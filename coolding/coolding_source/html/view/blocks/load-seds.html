@@ -16,7 +16,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="status in devices.statuses | orderBy:preOrder:reverse">
-            <td> <div class="btn btn-primary btn-draggable pw-drag" data-drag="true" data-jqyoui-options="{revert: 'invalid',appendTo: 'body'}" ng-model="module" jqyoui-draggable="{animate:true}" ng-init="module.title=status.name; module.id=status.nameid; module.deviceid=status.id; module.type=status.type" type="button">{{status.address | getaddress}}</div></td>
+            <td> <div class="btn btn-primary btn-draggable pw-drag" data-drag="true" data-jqyoui-options="{revert: 'invalid',appendTo: 'body'}" ng-model="module" jqyoui-draggable="{animate:true}" ng-init="module.title=status.name; module.id=status.nameid; module.deviceid=status.id; module.type=status.type">{{status.address | getaddress}}</div></td>
             <td>{{status.nameid}}</td>
             <td>{{status.name}}</td>
             <td>{{status.lastseendate}}</td>
@@ -24,5 +24,3 @@
         </tbody>
     </table>
 </div>
-
-
