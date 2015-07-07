@@ -1,0 +1,38 @@
+<%
+$ip   = Request.Get["ip"] || ''
+$id   = Request.Get["id"] || ''
+
+$flush   = Request.Get["flush"] || true
+
+$file = System.Path+'/coolding/cache/coolding_sequences.xml'
+
+$date_file = File.Date($file)
+$diff_minute = String(DateTime()-$date_file, 'ms')
+
+if $flush==true
+  $diff_minute = 200
+/if
+
+if ($diff_minute>=200)
+  if File.Exists($file)
+   File.Delete($file)
+  /if
+
+  $load = Http.Get('http://'+$ip+'/ir/sequences?json=true', 'smile',$id)
+  File.AppendLine($file, $load)
+
+  $result = 'false'
+  if($load[2]=="x")
+   if($load[3]=="m")
+    if($load[4]=="l")
+     $result = 'ok'
+    /if
+   /if
+  /if
+  Echo $result
+
+else
+  Echo 'Cache'
+/if
+
+%>

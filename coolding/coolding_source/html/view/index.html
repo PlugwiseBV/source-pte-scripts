@@ -1,0 +1,86 @@
+<div ng-controller="AddressIdentifier">
+    <!-- Coolding ShortID field -->
+    <div address-Bar></div>
+
+    <div id="container" class="container boxes_margin">
+        <!-- Error box -->
+        <div ng-show="devices.error">
+            <div class="callout callout-danger" id="callout-tables-striped-ie8">
+                <h4>Unfortunately!</h4>
+                <p>{{error_message}}</p>
+                <p translate="licensemissing" ng-show="license_missing" class="ng-hide"></p>
+            </div>
+        </div>
+
+        <!-- Device; Beacon found! -->
+        <div ng-show="devices.show">
+
+            <!-- Left Side -->
+            <div class="col-sm-6">
+                <!-- Coolding info Block -->
+                <div class="block authentication-widget" ng-class="{'pw-error-background': error_device == true, 'deviceinfo': error_device != true }">
+                    <div class="block-title">
+                        <h2 translate="device_info">Device information</h2>
+
+                        <div class="block-options pull-right">
+                            <span class="fa fa-cog fa-spin ng-hide" ng-show="loader_device"></span>
+                            <span class="ng-hide" ng-show="error_device"><span translate="failedtoload"><b>Error</b>, this block has <u>failed</u> to load</span> <span class="glyphicon glyphicon-remove pw-error"></span></span>
+                        </div>
+                    </div>
+                    <div class="list-block height-auto block padding-ten" coolding-Info></div>
+                </div>
+
+                <!-- All Coolding records -->
+                <div class="block authentication-widget" ng-class="{'pw-error-background': error_current == true, 'currentinfo': error_current != true }">
+                    <div class="block-title">
+                        <h2 translate="coolding_records">Coolding records</h2>
+                        <div class="block-options pull-right">
+                            <span class="fa fa-cog fa-spin loader_color ng-hide" ng-show="loader_current"></span>
+                            <span ng-hide="error_current" ng-click="cooldingSequence(identifier)"><span class="fa fa-refresh"></span> <span translate="reload">{{reload}}</span></span>
+                            <span class="ng-hide" ng-show="error_current"><span translate="failedtoload"><b>Error</b>, this block has <u>failed</u> to load</span> <span class="glyphicon glyphicon-remove pw-error"></span></span>
+                        </div>
+                    </div>
+                    <div class="list-block height-fixed block" coolding-Records></div>
+                </div>
+            </div>
+
+            <!-- Right Side -->
+            <div class="row col-sm-6">
+
+                <!-- Plugwise SED Modules -->
+                <div class="block authentication-widget">
+                    <div class="block-title">
+                        <h2 translate="plugwise_sed_modules">Plugwise SED Modules</h2>
+                        <div class="block-options pull-right">
+                            <span class="fa fa-cog fa-spin loader_color ng-hide" ng-show="loader_status"></span>
+                            <span class="ng-hide" ng-show="error_status"><span translate="failedtoload"><b>Error</b>, this block has <u>failed</u> to load</span> <span class="glyphicon glyphicon-remove pw-error"></span></span>
+                        </div>
+                    </div>
+                    <div class="list-block height-fixed block" load_seds></div>
+                </div>
+
+                <!-- Drag Drop -->
+                <div class="block authentication-widget" style="padding-bottom: 10px;">
+                    <div drag_Drop></div>
+                </div>
+            </div>
+
+
+            <!-- Bottom -->
+            <div class="col-sm-12">
+
+                <!-- History -->
+                <div class="block authentication-widget" ng-class="{'pw-error-background': error_current == true, 'currentinfo': error_current != true }">
+                    <div class="block-title">
+                        <h2 translate="coolding_records">History</h2>
+                        <div class="block-options pull-right">
+                            <span class="fa fa-cog fa-spin loader_color ng-hide" ng-show="loader_current"></span>
+                            <span class="ng-hide" ng-show="error_current"><span translate="failedtoload"><b>Error</b>, this block has <u>failed</u> to load</span> <span class="glyphicon glyphicon-remove pw-error"></span></span>
+                        </div>
+                    </div>
+                    <div class="list-block height-auto block" history-Block></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

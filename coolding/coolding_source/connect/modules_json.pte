@@ -1,0 +1,70 @@
+<%
+$get_modules = Plugwise.Modules
+$collect_scan = {}
+
+$mod   = Request.Get["module"] || '6'
+
+$count = 0
+foreach $get_modules as $module
+  // All scans
+  if ($module.Type==$mod)
+    $count += 1
+  /if
+/foreach
+
+$c = 0
+
+
+
+// Create json
+$cc = '['
+foreach $get_modules as $module
+  // All scans
+  if ($module.Type==$mod)
+    $collect_scan[] = {
+    	'id' => 			$module.Id,
+    	'name' =>			$module.Name,
+    	'uuid' =>			$module.UUId,
+    	'status' =>			$module.Status,
+    	'lastseendate' =>	$module.LastSeenDate,
+      'address' => $module.MacAddress
+    }
+
+    $cc += "{"
+ 	   $cc += '"id": '+$module.Id
+ 	   $cc += ", "
+     $cc += '"type": "'+$module.Type
+     $cc += '",'
+     $cc += '"nameid": "'+$module.Name.Replace('"', '\"')+'", '
+     if($module.Room!=null)
+ 	     $cc += '"name": "'+$module.Room.Name.Replace('"', '\"')+'", '
+     else
+       $cc += '"name": "No name", '
+     /if
+
+ 	   $cc += '"uuid": "'+$module.UUId+'", '
+ 	   $cc += '"status": "'+$module.Status+'", '
+     $cc += '"address": "'+$module.MacAddress+'", '
+ 	   $cc += '"lastseendate": "'+$module.LastSeenDate
+ 	   $cc += '"'
+    $c += 1
+
+    if $c == $count
+       $cc += "} "
+    else
+       $cc += "}, "
+    /if
+  /if
+/foreach
+$cc += ']'
+
+echo $cc
+$file = System.Path+'/coolding/cache/modules.json'
+
+if File.Exists($file)
+ File.Delete($file)
+/if
+
+File.AppendLine($file, $cc)
+
+%>

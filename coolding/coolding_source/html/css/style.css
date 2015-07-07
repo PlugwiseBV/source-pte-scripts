@@ -1,0 +1,476 @@
+body {
+    background: #ddd;
+    font-family: Ubuntu, sans-serif;
+}
+.navbar-default {
+    background-color: #fff;
+}
+.navbar-brand {
+    padding: 15px 15px 15px 25px;
+}
+.navbar-brand.center {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    text-align: center;
+    width: 300px;
+    margin: auto;
+    font-weight: 300;
+    text-transform: capitalize;
+}
+.navbar-brand .icon-bar {
+    background-color: #888;
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+    margin-top: 4px;
+}
+.roles-legend, .navbar-default {
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+.form-horizontal .control-div {
+    padding-top: 7px;
+    margin-bottom: 0;
+    text-align: left;
+}
+.block-title h1, .block-title h2, .block-title h3, .block-title h4, .block-title h5, .block-title h6 {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 0;
+    padding: 10px 15px 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.block, .block.full, .content-header, .content-header-media .header-section, .modal-body {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.block, .widget {
+    margin-bottom: 20px;
+}
+.block {
+    margin: 0 0 10px;
+    padding: 20px 15px 0;
+    background-color: #FFF;
+    -webkit-box-shadow: 0 2px 0 rgba(218, 224, 232, 0.5);
+    box-shadow: 0 2px 0 rgba(218, 224, 232, 0.5);
+}
+.block-title {
+    margin: -20px -15px 0;
+    border-bottom: 2px solid #ddd;
+    background: #fafafa;
+}
+.authentication-widget .list-block, .beacon-widget .list-block {
+    height: 464px;
+    /*display: none;*/
+}
+.list-block.height-auto {
+    height: auto;
+}
+.list-block {
+    /*margin: 0 -20px;*/
+    height: 500px;
+    /*overflow: hidden;*/
+    position: relative;
+}
+.widget-content:focus, .widget-content:hover, .widget:focus, .widget:hover {
+    text-decoration: none;
+    -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
+    -webkit-transform: translateY(-2px);
+    transform: translateY(-2px);
+}
+.roles .role.external_portal, .list-item.smile_thermo .vendor-model, .widget.locations {
+    background-color: #46A1DD;
+}
+.text-center {
+    text-align: center;
+}
+.widget-content:focus, .widget-content:hover, .widget:focus, .widget:hover {
+    text-decoration: none;
+    -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
+    -webkit-transform: translateY(-2px);
+    transform: translateY(-2px);
+}
+.roles .role.external_portal, .list-item.smile_thermo .vendor-model, .widget.locations {
+    background-color: #46A1DD;
+}
+.text-center {
+    text-align: center;
+}
+.widget {
+    color: #FFF;
+    margin-bottom: 15px;
+    position: relative;
+}
+.widget, .widget-content {
+    display: block;
+    -webkit-transition: all .1s ease-out;
+    transition: all .1s ease-out;
+    cursor: pointer;
+}
+.widget-icon {
+    width: 74px;
+    height: 74px;
+    line-height: 70px;
+    font-size: 34px;
+    text-align: center;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.05);
+}
+.push {
+    margin-bottom: 15px!important;
+}
+.pull-right {
+    right: 15px;
+    position: relative;
+    top: 10px;
+}
+.loader-color {
+    color: #46A1DD;
+}
+.pw-error-background {
+    background-color: #C26565;
+}
+.pw-error {
+    position: relative;
+    top: 2px;
+    color: rgb(213, 76, 76);
+}
+.table_order {
+    cursor: pointer;
+}
+.block {
+    display: block;
+}
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+.no-hover {
+    margin-top: 0 !important;
+    border-width: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+.form-signin input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.form-signin .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.btn-primary {
+    background-color: #8FB73E;
+    color: #FFF;
+    border-color: #7EA538;
+}
+.btn {
+    border-radius: 3px;
+    border-width: 0;
+    border-bottom-width: 2px;
+    box-shadow: 0 4px 1px -3px #BBBABA;
+    margin-top: -2px;
+}
+.btn-primary:active, .btn-primary:focus, .btn-primary:disabled, .btn-primary:hover {
+    background-color: #8FB73E!important;
+    color: #FFF!important;
+}
+.btn:active, .btn:focus, .btn:disabled, .btn:hover {
+    box-shadow: 0 0px 1px 0 #BBBABA;
+    margin-top: 0;
+    border-width: 0;
+}
+.deviceinfo {
+    background-color: rgb(165, 195, 147);
+}
+.currentinfo {
+    background-color: #939FC3;
+}
+.boxes_margin {
+    margin-top:10px
+}
+.status-box {
+    display: block;
+    margin-top:10px
+}
+.callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+    background-color: #F9F9F9
+}
+.callout-danger {
+    border-left-color: #d9534f;
+}
+.thumbnail div {
+    display: block;
+}
+.pw-drag {
+    z-index:999999;
+    z-index: 999999;
+    height: 20px;
+    min-width: 37px;
+    line-height: 8px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 0;
+}
+.sed_button {
+    padding: 2px 10px;
+    background: rgb(165, 195, 147);
+    float: left;
+    color: white;
+    border-radius: 10px;
+    border: 1px solid #8FB3E;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.lang-select {
+    cursor: pointer;
+}
+.block_sed .active {
+    background: rgb(0, 92, 181) !important;
+}
+.tooltip {
+    z-index: 2000;
+}
+.tooltip.in{
+    opacity: 1;
+}
+.tooltip-inner {
+    position: relative;
+    left: 50px;
+    text-align: left;
+}
+.padding-ten {
+    padding: 10px;
+}
+.height-fixed {
+    overflow: hidden;
+    overflow-y: scroll;
+}
+.version {
+    color: #aaa;
+    float: left;
+    font-size: 8px;
+    margin: 38px 0px 0px 10px;
+}
+@font-face {
+    font-family: plugwise-smileir;
+    src: url(../fonts/plugwise-smileir.woff) format('woff');
+    font-weight: 400;
+    font-style: normal
+}
+[class*=" icon-"]:before,
+[class^=icon-]:before {
+    font-family: plugwise-smileir;
+    font-style: normal;
+    font-weight: 400;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
+    margin-left: .2em
+}
+.icon-1:before {
+    content: '\e817'
+}
+.icon-up:before {
+    content: '\e816'
+}
+.icon-3:before {
+    content: '\e801'
+}
+.icon-4:before {
+    content: '\e802'
+}
+.icon-airco1:before {
+    content: '\e803'
+}
+.icon-airco2:before {
+    content: '\e804'
+}
+.icon-airco3:before {
+    content: '\e805'
+}
+.icon-blow:before {
+    content: '\e806'
+}
+.icon-cooling:before {
+    content: '\e807'
+}
+.icon-down:before {
+    content: '\e808'
+}
+.icon-dry:before {
+    content: '\e809'
+}
+.icon-eco:before {
+    content: '\e80a'
+}
+.icon-2:before {
+    content: '\e800'
+}
+.icon-heating2:before {
+    content: '\e80c'
+}
+.icon-night:before {
+    content: '\e80d'
+}
+.icon-off:before {
+    content: '\e80e'
+}
+.icon-on:before {
+    content: '\e80f'
+}
+.icon-onoff:before {
+    content: '\e810'
+}
+.icon-play:before {
+    content: '\e811'
+}
+.icon-stop:before {
+    content: '\e812'
+}
+.icon-temperature:before {
+    content: '\e813'
+}
+.icon-time:before {
+    content: '\e814'
+}
+.icon-turbo:before {
+    content: '\e815'
+}
+.icon-heating1:before {
+    content: '\e80b'
+}
+.icon-15:before {
+    font-family: Ubuntu,sans-serif !important;
+    content: '15';
+    margin-left: .1em;
+}
+
+.icon-16:before {
+    font-family: Ubuntu,sans-serif !important;
+    content: '16';
+    margin-left: .1em;
+}
+
+.icon-17:before {
+    font-family: Ubuntu,sans-serif !important;
+    content: '17';
+    margin-left: .1em;
+}
+
+.icon-18:before {
+    font-family: Ubuntu,sans-serif !important;
+    content: '18';
+    margin-left: .1em;
+}
+
+.icon-19:before {
+    font-family: Ubuntu,sans-serif !important;
+    content: '19';
+    margin-left: .1em;
+}
+
+.icon-20:before {
+    font-family: Ubuntu,sans-serif !important;
+    content: '20';
+    margin-left: .1em;
+}
+
+.icon-21:before {
+    font-family: Ubuntu,sans-serif !important;
+    content: '21';
+    margin-left: .1em;
+}
+
+.icon-22:before {
+    font-family: Ubuntu,sans-serif !important;
+    content: '22';
+    margin-left: .1em;
+}
+
+.icon-23:before {
+    font-family: Ubuntu,sans-serif !important;
+    content: '23';
+    margin-left: .1em;
+}
+
+.icon-24:before {
+    font-family: Ubuntu,sans-serif !important;
+    content: '24';
+    margin-left: .1em;
+}
+
+.icon-25:before {
+    font-family: Ubuntu,sans-serif !important;
+    content: '25';
+    margin-left: .1em;
+}
+
+.icon-26:before {
+    font-family: Ubuntu,sans-serif !important;
+    content: '26';
+    margin-left: .1em;
+}
+
+.icon-27:before {
+    font-family: Ubuntu,sans-serif !important;
+    content: '27';
+    margin-left: .1em;
+}
+
+.icon-28:before {
+    font-family: Ubuntu,sans-serif !important;
+    content: '28';
+    margin-left: .1em;
+}
+/*FONTS*/
+@font-face {
+    font-family: 'Ubuntu';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Ubuntu'), url(../fonts/ubuntu.woff) format('woff');
+}
+@font-face {
+    font-family: 'Ubuntu';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Ubuntu Medium'), local('Ubuntu-Medium'), url(../fonts/ubuntu-medium.woff) format('woff');
+}
+@font-face {
+    font-family: 'Ubuntu';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Ubuntu Bold'), local('Ubuntu-Bold'), url(../fonts/ubuntu-bold.woff) format('woff');
+}

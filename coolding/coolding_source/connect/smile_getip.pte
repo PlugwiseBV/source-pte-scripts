@@ -1,0 +1,14 @@
+<%
+$id   = Request.Get["id"] || ''
+$callback   = Request.Get["callback"] || ''
+
+$file = System.Path+'/coolding/cache/smile_getip.jsonp'
+
+if File.Exists($file)
+ File.Delete($file)
+/if
+
+File.AppendLine($file, Http.Get('https://smile.plugwise.net/?json=true&callback=smile&shortId='+$id+'&callback='+$callback))
+
+
+%>

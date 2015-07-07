@@ -1,0 +1,13 @@
+<%
+$file = System.Path+'/coolding/cache/coolding_setting.json'
+
+Echo Request.Method
+
+if File.Exists($file)
+ File.Delete($file)
+/if
+
+if Request.Method=="POST"
+	File.AppendLine($file, Request.RawPost)
+/if
+%>

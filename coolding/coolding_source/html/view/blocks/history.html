@@ -1,0 +1,28 @@
+<div class="block_sed" style="padding-top:10px" ng-init="orderType='type'" ng-hide="button_status">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Running</th>
+            <th>SED ID</th>
+            <th>SED Name</th>
+            <th>Extra Value</th>
+            <th>Command 1 when ON</th>
+            <th>Command 2 when OFF</th>
+            <th>Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="hist in history">
+            <td>{{hist.running}}</td>
+            <td>{{hist.sedid}}</td>
+            <td>{{hist.sedname}}</td>
+            <td>{{hist.extravalue}}</td>
+            <td>{{hist.commandname1 }}</td>
+            <td>{{hist.commandname2 }}</td>
+            <td> <span ng-click="turnOff(hist.sedid, hist.extravalue)" style="cursor:pointer; margin-bottom: 10px;margin-right:5px;" class="btn btn-info">(In)activate</span> <span ng-click="remove(hist.sedid)" style="cursor:pointer;margin-bottom: 10px;margin-right:5px;" class="btn btn-danger">Remove</span> </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+

@@ -1,0 +1,250 @@
+
+<div class="block-title">
+    <h2 translate="dragdropblock">Drag / Drop place</h2>
+    <div class="block-options pull-right">
+        <span class="fa fa-cog fa-spin loader_color ng-hide" ng-show="loader_status"></span>
+        <span class="ng-hide" ng-show="error_status"><span translate="failedtoload"><b>Error</b>, this block has <u>failed</u> to load</span> <span class="glyphicon glyphicon-remove pw-error"></span></span>
+    </div>
+</div>
+<div translate="dragdrop_sed">Drop here your SED:</div>
+<div class="thumbnail" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=record])'}" ng-model="list2" jqyoui-droppable="{deepCopy: true}" style='height:61px;'>
+    <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="list2" jqyoui-draggable ng-hide="!list2.title"><span>{{list2.id}}</span><br>{{list2.title}}</div>
+</div>
+
+<div translate="dragdrop_cooldingcommandon">Drop here your Coolding record when switch is on (blue):</div>
+<div class="thumbnail" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=module])'}" ng-model="list1" jqyoui-droppable="{deepCopy: true}" style='height:50px;'>
+    <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="list1" jqyoui-draggable ng-hide="!list1.title">{{list1.title}}</div>
+</div>
+
+<div translate="dragdrop_cooldingcommandoff">Drop here your Coolding record when switch is off (white):</div>
+<div class="thumbnail" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=module])'}" ng-model="list3" jqyoui-droppable="{deepCopy: true}" style='height:50px;'>
+    <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="list3" jqyoui-draggable ng-hide="!list3.title">{{list3.title}}</div>
+</div>
+
+<div ng-if="list2.type=='Sense'">
+    <div translate="dragdrop_cooldingcommandecoon">Drop here your Coolding record when on (green):</div>
+    <div class="thumbnail" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=module])'}" ng-model="$parent.list4" jqyoui-droppable="{deepCopy: true}" style='height:50px;'>
+        <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="$parent.list4" jqyoui-draggable ng-hide="!$parent.list4.title">{{list4.title}}</div>
+    </div>
+
+    <div translate="dragdrop_cooldingcommandecooff">Drop here your Coolding record when off (green):</div>
+    <div class="thumbnail" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=module])'}" ng-model="$parent.list5" jqyoui-droppable="{deepCopy: true}" style='height:50px;'>
+        <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="$parent.list5" jqyoui-draggable ng-hide="!$parent.list5.title">{{list5.title}}</div>
+    </div>
+
+
+    <style>
+        .limit_box {
+            height: 107px;
+            border-bottom: 1px solid #aaa;
+            border-top: 1px solid #aaa;
+            padding-top: 15px;
+        }
+        .limit_box > div {
+            float: left;
+            clear: left;
+            margin-bottom: 10px;
+        }
+        .limit_text {
+            float: left;
+            width: 130px;
+            padding-top: 5px;
+        }
+        .limits {
+            float: left;
+            padding: 5px;
+            font-size: 18px;
+            width: 60px;
+            height: 32px;
+        }
+        .advanced_settings {
+            margin-bottom: 20px;
+        }
+        .advanced_settings .gear {
+            padding-right: 10px;
+        }
+
+
+        .input-group {
+            position: relative;
+            display: table;
+            border-collapse: separate;
+        }
+        .input-group-btn {
+            position: relative;
+            font-size: 0;
+            white-space: nowrap;
+        }
+        .input-group-btn {
+            width: 1%;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+        .input-group-btn, .input-group .form-control {
+            display: table-cell;
+        }
+        .input-group .form-control:not(:first-child):not(:last-child) {
+            border-radius: 0;
+        }
+        .input-group .form-control {
+            display: table-cell;
+        }
+        .input-group .form-control {
+            position: relative;
+            z-index: 2;
+            float: left;
+            width: 100%;
+            margin-bottom: 0;
+        }
+        .input-group .form-control {
+            position: relative;
+            z-index: 2;
+            float: left;
+            width: 100%;
+            margin-bottom: 0;
+        }
+        .form-control {
+            display: block;
+            width: 100%;
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        }
+        .temp_limits {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .limit-padding {
+            padding-right: 10px;
+        }
+    </style>
+
+
+    <button class="btn btn-primary ng-binding ng-pristine advanced_settings" type="button" ng-click="advanced=!advanced">
+        <span class="gear"><i class="fa fa-cogs"></i></span> <span translate="advanced_settings">Advanced Settings</span>
+    </button>
+
+    <div ng-show="advanced">
+        <div translate="dragdrop_temperaturelimits" class="temp_limits">In case of temperature limits:</div>
+
+        <div class="limit_box">
+            <div>
+                <div class="limit_text">
+                    <span class="fa fa-level-up limit-padding"></span>
+                    <span translata="upper_limit">Upper limit:</span>
+                </div>
+                <div class="input-group" style="margin-bottom: 10px;">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-danger" ng-click="$parent.upper_limit=$parent.upper_limit-1">-</button>
+                    </span>
+                    <input class="form-control" type="text" min="1" max="100" value="0" ng-model="$parent.upper_limit" maxlength="3" style="text-align: center;">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-success" ng-click="$parent.upper_limit=$parent.upper_limit+1">+</button>
+                    </span>
+                </div>
+            <div>
+                <div class="limit_text">
+                    <span class="fa fa-level-down limit-padding"></span>
+                    <span translata="lower_limit">Lower limit:</span>
+                </div>
+                <div class="input-group" style="margin-bottom: 10px;">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-danger" ng-click="$parent.lower_limit=$parent.lower_limit-1">-</button>
+                    </span>
+                    <input class="form-control" type="text" min="1" max="100" value="0" ng-model="$parent.lower_limit" maxlength="3" style="text-align: center;">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-success" ng-click="$parent.lower_limit=$parent.lower_limit+1">+</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <h4 translate="schedule">Schedule</h4>
+    <span class="fa fa-cog fa-spin loader_color ng-hide" ng-show="sense_loader"></span>
+
+    <ul style="padding: 0 10px; ">
+        <li ng-repeat="allsched in schedules" style="list-style-type: none">
+            <label for="{{$index}}"><input type="radio" id="{{$index}}" ng-model="$parent.chosen_schedule" ng-value="allsched.uuid" name="schedule">{{allsched.name}} - [ <a href="javascript:void(0)" ng-click="loadSchedule(allsched.uuid)">View Schema</a> ] [ <a href="javascript:void(0)">Modify Exceptions</a> ]</label>
+        </li>
+    </ul>
+
+    <div ng-show="list2.type=='Sense' && schedule[0].days != null" style="padding: 10px;background: #aaa; border: 1px solid #101010; width: 100%; float: left; margin-bottom: 20px;">
+        <div ng-click="schedule[0].days=null" style="color:white;"><span class="fa fa-close"></span> Close scheme</div>
+        <hr style="border-top: 1px solid #000;margin-top:10px">
+    <style>
+        .schedule {
+            float:left;diplay:block;width:3px; height: 15px;border: 1px solid black;margin-right:1px;
+        }
+        .sheduleBelow {
+            background: cornflowerblue;
+        }
+        .sheduleNull {
+            background: white;
+        }
+        .sheduleUp {
+            background: lawngreen;
+        }
+
+    </style>
+    <div ng-repeat="sched in schedule[0].days" style="clear:both">
+        {{shed}}
+         <div ng-repeat="monday in sched.monday track by $index">
+            <div class="schedule" ng-class="{'sheduleBelow': monday<0, 'sheduleNull': monday==0, 'sheduleUp': monday>0}">&nbsp;</div>
+        </div>
+        <div ng-repeat="tuesday in sched.tuesday track by $index">
+            <div class="schedule" ng-class="{'sheduleBelow': tuesday<0, 'sheduleNull': tuesday==0, 'sheduleUp': tuesday>0}">&nbsp;</div>
+        </div>
+        <div ng-repeat="wednesday in sched.wednesday track by $index">
+            <div class="schedule" ng-class="{'sheduleBelow': wednesday<0, 'sheduleNull': wednesday==0, 'sheduleUp': wednesday>0}">&nbsp;</div>
+        </div>
+        <div ng-repeat="thursday in sched.thursday track by $index">
+            <div class="schedule" ng-class="{'sheduleBelow': thursday<0, 'sheduleNull': thursday==0, 'sheduleUp': thursday>0}">&nbsp;</div>
+        </div>
+        <div ng-repeat="friday in sched.friday track by $index">
+            <div class="schedule" ng-class="{'sheduleBelow': friday<0, 'sheduleNull': friday==0, 'sheduleUp': friday>0}">&nbsp;</div>
+        </div>
+        <div ng-repeat="saturday in sched.saturday track by $index">
+            <div class="schedule" ng-class="{'sheduleBelow': saturday<0, 'sheduleNull': saturday==0, 'sheduleUp': saturday>0}">&nbsp;</div>
+        </div>
+        <div ng-repeat="sunday in sched.sunday track by $index">
+            <div class="schedule" ng-class="{'sheduleBelow': sunday<0, 'sheduleNull': sunday==0, 'sheduleUp': sunday>0}">&nbsp;</div>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+</div>
+
+<div ng-if="list2.type=='Switch'" style="padding: 10px;">
+    <span>The Switch has two seperated pieces. You can define which piece will run what command.</span><br>
+    <label for="both"> Both </label>
+    <input type="radio" name="triggerPlace" value="both" id="both" checked="checked" ng-model="trigger.place"><br>
+    <label for="right"> Right </label>
+    <input type="radio" name="triggerPlace" value="right" id="right" ng-model="trigger.place"><br>
+    <label for="left"> Left </label>
+    <input type="radio" name="triggerPlace" value="left" id="left" ng-model="trigger.place">
+</div>
+
+<div>
+    <div class="btn btn-success ng-binding ng-pristine" ng-click="log()" translate="generate_eventscript">Generate eventscript</div>
+    <div class="btn btn-warning ng-binding ng-pristine" ng-click="reset()" translate="reset">Reset</div>
+</div>
+

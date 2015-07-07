@@ -1,0 +1,63 @@
+<%
+$uuid   = Request.Get["uuid"] || ''
+$cc = ''
+
+Function get_days($days)
+  $day_count = 0
+  foreach $days as $day
+    $day_count += 1
+  /foreach
+
+  $c = 0
+  $arr = ''
+  foreach $days as $day
+    $arr += $day
+
+    $c += 1
+    if($c==$day_count)
+      $arr += ''
+    else
+      $arr += ', '
+    /if
+  /foreach
+
+  return $arr
+/Function
+
+
+foreach Plugwise.Schedules as $schedule
+ if($uuid==$schedule.UUId)
+  $cc += '['
+ 
+//echo $schedule.AssignedAppliances
+  $cc += '{ "days": '
+  $cc += '[{'
+  $cc += '"monday": ['
+  $cc += get_days($schedule.Values.mo)
+  $cc += '] }, {'
+  $cc += '"tuesday": ['
+  $cc += get_days($schedule.Values.tu)
+  $cc += '] }, {'
+  $cc += '"wednesday": ['
+  $cc += get_days($schedule.Values.we)
+  $cc += '] }, {'
+  $cc += '"thursday": ['
+  $cc += get_days($schedule.Values.th)
+  $cc += '] }, {'
+  $cc += '"friday": ['
+  $cc += get_days($schedule.Values.fr)
+  $cc += '] }, {'
+  $cc += '"saturday": ['
+  $cc += get_days($schedule.Values.sa)
+  $cc += '] }, {'
+  $cc += '"sunday": ['
+  $cc += get_days($schedule.Values.su)
+  $cc += '] } ] '
+
+  $cc += '}'
+
+  $cc += ']'
+/if
+/foreach
+echo $cc
+%>

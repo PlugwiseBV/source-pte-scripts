@@ -1,0 +1,20 @@
+<div class="form-horizontal form-bordered">
+    <table class="table">
+        <thead>
+        <tr>
+            <th translate="dragdrop"> Drag / Drop </th>
+            <th translate="coolding_name_command"> Name Command</th>
+            <th translate="coolding_icon"> Icon</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="status in devices.current.sequence | orderBy:preOrder:reverse">
+            {{status.show}}
+            <td><div  class="btn btn-primary btn-draggable pw-drag" data-drag="true" data-jqyoui-options="{revert: 'invalid',appendTo: 'body',appendTo: 'body', containment: 'window',scroll: false, helper: 'clone'}" ng-model="record" jqyoui-draggable="{animate:false, placeholder:'keep'}" ng-init="record.title=status.name; record.id=status['$'].id">Drag</div></td>
+            <td>{{status.name}}</td>
+            <td><span class="icon-{{status.icon}}" style="font-size:18px" ng-click="sendCooldingCommand(status['$'].id)"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+

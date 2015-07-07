@@ -1,0 +1,7 @@
+<%
+$id		 			= Request.Get["id"] || ''
+$ip		 			= Request.Get["ip"] || ''
+$command 			= Request.Get["command"] || ''
+
+$result = Http.Get('http://'+$ip+'/ir/play?id='+$command, 'smile', $id)
+Echo $result

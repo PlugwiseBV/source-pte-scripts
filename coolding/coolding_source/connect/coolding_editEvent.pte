@@ -1,0 +1,63 @@
+<%
+$id 			= Request.Get["id"] || ''
+$status 			= Request.Get["status"] || ''
+$remove 			= Request.Get["remove"] || ''
+$filename 			= Request.Get["filename"] || ''
+
+$get_modules	 = Plugwise.Modules
+$file = System.Path+'/sys/events/'+$filename+'.pte'
+
+$id = $id.Replace('_left','')
+$id = $id.Replace('_right','')
+$id = $id.Replace('_both','')
+
+
+foreach $get_modules as $module
+  if ($module.name==$id)
+    if($status=="true")
+      if ($module.Type==5)
+    	 Echo $module.SetEvents($filename+'.pte', 'OnReport,OnBroadcast')
+      else
+        if ($module.Type==3)
+          $extravalue       = Request.Get["extravalue"] || ''
+          if($extravalue=="left")
+           if(File.Exists(System.Path+'/sys/switch/'+$module.uuid+'_left_inactive.pte'))
+            File.Move(System.Path+'/sys/switch/'+$module.uuid+'_left_inactive.pte', System.Path+'/sys/switch/'+$module.uuid+'_left.pte')
+           /if
+          /if
+          if($extravalue=="right")
+           if(File.Exists(System.Path+'/sys/switch/'+$module.uuid+'_right_inactive.pte'))
+            File.Move(System.Path+'/sys/switch/'+$module.uuid+'_right_inactive.pte', System.Path+'/sys/switch/'+$module.uuid+'_right.pte')
+           /if
+          /if
+        else
+          Echo $module.SetEvents($filename+'.pte', 'OnBroadcast')
+        /if
+
+      /if
+    else
+      if ($module.Type==3)
+        $extravalue       = Request.Get["extravalue"] || ''
+        if($extravalue=="left")
+          if(File.Exists(System.Path+'/sys/switch/'+$module.uuid+'_left.pte'))
+            File.Move(System.Path+'/sys/switch/'+$module.uuid+'_left.pte', System.Path+'/sys/switch/'+$module.uuid+'_left_inactive.pte')
+          /if
+        /if
+        if($extravalue=="right")
+          if(File.Exists(System.Path+'/sys/switch/'+$module.uuid+'_right.pte'))
+            File.Move(System.Path+'/sys/switch/'+$module.uuid+'_right.pte', System.Path+'/sys/switch/'+$module.uuid+'_right_inactive.pte')
+          /if
+        /if
+      else
+        Echo $module.SetEvents(null,null)
+      /if
+    /if
+
+  /if
+/foreach
+
+if($remove == true)
+  if File.Exists($file)
+    File.Delete($file)
+  /if
+/if

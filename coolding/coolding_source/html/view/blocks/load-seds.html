@@ -1,0 +1,26 @@
+<div class="block_sed" style="padding-top:10px" ng-init="orderType='type'" ng-hide="button_status">
+    <div class="sed_button" ng-class="{'active':sedSelect === 'switch'}" ng-click="load_sed('switch');sedSelect='switch'">Switch</div>
+    <div class="sed_button" ng-class="{'active':sedSelect === 'scan' || sedSelect === undefined}" ng-click="load_sed('scan');sedSelect='scan'">Scan</div>
+    <div class="sed_button" ng-class="{'active':sedSelect === 'sense'}" ng-click="load_sed('sense');sedSelect='sense'">Sense</div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th translate="address"> Address </th>
+            <th class="table_order" ng-click="orderType='name';reverse=!reverse;order('name', reverse)"><span translate="name">Name</span> <span class="fa" ng-show="orderType == 'name'" ng-class="{'fa-sort-up': reverse == true, 'fa-sort-down': reverse != true}"></span><span ng-hide="orderType == 'name'" class="fa fa-unsorted"></span></th>
+            <th translate="room">Room</th>
+            <th class="table_order" ng-click="orderType='date';reverse=!reverse;order('lastseendate', reverse)" translate="last_seen_date">Last Seen Date <span ng-show="orderType == 'date'" class="fa" ng-class="{'fa-sort-up': reverse == true, 'fa-sort-down': reverse != true}"></span><span ng-hide="orderType == 'date'" class="fa fa-unsorted"></span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="status in devices.statuses | orderBy:preOrder:reverse">
+            <td> <div class="btn btn-primary btn-draggable pw-drag" data-drag="true" data-jqyoui-options="{revert: 'invalid',appendTo: 'body'}" ng-model="module" jqyoui-draggable="{animate:true}" ng-init="module.title=status.name; module.id=status.nameid; module.deviceid=status.id; module.type=status.type" type="button" data-container="body" data-toggle="popover" data-html="true" data-placement="right" data-content="hoi">{{status.address | getaddress}}</div></td>
+            <td>{{status.nameid}}</td>
+            <td>{{status.name}}</td>
+            <td>{{status.lastseendate}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+

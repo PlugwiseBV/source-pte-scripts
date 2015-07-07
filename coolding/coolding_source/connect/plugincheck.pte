@@ -1,0 +1,8 @@
+<%
+// Check event scripting
+
+if Plugwise.Features["v"] == undefined
+ Echo "false"
+else
+ Echo "true"
+/if

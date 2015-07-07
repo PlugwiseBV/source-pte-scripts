@@ -1,0 +1,33 @@
+<%
+$ip   = Request.Get["ip"] || ''
+$id   = Request.Get["id"] || ''
+
+$flush   = Request.Get["flush"] || true
+
+$file = System.Path+'/coolding/cache/coolding_info.xml'
+
+$last_coolding = System.Path+'/coolding/cache/last/last_connect.pte'
+
+
+  if File.Exists($file)
+   File.Delete($file)
+  /if
+
+  $load = Http.Get('http://'+$ip+'/ir/info', 'smile', $id)
+  File.AppendLine($file, $load)
+
+  $result = 'false'
+  if($load[2]=="x")
+   if($load[3]=="m")
+    if($load[4]=="l")
+     $result = 'ok'
+      File.Delete($last_coolding)
+      File.AppendLine($last_coolding, $id)
+
+    /if
+   /if
+  /if
+  Echo $result
+
+
+%>

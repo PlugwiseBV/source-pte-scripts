@@ -1,0 +1,467 @@
+<%
+// @author Ersin Topuz (eto)
+
+Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
+
+  // All directories
+  $s = System.Path
+  $directories = {
+    "last_command" => $s+"/coolding/cache/states/last_coolding_command_"+$uuid+".txt",
+    "coolding_ip"  => $s+"/coolding/cache/ip/coolding_"+$id+".txt",
+    "last_ip"      => $s+"/coolding/cache/ip/coolding_lastip_"+$id+".txt",
+    "log_file"     => $s+"/coolding/log.txt"
+  }
+
+  // Log is true
+  $log = True
+
+  // Request new ipaddress when cache is empty
+  $ip = Renewip($id, $directories)
+  
+  if($log)
+    File.AppendLine($directories['log_file'], "Begin log; "+$sed_type+" : "+$type+" [ip: "+$ip+"] - Date: "+DateTime())
+  /if
+
+  if($sed_type=='Sense')
+
+    // Multiply Plugwise Schedule 
+    $now = $now*10
+
+    CooldingSense($id, $commands, $uuid, $now, $ip, $directories, ReadLastCommand($directories, $id, $ip), $log)
+  /if
+
+  if($sed_type=='Scan')
+      File.AppendLine($directories['log_file'], "uitvoeren Scan")
+    CooldingScan($id, $commands, $now, $ip, $directories, ReadLastCommand($directories, $id, $ip), $log)
+  /if
+
+  if($sed_type=='Switch')
+      File.AppendLine($directories['log_file'], "uitvoeren Switch")
+    CooldingSwitch($id, $commands, $now, $ip, $directories, ReadLastCommand($directories, $id, $ip), $log)
+  /if
+
+  if($log)
+    File.AppendLine($directories['log_file'], "=== End of logs")
+  /if
+/Function
+
+Function checkLastCommand($id, $command, $url, $log, $lcommand, $directories, $new_status, $old_status)
+
+
+  if $lcommand == undefined
+    $lcommands = '' 
+  else
+    $lcommands = $lcommand
+  /if
+
+  if($lcommands==$command)
+    if File.Exists($directories['last_command'])
+      File.Delete($directories['last_command'])
+    /if
+    File.AppendLine($directories['last_command'], $command)
+
+    if($log)
+      File.AppendLine($directories['log_file'], $old_status)
+    /if
+  else
+    File.Delete($directories['last_command'])
+    if($log)
+      File.AppendLine($directories['log_file'], $new_status)
+    /if
+    $command_run = true
+    $result = Http.Get($url, 'smile', $id)
+    File.AppendLine($directories['last_command'], $command)
+  /if
+  return {"result"=>$result, "command_run"=>$command_run}
+/Function
+
+Function validateResult($id, $result, $command_run, $directories, $log)
+    // When a command is called
+
+      File.AppendLine($directories['log_file'], "validate result")
+    if($command_run==true)
+      if($log)
+        File.AppendLine($directories['log_file'], "Command called = true")
+        File.AppendLine($directories['log_file'], "Result page: " +$result[0]+$result[1])
+      /if
+
+      if($result!="ok\n")
+        if($log)
+          File.AppendLine($directories['log_file'], "Coolding can not be found, ip address is changed?")
+          File.AppendLine($directories['log_file'], "Renewing ip address; Current ip address: "+$ip+" and result page: "+$result)
+        /if
+
+        File.Delete($directories['last_command'])
+        File.AppendLine($directories['last_command'], "0")
+        File.Delete($directories['coolding_ip'])
+
+        $ip = Renewip($id, $directories)
+
+        // Now the ip address is fixed, run the command one more time!
+        CooldingSense($id, $commands, $uuid, $now, $ip, $directories['last_command'], $lcommand, $directories['log_file'])
+
+        if($log)
+          File.AppendLine($directories['log_file'], "New ip address"+$ip)
+        /if 
+      /if
+    /if
+/Function
+
+Function CooldingSwitch($id, $commands, $now, $ip, $directories, $lcommand, $log)
+File.AppendLine($directories['log_file'], "Coolding Switch function")
+  $on_url = 'http://'+$ip+'/ir/play?id='+$commands['on_id']
+  $off_url = 'http://'+$ip+'/ir/play?id='+$commands['off_id']
+
+
+  File.AppendLine($directories['log_file'], "now="+$now)
+  File.AppendLine($directories['log_file'], "lcommand="+$lcommand)
+
+  if($now==true)
+    File.AppendLine($directories['log_file'], "Switch turned on; now is true")
+
+    $result = Http.Get($on_url, 'smile', $id)
+    File.AppendLine($directories['last_command'], $commands['on_id'])
+
+  Else
+    File.AppendLine($directories['log_file'], "Switch turned off; now is false")
+
+    $result = Http.Get($off_url, 'smile', $id)
+    File.AppendLine($directories['last_command'], $commands['off_id'])
+
+    File.AppendLine($directories['log_file'], "url: "+$off_url)
+
+  /If
+
+
+    File.AppendLine($directories['log_file'], "result: "+$result[0]+$result[1])
+
+
+  if($result!="ok\n")
+    if($log)
+      File.AppendLine($directories['log_file'], "Coolding can not be found, ip address is changed?")
+      File.AppendLine($directories['log_file'], "Renewing ip address; Current ip address: "+$ip+" and result page: "+$result)
+    /if
+    File.Delete($directories['last_command'])
+    File.AppendLine($directories['last_command'], "0")
+    File.Delete($directories['coolding_ip'])
+
+    $ip = Renewip($id, $directories)
+
+    // Now the ip address is fixed, run the command one more time!
+    CooldingScan($id, $commands, $now, $ip, $directories, $lcommand, $log)
+
+    if($log)
+      File.AppendLine($directories['log_file'], "New ip address"+$ip)
+    /if
+  /if
+/Function
+
+
+Function CooldingScan($id, $commands, $now, $ip, $directories, $lcommand, $log)
+  $on_url = 'http://'+$ip+'/ir/play?id='+$commands['on_id']
+  $off_url = 'http://'+$ip+'/ir/play?id='+$commands['off_id']
+
+
+
+  if($now==true)
+    File.AppendLine($directories['log_file'], "Scan turned on; now is true")
+
+    $result = Http.Get($on_url, 'smile', $id)
+    File.AppendLine($directories['last_command'], $commands['on_id'])
+
+  Else
+    File.AppendLine($directories['log_file'], "Scan turned off; now is false")
+
+    $result = Http.Get($off_url, 'smile', $id)
+    File.AppendLine($directories['last_command'], $commands['off_id'])
+
+    File.AppendLine($directories['log_file'], "url: "+$off_url)
+
+  /If
+
+
+    File.AppendLine($directories['log_file'], "result: "+$result[0]+$result[1])
+
+
+
+  if($result!="ok\n")
+    if($log)
+      File.AppendLine($directories['log_file'], "Coolding can not be found, ip address is changed?")
+      File.AppendLine($directories['log_file'], "Renewing ip address; Current ip address: "+$ip+" and result page: "+$result)
+    /if
+    File.Delete($directories['last_command'])
+    File.AppendLine($directories['last_command'], "0")
+    File.Delete($directories['coolding_ip'])
+
+    $ip = Renewip($id, $directories)
+
+    // Now the ip address is fixed, run the command one more time!
+    CooldingScan($id, $commands, $now, $ip, $directories, $lcommand, $log)
+
+    if($log)
+      File.AppendLine($directories['log_file'], "New ip address"+$ip)
+    /if
+  /if
+/Function
+
+Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand, $log)
+  // Coolding play URL
+  $eco_on_url = 'http://'+$ip+'/ir/play?id='+$commands['eco_on_id']
+  $eco_off_url = 'http://'+$ip+'/ir/play?id='+$commands['eco_off_id']
+  $on_url = 'http://'+$ip+'/ir/play?id='+$commands['on_id']
+  $off_url = 'http://'+$ip+'/ir/play?id='+$commands['off_id']
+
+  // When command is run, switch to true
+  $command_run = false
+
+  // Calculate the mount of Quarters
+  $quarter = CalculateQuarters()
+
+  $d = DateTime()
+
+  // Begin the schedule loop
+  foreach Plugwise.Schedules as $schedule
+
+    // When the correct schedule if found
+    if($uuid==$schedule.UUId)
+
+      if $lcommand == undefined
+        $lcommands = '' 
+      else
+        if $lcommand[0] == undefined
+          $lcommands = ''
+        else
+          $lcommands = $lcommand[0]
+        /if
+      /if
+
+      if($d.Weekday==0)
+        $day = 6
+      else
+        $day = $d.Weekday-1
+      /if
+
+
+      if($schedule.Values[($day)][$quarter]==0)
+
+        if($lcommands==($commands['off_id']+"_off"))
+          if($log)
+            File.AppendLine($directories['log_file'], "Just Turn Off - But it is already off!")
+          /if
+         else
+           File.Delete($directories['last_command'])
+           if($log)
+             File.AppendLine($directories['log_file'], "Just torn off - Turn off command!")
+           /if
+           $command_run = true
+           $result = Http.Get($off_url, 'smile', $id)
+           File.AppendLine($directories['last_command'], $commands['off_id']+'_off')
+        /if
+      Elseif($schedule.Values[($day)][$quarter]==-1)
+
+        if($lcommands==($commands['on_id']+'_on'))
+          if($log)
+            File.AppendLine($directories['log_file'], "Just Turn On - But it is already on!")
+          /if
+         else
+           File.Delete($directories['last_command'])
+           if($log)
+             File.AppendLine($directories['log_file'], "Just torn on - Turn on command!")
+           /if
+           $command_run = true
+           $result = Http.Get($on_url, 'smile', $id)
+           File.AppendLine($directories['last_command'], $commands['on_id']+'_on')
+        /if
+      else
+
+        // Calculate the upper and lower ratio
+        $upper_limit = ($schedule.Values[($day)][$quarter]+$commands['upper_ratio']);
+        $lower_limit = ($schedule.Values[($day)][$quarter]-$commands['lower_ratio']);
+
+        if($log)
+          File.AppendLine($directories['log_file'], "quarter: "+$quarter)
+          File.AppendLine($directories['log_file'], "Upper limit: "+$upper_limit)
+          File.AppendLine($directories['log_file'], "Lower limit: "+$lower_limit)
+          File.AppendLine($directories['log_file'], "Scheme value: "+$schedule.Values[$day][$quarter])
+          File.AppendLine($directories['log_file'], "Sense temp: "+$now)
+
+          File.AppendLine($directories['log_file'], "All command: "+$commands)
+          File.AppendLine($directories['log_file'], "Last command: "+$lcommands)
+          
+        /if
+
+        if($upper_limit<$now)
+          if($lcommands==($commands['eco_on_id']+"_eco_on"))
+            if($log)
+              File.AppendLine($directories['log_file'], "Exceeding the average - Already on!")
+            /if
+           else
+             File.Delete($directories['last_command'])
+             if($log)
+               File.AppendLine($directories['log_file'], "Exceeding the average - Turn on command!")
+             /if
+             $command_run = true
+             $result = Http.Get($eco_on_url, 'smile', $id)
+             File.AppendLine($directories['last_command'], $commands['eco_on_id']+"_eco_on")
+          /if
+        /if
+
+       if($lower_limit>$now)
+         if($lcommands==($commands['eco_off_id']+'_eco_off'))
+           if($log)
+             File.AppendLine($directories['log_file'], "Below the norm - already off")
+           /if
+         else
+           File.Delete($directories['last_command'])
+           if($log)
+             File.AppendLine($directories['log_file'], "Below the norm - Turn off command!")
+           /if
+           $command_run = true
+           $result = Http.Get($eco_off_url, 'smile', $id)
+           File.AppendLine($directories['last_command'], $commands['eco_off_id']+'_eco_off')
+         /if
+      /if
+    /if
+
+
+    // When a command is called
+    if($command_run==true)
+      if($log)
+        File.AppendLine($directories['log_file'], "Command called = true")
+        File.AppendLine($directories['log_file'], "Result page: " +$result[0]+$result[1])
+      /if
+
+      if($result!="ok\n")
+        if($log)
+          File.AppendLine($directories['log_file'], "Coolding can not be found, ip address is changed?")
+          File.AppendLine($directories['log_file'], "Renewing ip address; Current ip address: "+$ip+" and result page: "+$result)
+        /if
+
+        File.Delete($directories['last_command'])
+        File.AppendLine($directories['last_command'], "0")
+        File.Delete($directories['coolding_ip'])
+
+        $ip = Renewip($id, $directories)
+
+        // Now the ip address is fixed, run the command one more time!
+        CooldingSense($id, $commands, $uuid, $now, $ip, $directories['last_command'], $lcommand, $directories['log_file'])
+
+        if($log)
+          File.AppendLine($directories['log_file'], "New ip address"+$ip)
+        /if 
+      /if
+    /if
+
+// This one will ocur when there is a range; e.g. avg: 240, upper: 250, below: 230
+// When the current temp is 245 it will be between this range, and nothing will happen..
+   if($upper_limit>$now)
+     if($lower_limit<$now)
+       if($log)
+        File.AppendLine($directories['log_file'], "Inside limitations")
+       /if
+     /if
+   /if
+  /if
+ /foreach
+
+ if($log)
+  File.AppendLine($directories['log_file'], "End of function CooldingSense")
+ /if
+
+ /Function
+
+
+
+Function Renewip($id, $directories)
+   $adres = 'https://smile.plugwise.net/?json=true&callback=smile&shortId='+$id
+     File.AppendLine($directories['log_file'], "Data get: "+$adres)
+
+  if File.Exists($directories['coolding_ip'])
+    $get_ip = File.Read($directories['coolding_ip'])
+    $ip = $get_ip[0]
+    File.AppendLine($directories['log_file'], "IP is already known: "+$ip)
+  else
+     $data = Http.Get($adres)
+
+     File.AppendLine($directories['log_file'], "Beacon: "+$data)
+
+     $wifi_ip = RegEx.Match('"wifi_ip":"(.*?)"', $data)
+     $lan_ip = RegEx.Match('"lan_ip":"(.*?)"', $data)
+
+    if $wifi_ip[1] == undefined
+      $ip = $lan_ip[1]
+     else
+      $ip = $wifi_ip[1]
+    /if
+
+    // When wifi address cant open
+    if File.Exists($directories['last_ip'])
+      $last_ip = File.Read($directories['last_ip'])
+
+        if($last_ip==$wifi_ip[1])
+          if $lan_ip != undefined
+            $ip = $lan_ip[1]
+          /if
+        /if
+      
+    /if
+
+
+    File.AppendLine($directories['last_ip'], $ip)
+    File.AppendLine($directories['coolding_ip'], $ip)
+    File.AppendLine($directories['log_file'], "new ip: "+$ip+" - "+$directories['coolding_ip'])
+  /if
+  return $ip
+/Function
+
+
+
+// Time calculation
+Function CalculateQuarters()
+  $d = DateTime()
+  $quarter = 0
+  if($d.Hour>0)
+    $quarter += ($d.Hour*4)
+  /if
+  if($d.Minute>=0)
+    if($d.Minute<=14)
+      $quarter += 0
+    /if
+  /if
+  if($d.Minute>=15)
+    if($d.Minute<=29)
+      $quarter += 1
+    /if
+  /if
+  if($d.Minute>=30)
+     if($d.Minute<=44)
+       $quarter += 2
+     /if
+  /if
+  if($d.Minute>=45)
+    $quarter += 3
+  /if
+  return $quarter
+/Function
+
+// Latest commando
+Function ReadLastCommand($directories, $id, $ip)
+
+  File.AppendLine($directories['log_file'], "Fetching last played command")
+  $data = Http.Get('http://'+$ip+'/ir/sequences/lastplayed', 'smile', $id)
+
+  $command = RegEx.Match("sequence id='(.*?)'", $data)
+
+  // Check Last command file
+  if $command[1] != undefined
+    File.AppendLine($directories['log_file'], "command 1 "+$command[1])
+    File.AppendLine($directories['last_command'], $command[1])
+  else
+    File.AppendLine($directories['last_command'], "0")
+    $lcommand = "0"
+  /if
+  File.AppendLine($directories['log_file'], "Last command = "+$lcommand)
+  return $lcommand
+/Function
+
+%>

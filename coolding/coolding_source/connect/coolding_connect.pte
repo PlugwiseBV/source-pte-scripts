@@ -1,0 +1,15 @@
+<%
+$get_modules = Plugwise.Modules
+$collect_scan = {}
+
+$uuid   		= Request.Get["uuid"] || ''
+$eventscript	= Request.Get["eventscript"] || ''
+
+foreach $get_modules as $module
+
+  // All scans
+  if ($module.UUId==$uuid)
+  	Echo $module.SetEvents($eventscript+'.pte', 'OnBroadcast')
+  /if
+/foreach
+%>

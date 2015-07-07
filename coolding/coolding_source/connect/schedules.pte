@@ -1,0 +1,39 @@
+<%
+$c = 0
+$cc = '['
+$count = 0
+
+
+foreach Plugwise.Schedules as $schedule
+if($schedule.Name.Substring(0,3)=="_CD")
+ $count = $count+1
+/if
+/foreach
+
+foreach Plugwise.Schedules as $schedule
+ 
+
+if($schedule.Name.Substring(0,3)=="_CD")
+
+ $cc += '{'
+
+  $cc += '"id": '+$schedule.Id
+  $cc += ', '
+  $cc += '"uuid": "'+$schedule.UUId
+  $cc += '", '
+ 
+  $cc += '"name": "'+$schedule.Name.Substring(3)+'"'
+
+$c = $c+1
+  if $c == $count
+   $cc += "} "
+  else
+   $cc += "}, "
+  /if
+/if
+/foreach
+$cc += ']'
+
+Echo $cc
+
+%>
