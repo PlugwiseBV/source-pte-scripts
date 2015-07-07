@@ -3,6 +3,8 @@
     <div class="sed_button" ng-class="{'active':sedSelect === 'scan' || sedSelect === undefined}" ng-click="load_sed('scan');sedSelect='scan'">Scan</div>
     <div class="sed_button" ng-class="{'active':sedSelect === 'sense'}" ng-click="load_sed('sense');sedSelect='sense'">Sense</div>
 
+    <span class="ng-hide" ng-show="sed_loading">Loading..</span>
+
     <table class="table">
         <thead>
         <tr>

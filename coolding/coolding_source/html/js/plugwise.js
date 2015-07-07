@@ -242,6 +242,7 @@
       };
       $scope.load_sed = function(sed) {
         var sed_id;
+        $scope.sed_loading = true;
         sed_id = 6;
         if (sed === 'switch') {
           sed_id = 3;
@@ -257,6 +258,7 @@
             $scope.loader_status = false;
             $scope.button_status = false;
             $scope.error_status = false;
+            $scope.sed_loading = false;
             $scope.devices.statuses = fetch.data;
             $scope.devices.statuses.show = true;
           }), function(reason) {
@@ -425,6 +427,7 @@
                       $scope.loader_status = false;
                       $scope.button_status = false;
                       $scope.error_status = false;
+                      $scope.sed_loading = false;
                       $scope.devices.statuses = fetch.data;
                       $scope.devices.statuses.show = true;
                     }), function(reason) {
