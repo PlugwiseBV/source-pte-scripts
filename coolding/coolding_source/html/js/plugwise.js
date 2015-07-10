@@ -2,7 +2,7 @@
 (function() {
   var controller, myApp, services;
 
-  angular.module('hardware', ['pascalprecht.translate', 'ngRoute', 'hardware.filters', 'hardware.services', 'hardware.controllers', 'hardware.directives', 'ngCookies', 'ngDragDrop', 'ui.bootstrap']).config(function($httpProvider) {
+  angular.module('hardware', ['pascalprecht.translate', 'ngRoute', 'hardware.filters', 'hardware.services', 'hardware.controllers', 'hardware.directives', 'ngCookies', 'ngDragDrop', 'ui.bootstrap', 'ui.bootstrap.modal']).config(function($httpProvider) {
     $httpProvider.defaults.useXDomain = true;
     return delete $httpProvider.defaults.headers.common['X-Requested-With'];
   }).config(function($translateProvider) {
@@ -240,6 +240,66 @@
           return JsonService.serverRequests('../connect/save_coolding_setting.pte', 'POST', $scope.history).then((function(fetch) {}));
         }
       };
+      $scope.emptyList = function(id) {
+        console.log('remove');
+        console.log(id);
+        if (id === 1) {
+          $scope.list1 = '';
+          $scope.list1 = {};
+        }
+        if (id === 2) {
+          $scope.list2 = '';
+          $scope.list2 = {};
+          $scope.list4 = '';
+          $scope.list4 = {};
+          $scope.list5 = '';
+          $scope.list5 = {};
+        }
+        if (id === 3) {
+          $scope.list3 = '';
+          $scope.list3 = {};
+        }
+        if (id === 4) {
+          $scope.list4 = '';
+          $scope.list4 = {};
+        }
+        if (id === 5) {
+          $scope.list5 = '';
+          return $scope.list5 = {};
+        }
+      };
+      $scope.placeSed = function(id, type, title) {
+        console.log(id);
+        $scope.list2.id = id;
+        $scope.list2.type = type;
+        return $scope.list2.title = title;
+      };
+      $scope.placeCooldingcom = function(id, title) {
+        var open;
+        open = false;
+        if ($scope.list1.id == null) {
+          open = true;
+          $scope.list1.id = id;
+          $scope.list1.title = title;
+        }
+        if (($scope.list3.id == null) && !open) {
+          open = true;
+          $scope.list3.id = id;
+          $scope.list3.title = title;
+        }
+        if ($scope.list2.type === '5') {
+          if (($scope.list4.id == null) && !open) {
+            open = true;
+            $scope.list4.id = id;
+            $scope.list4.title = title;
+          }
+          if (($scope.list5.id == null) && !open) {
+            open = true;
+            $scope.list5.id = id;
+            return $scope.list5.title = title;
+          }
+        }
+      };
       $scope.load_sed = function(sed) {
         var sed_id;
         $scope.sed_loading = true;
@@ -292,7 +352,6 @@
             }), function(reason) {});
           } else {
             if ($scope.ip === $scope.wifiip) {
-              console.log($scope.lanip);
               if ($scope.lanip != null) {
                 $scope.ip = $scope.lanip;
                 $scope.cooldingSequence(identifier);

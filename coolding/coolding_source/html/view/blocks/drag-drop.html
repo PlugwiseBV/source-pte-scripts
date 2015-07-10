@@ -8,28 +8,28 @@
 </div>
 <div translate="dragdrop_sed">Drop here your SED:</div>
 <div class="thumbnail" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=record])'}" ng-model="list2" jqyoui-droppable="{deepCopy: true}" style='height:61px;'>
-    <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="list2" jqyoui-draggable ng-hide="!list2.title"><span>{{list2.id}}</span><br>{{list2.title}}</div>
+    <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="list2" jqyoui-draggable ng-hide="!list2.title" ng-dblclick="emptyList(2);"><span>{{list2.id}}</span><br>{{list2.title}}</div>
 </div>
 
 <div translate="dragdrop_cooldingcommandon">Drop here your Coolding record when switch is on (blue):</div>
 <div class="thumbnail" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=module])'}" ng-model="list1" jqyoui-droppable="{deepCopy: true}" style='height:50px;'>
-    <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="list1" jqyoui-draggable ng-hide="!list1.title">{{list1.title}}</div>
+    <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="list1" jqyoui-draggable ng-hide="!list1.title" ng-dblclick="emptyList(1);">{{list1.title}}</div>
 </div>
 
 <div translate="dragdrop_cooldingcommandoff">Drop here your Coolding record when switch is off (white):</div>
 <div class="thumbnail" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=module])'}" ng-model="list3" jqyoui-droppable="{deepCopy: true}" style='height:50px;'>
-    <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="list3" jqyoui-draggable ng-hide="!list3.title">{{list3.title}}</div>
+    <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="list3" jqyoui-draggable ng-hide="!list3.title" ng-dblclick="emptyList(3);">{{list3.title}}</div>
 </div>
 
-<div ng-if="list2.type=='Sense'">
+<div ng-if="list2.type=='5'">
     <div translate="dragdrop_cooldingcommandecoon">Drop here your Coolding record when on (green):</div>
     <div class="thumbnail" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=module])'}" ng-model="$parent.list4" jqyoui-droppable="{deepCopy: true}" style='height:50px;'>
-        <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="$parent.list4" jqyoui-draggable ng-hide="!$parent.list4.title">{{list4.title}}</div>
+        <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="$parent.list4" jqyoui-draggable ng-hide="!$parent.list4.title" ng-dblclick="emptyList(4);">{{list4.title}}</div>
     </div>
 
     <div translate="dragdrop_cooldingcommandecooff">Drop here your Coolding record when off (green):</div>
     <div class="thumbnail" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=module])'}" ng-model="$parent.list5" jqyoui-droppable="{deepCopy: true}" style='height:50px;'>
-        <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="$parent.list5" jqyoui-draggable ng-hide="!$parent.list5.title">{{list5.title}}</div>
+        <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="$parent.list5" jqyoui-draggable ng-hide="!$parent.list5.title" ng-dblclick="emptyList(5);">{{list5.title}}</div>
     </div>
 
 
@@ -183,7 +183,7 @@
         </li>
     </ul>
 
-    <div ng-show="list2.type=='Sense' && schedule[0].days != null" style="padding: 10px;background: #aaa; border: 1px solid #101010; width: 100%; float: left; margin-bottom: 20px;">
+    <div ng-show="list2.type=='5' && schedule[0].days != null" style="padding: 10px;background: #aaa; border: 1px solid #101010; width: 100%; float: left; margin-bottom: 20px;">
         <div ng-click="schedule[0].days=null" style="color:white;"><span class="fa fa-close"></span> Close scheme</div>
         <hr style="border-top: 1px solid #000;margin-top:10px">
     <style>
@@ -233,7 +233,7 @@
 
 </div>
 
-<div ng-if="list2.type=='Switch'" style="padding: 10px;">
+<div ng-if="list2.type=='3'" style="padding: 10px;">
     <span>The Switch has two seperated pieces. You can define which piece will run what command.</span><br>
     <label for="both"> Both </label>
     <input type="radio" name="triggerPlace" value="both" id="both" checked="checked" ng-model="trigger.place"><br>

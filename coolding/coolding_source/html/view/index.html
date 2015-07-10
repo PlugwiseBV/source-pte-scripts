@@ -1,3 +1,4 @@
+
 <div ng-controller="AddressIdentifier">
     <!-- Coolding ShortID field -->
     <div address-Bar></div>
@@ -56,7 +57,19 @@
                             <span class="ng-hide" ng-show="error_status"><span translate="failedtoload"><b>Error</b>, this block has <u>failed</u> to load</span> <span class="glyphicon glyphicon-remove pw-error"></span></span>
                         </div>
                     </div>
-                    <div class="list-block height-fixed block" load_seds></div>
+                    <div style="width: 100%; padding-top: 10px;" ng-hide="button_status" class="block_sed">
+                            <div class="sed_button" ng-class="{'active':sedSelect === 'switch'}" ng-click="load_sed('switch');sedSelect='switch'">Switch</div>
+    <div class="sed_button" ng-class="{'active':sedSelect === 'scan' || sedSelect === undefined}" ng-click="load_sed('scan');sedSelect='scan'">Scan</div>
+    <div class="sed_button" ng-class="{'active':sedSelect === 'sense'}" ng-click="load_sed('sense');sedSelect='sense'">Sense</div>
+
+    <span class="ng-hide" ng-show="sed_loading"><i class="fa fa-cog fa-spin loader_color"></i> Loading..</span>
+                    </div>
+                    <style>
+                    .low-opacity {
+                        opacity: 0.2;
+                    }
+                    </style>
+                    <div class="list-block height-fixed block" style="width:100%;margin:0; padding:0" ng-class="{'low-opacity':sed_loading === true}" load_seds></div>
                 </div>
 
                 <!-- Drag Drop -->
