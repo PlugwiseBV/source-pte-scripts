@@ -21,8 +21,6 @@ $eco_on     = Request.Get["eco_on"] || ''
 $eco_off    = Request.Get["eco_off"] || ''
 
 
-
-
 $file = System.Path+'/sys/events/'+$name+'.pte'
 
 
@@ -37,7 +35,7 @@ else
   File.AppendLine($file, '  Include "coolding/connect/coolding.pte";')
   File.AppendLine($file, "/Function")
 
-  if($device=='Sense')
+  if($device==5)
     // Sense Settings
     File.AppendLine($file, "Function datasettings($sender, $type)")
       File.AppendLine($file, '  $id     = "'+$password+'"')
@@ -66,38 +64,64 @@ else
 
   // Detect switch and scan
   $not_sense = 0
-  if($device=='Switch')
+  if($device==3)
     $not_sense = 1
   /if
-  if($device=='Scan')
+  if($device==6)
     $not_sense = 1
   /if
 
   // when its not a sense
   if($not_sense==1)
-    if($device=="Switch")
+    if($device==3)
       if($extra=='both')
-        $file_switch = System.Path+"/sys/switch/"+Plugwise.Modules[$sed_id].uuid+".pte"
+        $file_switch_l = System.Path+"/sys/switch/"+Plugwise.Modules[$sed_id].uuid+"_left.pte"
+        if File.Exists($file_switch_l)
+          File.Delete($file_switch_l)
+        /if
+
+        File.AppendLine($file_switch_l, "<%") 
+          File.AppendLine($file_switch_l, "  $commands = {")
+          File.AppendLine($file_switch_l, '   "on_id" => "'+$sequence_id+'",')
+          File.AppendLine($file_switch_l, '   "off_id" => "'+$sequence_id_off+'"')
+        File.AppendLine($file_switch_l, "  }")
+        File.AppendLine($file_switch_l, "%"+">") 
+
+
+        $file_switch_r = System.Path+"/sys/switch/"+Plugwise.Modules[$sed_id].uuid+"_right.pte"
+        if File.Exists($file_switch_r)
+          File.Delete($file_switch_r)
+        /if
+
+        File.AppendLine($file_switch_r, "<%") 
+          File.AppendLine($file_switch_r, "  $commands = {")
+          File.AppendLine($file_switch_r, '   "on_id" => "'+$sequence_id+'",')
+          File.AppendLine($file_switch_r, '   "off_id" => "'+$sequence_id_off+'"')
+        File.AppendLine($file_switch_r, "  }")
+        File.AppendLine($file_switch_r, "%"+">") 
+
       else
         $file_switch = System.Path+"/sys/switch/"+Plugwise.Modules[$sed_id].uuid+"_"+$extra+".pte"
-      /if
-      if File.Exists($file_switch)
-        File.Delete($file_switch)
+
+        if File.Exists($file_switch)
+          File.Delete($file_switch)
+        /if
+
+        File.AppendLine($file_switch, "<%") 
+          File.AppendLine($file_switch, "  $commands = {")
+          File.AppendLine($file_switch, '   "on_id" => "'+$sequence_id+'",')
+          File.AppendLine($file_switch, '   "off_id" => "'+$sequence_id_off+'"')
+        File.AppendLine($file_switch, "  }")
+        File.AppendLine($file_switch, "%"+">") 
       /if
 
-      File.AppendLine($file_switch, "<%") 
-        File.AppendLine($file_switch, "  $commands = {")
-        File.AppendLine($file_switch, '   "on_id" => "'+$sequence_id+'",')
-        File.AppendLine($file_switch, '   "off_id" => "'+$sequence_id_off+'"')
-      File.AppendLine($file_switch, "  }")
-      File.AppendLine($file_switch, "%"+">") 
     /if
     // switch
     File.AppendLine($file, "Function datasettings($sender, $switchedOn, $type)")
     File.AppendLine($file, '  $id     = "'+$password+'"')
   /if
 
-    if($device=='Scan')
+    if($device==6)
       File.AppendLine($file, '  $uuid   = "scan_"+$id')
       File.AppendLine($file, "  $commands = {")
        File.AppendLine($file, '   "on_id" => "'+$sequence_id+'",')
@@ -118,16 +142,25 @@ else
    File.AppendLine($file, "Function OnBroadcast($sender, $switchedOn, $eventId)")
 
 // Click event
-if($device=='Switch')
+if($device==3)
  $click = false
  File.AppendLine($file, "$device = 'd'+$eventId")
  File.AppendLine($file, "$deviceid = $device.Replace('deventid=','')")
 
  if($extra=='both')
   // Both
- File.AppendLine($file, 'if $deviceid==2')
-  File.AppendLine($file, '  datasettings($sender.uuid, $switchedOn, "OnBroadCast")')
+
+// Left
+ File.AppendLine($file, 'if $deviceid==1')
+  File.AppendLine($file, '  datasettings($sender.uuid+"_left", $switchedOn, "OnBroadCast")')
  File.AppendLine($file, '/if')
+
+
+// Right
+ File.AppendLine($file, 'if $deviceid==3')
+  File.AppendLine($file, '  datasettings($sender.uuid+"_right", $switchedOn, "OnBroadCast")')
+ File.AppendLine($file, '/if')
+
 
  else
 
@@ -154,10 +187,11 @@ else
 // Foreach
  foreach $get_modules as $module
   // All SEDS
+
   if ($module.Id==$sed_id)
     Echo '[{ "return": "'
     
-    if($device=='Sense')
+    if($device==5)
       Echo $module.SetEvents($name+'.pte', 'OnReport,OnBroadcast')
     else
       Echo $module.SetEvents($name+'.pte', 'OnBroadcast')

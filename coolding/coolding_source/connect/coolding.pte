@@ -22,7 +22,7 @@ Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
     File.AppendLine($directories['log_file'], "Begin log; "+$sed_type+" : "+$type+" [ip: "+$ip+"] - Date: "+DateTime())
   /if
 
-  if($sed_type=='Sense')
+  if($sed_type==5)
 
     // Multiply Plugwise Schedule 
     $now = $now*10
@@ -30,18 +30,19 @@ Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
     CooldingSense($id, $commands, $uuid, $now, $ip, $directories, ReadLastCommand($directories, $id, $ip), $log)
   /if
 
-  if($sed_type=='Scan')
+  if($sed_type==6)
       File.AppendLine($directories['log_file'], "uitvoeren Scan")
     CooldingScan($id, $commands, $now, $ip, $directories, ReadLastCommand($directories, $id, $ip), $log)
   /if
 
-  if($sed_type=='Switch')
+  if($sed_type==3)
       File.AppendLine($directories['log_file'], "uitvoeren Switch")
     CooldingSwitch($id, $commands, $now, $ip, $directories, ReadLastCommand($directories, $id, $ip), $log)
   /if
 
   if($log)
     File.AppendLine($directories['log_file'], "=== End of logs")
+    File.AppendLine($directories['log_file'], " ")
   /if
 /Function
 

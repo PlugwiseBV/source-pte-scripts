@@ -146,55 +146,109 @@
       $scope.loadSchedule = function(uuid) {
         $scope.schedule_loader = true;
         return JsonService.serverRequests('../connect/schedule_values.pte?uuid=' + uuid).then((function(fetch) {
-          $scope.schedule = fetch.data;
-          return console.log(fetch.data);
+          return $scope.schedule = fetch.data;
         }));
       };
       $scope.log = function() {
         var data, extraValue, filename, sedname;
         filename = Math.floor(Math.random() * 900000) + 10000;
         extraValue = '';
-        if ($scope.list2.type === 'Switch') {
+        if ($scope.list2.type === '3') {
           extraValue = $scope.trigger.place;
         }
-        if ($scope.list2.type === 'Sense') {
+        if ($scope.list2.type === '5') {
           extraValue = "Sense&upper_limit=" + $scope.upper_limit + "&lower_limit=" + $scope.lower_limit + "&schedule=" + $scope.chosen_schedule + "&eco_on=" + $scope.list4.id + "&eco_off=" + $scope.list5.id;
         }
         JsonService.serverRequests('../connect/coolding_writeScript.pte?id=' + $scope.identifier + '&device=' + $scope.list2.type + '&extra=' + extraValue + '&ip=' + $scope.ip + '&sequence_id=' + $scope.list1.id + '&sequence_id_off=' + $scope.list3.id + '&sed_id=' + $scope.list2.deviceid + '&name=' + filename, 'jsonp').then((function(fetch) {}));
         if ($scope.list2.id != null) {
+          console.log("remove existing");
+          console.log($scope.history);
           angular.forEach($scope.history, function(v, k) {
+            console.log($scope.history);
             if (v.sedid != null) {
-              if (v.sedid === $scope.list2.id) {
-                return $scope.history.splice(k, 1);
+              if ($scope.list2.type === '3') {
+                console.log("concat");
+                console.log($scope.list2.type);
+                console.log($scope.list2.id);
+                console.log(v.sedid);
+                if ($scope.trigger.place === 'right') {
+                  if (v.sedid === $scope.list2.id + '_right') {
+                    $scope.history.splice(k, 1);
+                  }
+                }
+                if ($scope.trigger.place === 'left') {
+                  if (v.sedid === $scope.list2.id + '_left') {
+                    $scope.history.splice(k, 1);
+                  }
+                }
+                if ($scope.trigger.place === 'both') {
+                  if (v.sedid === $scope.list2.id + '_left') {
+                    $scope.history.splice(k, 1);
+                    console.log('after splice left');
+                    console.log($scope.history);
+                  }
+                  if (v.sedid === $scope.list2.id + '_right') {
+                    $scope.history.splice(k, 1);
+                    console.log('after splice right');
+                    return console.log($scope.history);
+                  }
+                }
+              } else {
+                if (v.sedid === $scope.list2.id) {
+                  return $scope.history.splice(k, 1);
+                }
               }
             }
           });
           if ($scope.list2.title != null) {
             sedname = $scope.list2.title;
           } else {
-
+            sedname = 'No name';
           }
-          JsonService.sedname = 'No name';
-          if ($scope.list2.type === 'Switch') {
-            data = [
-              {
-                "filename": filename,
-                "running": true,
-                "extravalue": $scope.trigger.place,
-                "command1": $scope.list1.id,
-                "commandname1": $scope.list1.title,
-                "command2": $scope.list3.id,
-                "commandname2": $scope.list3.title,
-                "seddeviceid": $scope.list2.deviceid,
-                "sedid": $scope.list2.id,
-                "sedname": sedname
-              }
-            ];
-          } else if ($scope.list2.type === 'Sense') {
-            console.log("heyyy");
-            console.log($scope);
-            console.log($scope.list4);
-            console.log($scope.list5);
+          if ($scope.list2.type === '3') {
+            if ($scope.trigger.place === 'both') {
+              data = [
+                {
+                  "filename": filename,
+                  "running": true,
+                  "extravalue": "right",
+                  "command1": $scope.list1.id,
+                  "commandname1": $scope.list1.title,
+                  "command2": $scope.list3.id,
+                  "commandname2": $scope.list3.title,
+                  "seddeviceid": $scope.list2.deviceid,
+                  "sedid": $scope.list2.id + "_right",
+                  "sedname": sedname
+                }, {
+                  "filename": filename,
+                  "running": true,
+                  "extravalue": "left",
+                  "command1": $scope.list1.id,
+                  "commandname1": $scope.list1.title,
+                  "command2": $scope.list3.id,
+                  "commandname2": $scope.list3.title,
+                  "seddeviceid": $scope.list2.deviceid,
+                  "sedid": $scope.list2.id + "_left",
+                  "sedname": sedname
+                }
+              ];
+            } else {
+              data = [
+                {
+                  "filename": filename,
+                  "running": true,
+                  "extravalue": $scope.trigger.place,
+                  "command1": $scope.list1.id,
+                  "commandname1": $scope.list1.title,
+                  "command2": $scope.list3.id,
+                  "commandname2": $scope.list3.title,
+                  "seddeviceid": $scope.list2.deviceid,
+                  "sedid": $scope.list2.id + "_" + $scope.trigger.place,
+                  "sedname": sedname
+                }
+              ];
+            }
+          } else if ($scope.list2.type === '5') {
             data = [
               {
                 "filename": filename,
@@ -236,6 +290,7 @@
           } else {
             $scope.history = data;
           }
+          console.log("history");
           console.log($scope.history);
           return JsonService.serverRequests('../connect/save_coolding_setting.pte', 'POST', $scope.history).then((function(fetch) {}));
         }
@@ -268,11 +323,12 @@
           return $scope.list5 = {};
         }
       };
-      $scope.placeSed = function(id, type, title) {
+      $scope.placeSed = function(id, type, title, deviceid) {
         console.log(id);
         $scope.list2.id = id;
         $scope.list2.type = type;
-        return $scope.list2.title = title;
+        $scope.list2.title = title;
+        return $scope.list2.deviceid = deviceid;
       };
       $scope.placeCooldingcom = function(id, title) {
         var open;
@@ -366,6 +422,8 @@
         });
       };
       $scope.cooldingInfo = function(identifier) {
+        console.log('identifier - coolding info');
+        console.log($scope.ip);
         return $.get('../connect/coolding_info.pte?ip=' + $scope.ip + '&id=' + identifier, function(xml) {
           if (xml === 'ok') {
             JsonService.serverRequests('../cache/coolding_info.xml').then((function(xmll) {
@@ -393,6 +451,10 @@
       };
       $scope.request = function(identifier) {
         var devices;
+        if (identifier === void 0) {
+          console.log('stop');
+          return;
+        }
         if ($location.path() !== '/index/' + identifier) {
           $location.path('/index/' + identifier);
           return;
@@ -463,8 +525,7 @@
                   $scope.loader_status = true;
                   $scope.button_status = true;
                   orderBy = $filter('orderBy');
-                  $scope.loader_current = false;
-                  $scope.error_current = true;
+                  $scope.error_current = false;
                   $scope.list4 = {};
                   $scope.list5 = {};
                   $scope.list3 = {};
@@ -660,8 +721,6 @@
   }).factory("regexValidate", function() {
     this.shortid = (function(_this) {
       return function(v) {
-        console.log(_this.uuid);
-        console.log(v.toLowerCase());
         if (v.toLowerCase().match(/^[b-df-hj-np-tv-xz]{8}$/)) {
           return true;
         }

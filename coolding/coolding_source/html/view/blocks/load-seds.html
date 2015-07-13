@@ -10,7 +10,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="status in devices.statuses | orderBy:preOrder:reverse">
-            <td> <div class="btn btn-primary btn-draggable pw-drag" data-drag="true" data-jqyoui-options="{revert: 'invalid', appendTo: 'body', containment: 'window',scroll: false, helper: 'clone'}" ng-model="module" jqyoui-draggable="{animate:true}" ng-init="module.title=status.name; module.id=status.nameid; module.deviceid=status.id; module.type=status.type" ng-dblclick="placeSed(status.nameid, status.type, status.name);">{{status.address | getaddress}}</div></td>
+            <td> <div class="btn btn-primary btn-draggable pw-drag" data-drag="true" data-jqyoui-options="{revert: 'invalid', appendTo: 'body', containment: 'window',scroll: false, helper: 'clone'}" ng-model="module" jqyoui-draggable="{animate:true}" ng-init="module.title=status.name; module.id=status.nameid; module.deviceid=status.id; module.type=status.type" ng-dblclick="placeSed(status.nameid, status.type, status.name, status.id);">{{status.address | getaddress}}</div></td>
 
 
 

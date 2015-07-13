@@ -37,11 +37,11 @@
                         <h2 translate="coolding_records">Coolding records</h2>
                         <div class="block-options pull-right">
                             <span class="fa fa-cog fa-spin loader_color ng-hide" ng-show="loader_current"></span>
-                            <span ng-hide="error_current" ng-click="cooldingSequence(identifier)"><span class="fa fa-refresh"></span> <span translate="reload">{{reload}}</span></span>
+                            <span ng-hide="error_current" ng-click="cooldingSequence(identifier)"><span class="fa fa-refresh" ng-hide="loader_current"></span> <span translate="reload">{{reload}}</span></span>
                             <span class="ng-hide" ng-show="error_current"><span translate="failedtoload"><b>Error</b>, this block has <u>failed</u> to load</span> <span class="glyphicon glyphicon-remove pw-error"></span></span>
                         </div>
                     </div>
-                    <div class="list-block height-fixed block" coolding-Records></div>
+                    <div class="list-block height-fixed block" coolding-Records ng-hide="loader_current"></div>
                 </div>
             </div>
 
@@ -53,11 +53,11 @@
                     <div class="block-title">
                         <h2 translate="plugwise_sed_modules">Plugwise SED Modules</h2>
                         <div class="block-options pull-right">
-                            <span class="fa fa-cog fa-spin loader_color ng-hide" ng-show="loader_status"></span>
+                            <span class="fa fa-cog fa-spin loader_color ng-hide" ng-show="loader_status"></span> <span class="ng-hide" ng-show="loader_status">Loading...</span>
                             <span class="ng-hide" ng-show="error_status"><span translate="failedtoload"><b>Error</b>, this block has <u>failed</u> to load</span> <span class="glyphicon glyphicon-remove pw-error"></span></span>
                         </div>
                     </div>
-                    <div style="width: 100%; padding-top: 10px;" ng-hide="button_status" class="block_sed">
+                    <div style="width: 100%; padding-top: 10px;" ng-hide="button_status" class="block_sed" ng-show="devices.statuses.show">
                             <div class="sed_button" ng-class="{'active':sedSelect === 'switch'}" ng-click="load_sed('switch');sedSelect='switch'">Switch</div>
     <div class="sed_button" ng-class="{'active':sedSelect === 'scan' || sedSelect === undefined}" ng-click="load_sed('scan');sedSelect='scan'">Scan</div>
     <div class="sed_button" ng-class="{'active':sedSelect === 'sense'}" ng-click="load_sed('sense');sedSelect='sense'">Sense</div>
@@ -69,7 +69,7 @@
                         opacity: 0.2;
                     }
                     </style>
-                    <div class="list-block height-fixed block" style="width:100%;margin:0; padding:0" ng-class="{'low-opacity':sed_loading === true}" load_seds></div>
+                    <div class="list-block height-fixed block" style="width:100%;margin:0; padding:0" ng-class="{'low-opacity':sed_loading === true}" load_seds ng-show="devices.statuses.show"></div>
                 </div>
 
                 <!-- Drag Drop -->
