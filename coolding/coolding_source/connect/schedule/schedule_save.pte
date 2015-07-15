@@ -1,0 +1,12 @@
+<%
+$uuid 	= Request.Get["uuid"] || ''
+$file = System.Path+'/coolding/cache/schedules/'+$file_name+'.json'
+
+if File.Exists($file)
+// File.Delete($file)
+/if
+
+if Request.Method=="POST"
+Echo "aa"
+/if
+%>

@@ -1,0 +1,11 @@
+<%
+$uuid         = Request.Get["uuid"] || ''
+
+
+foreach Plugwise.Schedules as $schedule
+ if($schedule.UUId==$uuid)
+   Echo $schedule.Name
+ /if
+/foreach
+
+%>
