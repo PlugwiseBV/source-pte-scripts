@@ -70,8 +70,9 @@
       };
     }
   ]).controller('AddressIdentifier', [
-    '$scope', '$location', '$http', 'JsonService', '$filter', '$route', 'regexValidate', '$timeout', function($scope, $location, $http, JsonService, $filter, $route, regexValidate, $timeout) {
+    '$scope', '$location', '$http', 'JsonService', '$filter', '$route', 'regexValidate', '$timeout', '$window', function($scope, $location, $http, JsonService, $filter, $route, regexValidate, $timeout, $window) {
       $scope.valid = false;
+      $scope.windowOpen = false;
       $scope.trigger = {
         'place': 'both'
       };
@@ -81,6 +82,27 @@
           return $scope.running();
         } else {
           return $scope.run = false;
+        }
+      };
+      $scope.modifyexception = function(id) {
+        var child, interval;
+        if (!$scope.windowOpen) {
+          $scope.windowOpen = true;
+          child = $window.open("calendar.html?id=" + id, "_blank", "height=600,width=1000");
+          return interval = setInterval(function() {
+            try {
+              (function() {
+                if (child.document.domain === document.domain) {
+                  return clearInterval(interval);
+                }
+              });
+            } catch (_error) {}
+            if (child.closed) {
+              console.log("closed");
+              clearInterval(interval);
+              $scope.windowOpen = false;
+            }
+          }, 500);
         }
       };
       $scope.remove = function(id) {
