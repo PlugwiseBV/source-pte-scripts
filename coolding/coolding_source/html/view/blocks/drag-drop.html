@@ -175,7 +175,7 @@
 
     <ul style="padding: 0 10px; ">
         <li ng-repeat="allsched in schedules" style="list-style-type: none">
-            <label for="{{$index}}"><input type="radio" id="{{$index}}" ng-model="$parent.chosen_schedule" ng-value="allsched.uuid" name="schedule">{{allsched.name}} - [ <a href="javascript:void(0)" ng-click="loadSchedule(allsched.uuid)">View Schema</a> ] [ <a href="javascript:void(0)">Modify Exceptions</a> ]</label>
+            <label for="{{$index}}"><input type="radio" id="{{$index}}" ng-model="$parent.chosen_schedule" ng-value="allsched.uuid" name="schedule">{{allsched.name}} - [ <a href="javascript:void(0)" ng-click="loadSchedule(allsched.uuid)">View Schema</a> ] [ <a href="javascript:void(0)" ng-click="modifyexception(allshed.uuid)">Modify Exceptions</a> ]</label>
         </li>
     </ul>
 
