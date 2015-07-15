@@ -76,6 +76,7 @@
       $scope.trigger = {
         'place': 'both'
       };
+      $scope.calendar = '';
       $scope.runScript = function() {
         if ($scope.run === false) {
           $scope.run = true;
@@ -84,9 +85,8 @@
           return $scope.run = false;
         }
       };
-      $scope.saveCalendarParent = function(id, filename) {
-        console.log(id);
-        return console.log(filename);
+      $window.saveCalendarParent = function(id, filename) {
+        return $scope.calendar = id + '_' + filename;
       };
       $scope.modifyexception = function(id) {
         var child, interval;
@@ -185,7 +185,7 @@
         if ($scope.list2.type === '5') {
           extraValue = "Sense&upper_limit=" + $scope.upper_limit + "&lower_limit=" + $scope.lower_limit + "&schedule=" + $scope.chosen_schedule + "&eco_on=" + $scope.list4.id + "&eco_off=" + $scope.list5.id;
         }
-        JsonService.serverRequests('../connect/coolding_writeScript.pte?id=' + $scope.identifier + '&device=' + $scope.list2.type + '&extra=' + extraValue + '&ip=' + $scope.ip + '&sequence_id=' + $scope.list1.id + '&sequence_id_off=' + $scope.list3.id + '&sed_id=' + $scope.list2.deviceid + '&name=' + filename, 'jsonp').then((function(fetch) {}));
+        JsonService.serverRequests('../connect/coolding_writeScript.pte?id=' + $scope.identifier + '&device=' + $scope.list2.type + '&extra=' + extraValue + '&ip=' + $scope.ip + '&sequence_id=' + $scope.list1.id + '&sequence_id_off=' + $scope.list3.id + '&sed_id=' + $scope.list2.deviceid + '&name=' + filename + '&calendar=' + $scope.calendar, 'jsonp').then((function(fetch) {}));
         if ($scope.list2.id != null) {
           console.log("remove existing");
           console.log($scope.history);

@@ -1,9 +1,13 @@
 <%
 $uuid = Request.Get["uuid"] || ''
 $filename = Request.Get["filename"] || ''
-$file = System.Path+'/coolding/cache/schedules/'+$filename+'.json'
+$file = System.Path+'/sys/schedules/'+$uuid+'_'+$filename+'.pte'
 
 if Request.Method=="POST"
-  File.AppendLine($file, Request.RawPost)
+echo Request.RawPost
+  $post = Request.RawPost.Replace('":"', '"=>"').Replace('[', '{').Replace(']', '}')
+  File.AppendLine($file, "<%")
+    File.AppendLine($file, "$days = "+$post)
+  File.AppendLine($file, "%"+">")
 /if
 %>

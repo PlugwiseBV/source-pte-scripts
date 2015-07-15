@@ -4,6 +4,7 @@ $id       = Request.Get["id"] || ''
 $ip         = Request.Get["ip"] || ''
 $device     = Request.Get["device"] || ''
 $extra      = Request.Get["extra"] || ''
+$calendar      = Request.Get["calendar"] || ''
 
 $upper_limit      = Request.Get["upper_limit"] || ''
 $lower_limit      = Request.Get["lower_limit"] || ''
@@ -46,7 +47,8 @@ else
        File.AppendLine($file, '   "on_id" => "'+$sequence_id+'",')
        File.AppendLine($file, '   "off_id" => "'+$sequence_id_off+'",')
        File.AppendLine($file, '   "upper_ratio" => "'+$upper_limit+'",')
-       File.AppendLine($file, '   "lower_ratio" => "'+$lower_limit+'"')
+       File.AppendLine($file, '   "lower_ratio" => "'+$lower_limit+'",')
+        File.AppendLine($file, '   "calendar" => "'+$calendar+'"')
       File.AppendLine($file, "  }")
       File.AppendLine($file, "  Airco($id, $commands, $sender.Temperature, $type, 'Sense', $uuid)")
     File.AppendLine($file, "/Function")

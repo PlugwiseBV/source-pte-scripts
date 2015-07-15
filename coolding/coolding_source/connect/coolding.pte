@@ -9,7 +9,8 @@ Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
     "last_command" => $s+"/coolding/cache/states/last_coolding_command_"+$uuid+".txt",
     "coolding_ip"  => $s+"/coolding/cache/ip/coolding_"+$id+".txt",
     "last_ip"      => $s+"/coolding/cache/ip/coolding_lastip_"+$id+".txt",
-    "log_file"     => $s+"/coolding/log.txt"
+    "log_file"     => $s+"/coolding/log.txt",
+    "schedules"    => $s+"/sys/schedules/"
   }
 
   // Log is true
@@ -206,6 +207,29 @@ Function CooldingScan($id, $commands, $now, $ip, $directories, $lcommand, $log)
 /Function
 
 Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand, $log)
+
+
+  $year  = DateTime().Format("yyyy")
+  $month = DateTime().Format("MM")
+  $day   = DateTime().Format("dd")
+
+  $schedule = $directories["schedules"]+$commands['calendar']+".pte"
+  
+  if File.Exists($schedule)
+    Include "sys/schedules/"+$commands['calendar']+".pte";
+
+    foreach $days as $dayloop
+      if float($dayloop.year) == float($year)
+        if float($dayloop.month) == float($month)
+          if float($dayloop.day) == float($day)
+            // new uuid
+            $uuid = $dayloop.id
+          /if
+        /if
+      /if
+    /foreach
+  /if
+
   // Coolding play URL
   $eco_on_url = 'http://'+$ip+'/ir/play?id='+$commands['eco_on_id']
   $eco_off_url = 'http://'+$ip+'/ir/play?id='+$commands['eco_off_id']
