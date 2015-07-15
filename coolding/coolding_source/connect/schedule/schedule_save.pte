@@ -1,12 +1,9 @@
 <%
-$uuid 	= Request.Get["uuid"] || ''
-$file = System.Path+'/coolding/cache/schedules/'+$file_name+'.json'
-
-if File.Exists($file)
-// File.Delete($file)
-/if
+$uuid = Request.Get["uuid"] || ''
+$filename = Request.Get["filename"] || ''
+$file = System.Path+'/coolding/cache/schedules/'+$filename+'.json'
 
 if Request.Method=="POST"
-Echo "aa"
+  File.AppendLine($file, Request.RawPost)
 /if
 %>
