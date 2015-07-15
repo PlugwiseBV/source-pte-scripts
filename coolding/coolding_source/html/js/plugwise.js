@@ -84,7 +84,10 @@
           return $scope.run = false;
         }
       };
-      $scope.saveCalendarParent = function(m) {};
+      $scope.saveCalendarParent = function(id, filename) {
+        console.log(id);
+        return console.log(filename);
+      };
       $scope.modifyexception = function(id) {
         var child, interval;
         if (!$scope.windowOpen) {

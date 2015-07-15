@@ -238,15 +238,12 @@ var calendar = {
         );
       });
 
-      s = window.opener.angular.element('#addressidentifier').scope();
-      s.setMessage("aabb");
-      s.$apply();
 
 
       console.log('url id: '+getUrlVars()["id"]);
       filename = 10000 + Math.floor(Math.random() * 90000);
       $.post("../connect/schedule/schedule_save.pte?uuid="+getUrlVars()["id"]+"&filename="+filename, JSON.stringify(list)).done(function(data) {
-console.log(data);
+        window.opener.saveCalendarParent(getUrlVars()["id"], filename);
       });
  });
     /**
