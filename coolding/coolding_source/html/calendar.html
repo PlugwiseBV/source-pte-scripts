@@ -11,6 +11,27 @@
 </head>
 <body>
 
+
+
+<style>
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #eed3d7;
+  border-radius: 4px;
+  position: absolute;
+  top: 10px;
+  right: 21px;
+  float: right; 
+  clear: right;
+  background-color: #8585DB;
+  color: white;
+  display: none;
+}
+</style>
+
+<div class="alert"></div>
+
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
@@ -53,11 +74,14 @@
 			</div>
 			<div class="col-md-6">
 				<h2>Schema</h2>
-				<p>Select exception days for '<b id="schemaname"></b>'</p>
-				<ul style="padding: 0 10px; " id="schema"></ul>
-				<span class="print-btn" id="savecalendar">Save calendar exceptions</span>
+				<p>Select exception days for: <b id="schemaname"></b></p>
+				<ul style="padding: 0 10px;" id="schema"></ul>
+				<span class="print-btn" id="savecalendar">Save calendar exception</span>
 				<br>
 				<a href="javascript:close();" style="text-decoration: none;"><span>Close</span></a>
+				<br>
+				<h3>History:</h3>
+				<div class="history"></div>
 				<div class="person-list"></div>
 			</div>
 		</div>

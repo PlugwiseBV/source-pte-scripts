@@ -10,6 +10,8 @@ var calendar = {
     var sat = 'Sat';
     var sund = 'Sun';
 
+    var color_uuid = [];
+
     /**
      * Get current date
      */
@@ -37,65 +39,62 @@ var calendar = {
       $('.month').attr('data-month', monthNumber);
       printDateNumber(yearNumber, monthNumber, mon, tue, wed, thur, fri, sat, sund);
     }
-/**
-    $('.btn-next').on('click', function(e) {
-      $('.btn-prev').removeClass('button-remove');
-      var monthNumber = $('.month').attr('data-month');
-      if (monthNumber == 11) {
-         $('.btn-next').addClass('button-remove');
+    function refreshCalendar() {
+      printDateNumber(yearNumber, monthNumber, mon, tue, wed, thur, fri, sat, sund); 
+    }
+
+   function getUrlVars()
+    {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for(var i = 0; i < hashes.length; i++)
+        {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+
+    function getDarkColors() {
+      var letters = '012345'.split('');
+      var color = '#';        
+      color += letters[Math.round(Math.random() * 5)];
+      letters = '0123456789ABCDEF'.split('');
+      for (var i = 0; i < 5; i++) {
+        color += letters[Math.round(Math.random() * 15)];
       }
-  
-      if (monthNumber < 12) {
-        setMonth(parseInt(monthNumber) + 1, mon, tue, wed, thur, fri, sat, sund);
-      };
-    });
-
-    $('.btn-prev').on('click', function(e) {
-      $('.btn-next').removeClass('button-remove');
-      var monthNumber = $('.month').attr('data-month');
-      if (monthNumber == 2) {
-         $('.btn-prev').addClass('button-remove');
-      }
-      if (monthNumber > 1) {
-        setMonth(parseInt(monthNumber) - 1, mon, tue, wed, thur, fri, sat, sund);
-      };
-    });
-
-     * Get all dates for current month
-     */
-
-
-     function getUrlVars()
-      {
-          var vars = [], hash;
-          var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-          for(var i = 0; i < hashes.length; i++)
-          {
-              hash = hashes[i].split('=');
-              vars.push(hash[0]);
-              vars[hash[0]] = hash[1];
-          }
-          return vars;
-      }
+      return color;
+    }
 
     $.get("../connect/schedule/schedule_to_name.pte?uuid="+getUrlVars()["id"], function(val) {
-      $('#schemaname').text(val);
+      $('#schemaname').text(val.replace('_CD', ''));
     })
 
     $.get("../connect/schedules.pte", function(val) {
 
       colors = [
-        {'background': 'rgb(190, 172, 48)', 'color': '#fff'}
-      ]
+        {'background': '#5A0AD2', 'color': '#fff'}
+      ];
+
       val = JSON.parse(val);
-      console.log(val);
-      for(var i=0; i<=val.length; i++) {
-        checked = '';
-        if(i==0) checked = 'checked';
-        console.log(val[i]);
-         $('#schema').append('<li style="list-style-type: none"><label for="'+i+'"><input type="radio" id="'+i+'" name="schedule" value="'+val[i].uuid+'" backcolor="'+colors[i].background+'" color="'+colors[i].color+'" '+checked+'> '+val[i].name+' [<font style="color: rgb(190, 172, 48)">yellow</font>]</label></li>');
-      }
-    })
+      for(var i=0; i<=val.length-1; i++) {        
+        if(typeof colors[i] === 'undefined') {
+          color = "#fff";
+          background = getDarkColors();
+        } else {
+          color = colors[i].color
+          background = colors[i].background
+        }
+
+        color_uuid.push({'background': background, 'color': color, 'uuid': val[i].uuid});
+
+        if(val[i].uuid==getUrlVars()["id"].replace('#','')) {
+          $('#schema').prepend('<li style="list-style-type: none"><label for="'+i+'"><input type="radio" id="'+i+'" name="schedule" value="'+val[i].uuid+'" backcolor="rgb(147, 159, 195)" color="#fff" checked> '+val[i].name+' <small style="position: relative;top: 5px;left: -3px;float:left;height:10px;width:10px;display:block;background: rgb(147, 159, 195)"></small> (reset) </label></li>');
+        } else
+          $('#schema').append('<li style="list-style-type: none"><label for="'+i+'"><input type="radio" id="'+i+'" name="schedule" value="'+val[i].uuid+'" backcolor="'+background+'" color="'+color+'"> '+val[i].name+' <small style="position: relative;top: 5px;left: -3px;float:left;height:10px;width:10px;display:block;background: '+background+'"></small></label></li>');
+        }
+    });
 
     $('.btn-next').on('click', function(e) {
       var monthNumber = $('.month').attr('data-month');
@@ -214,6 +213,24 @@ var calendar = {
     /**
      * Add '.event' class to all days that has an event
      */
+
+    function loadHistory(arr) {
+      $(".history").empty();
+      for(var i=0; i<=arr.length-1; i++) {
+        console.log(arr[i]);
+        $(".history").prepend('<li class="calendar_history">'+arr[i].user_filename+' - <b class="load" style="cursor: pointer;" data-uuid="'+arr[i].uuid+'" data-filename="'+arr[i].user_filename+'" data-filepath="'+arr[i].filepath+'">select and load</b> - <b class="remove" style="cursor: pointer;" data-filename="'+arr[i].user_filename+'">remove</b></li>');
+      }
+    }
+
+function getHistory() {
+
+    return $.get("../cache/schedule_history.json", function(val) {
+      return loadHistory(JSON.parse(val));
+    });
+}
+var history = getHistory();
+
+
     function setEvent() {
       $('.day-event').each(function(i) {
         var eventYear = $(this).attr('date-year');
@@ -224,9 +241,71 @@ var calendar = {
         $('tbody.event-calendar tr td[date-year="' + eventYear + '"][date-month="' + eventMonth + '"][date-day="' + eventDay + '"]').attr('id',id).addClass('event').css({"border": "1px solid rgb(147, 159, 195)", "color": $(this).attr('color'), "background-color": $(this).attr('backcolor')});
       });
     };
-;
+
+    $('.history').on('click', '.load', function(e) {
+      var filepath = $(this).attr("data-filepath");
+      var filename = $(this).attr("data-filename");
+      var uuid = $(this).attr("data-uuid");
+      window.opener.saveCalendarParent(getUrlVars()["id"], parseInt(filepath), filename);
+
+      $.get("../connect/schedule/schedule_load.pte?filepath="+filepath+"&uuid="+uuid, function(val) {
+            var load = (JSON.parse("["+val.replace(new RegExp("'",'g'), '"').replace(new RegExp('"=>"','g'), '":"').slice(1,-1)+"]"));
+
+
+            
+            $(".list").empty();
+            refreshCalendar();
+
+            back = 'black';
+            color = 'red';
+            for(var i=0; i<=load.length-1; i++) {
+              for(var j=0; j<=color_uuid.length-1; j++) {
+                if(color_uuid[j].uuid==load[i].id) {
+                  back = color_uuid[j].background;
+                  color = color_uuid[j].color;
+                }
+              }
+              $(".list").prepend('<div class="day-event" date-year="'+load[i].year+'" date-month="'+load[i].month+'" date-day="'+load[i].day+'" data-number="1" backcolor="'+back+'" color="'+color+'" id="'+load[i].id+'"></div>');
+            }
+            setEvent();
+          -->
+
+      });
+    });
+
+
+
+    $('.history').on('click', '.remove', function(e) {
+
+
+
+      var filename = $(this).attr("data-filename");
+      $.get("../cache/schedule_history.json", function(val) {
+
+        arr = JSON.parse(val)
+
+      console.log(arr);
+      console.log("aaaa");
+        for(var i=0; i<=arr.length-1; i++) {
+          if(filename === arr[i].user_filename) arr.splice(i, 1);
+        }
+        console.log("post");
+        console.log(arr);
+        $.post("../connect/schedule/schedule_history.pte", JSON.stringify(arr)).done(function(data) {
+          getHistory();
+        });
+
+      });
+
+    });
+
+
  $('#savecalendar').on('click', function(e) {
-  var list = []
+    var user_filename = prompt("Give a name for the calendar");
+    console.log(user_filename);
+    if(user_filename) {
+      console.log("bhhh");
+    var list = []
       $('.list > div').each(function(i) {
         list.push(
           {
@@ -238,13 +317,25 @@ var calendar = {
         );
       });
 
+    filename = 10000 + Math.floor(Math.random() * 90000);
+    window.opener.saveCalendarParent(getUrlVars()["id"], filename, user_filename);
 
+    $.post("../connect/schedule/schedule_save.pte?filename="+filename+"&uuid="+getUrlVars()["id"], JSON.stringify(list)).done(function(data) {
+      window.opener.saveCalendarParent(getUrlVars()["id"], filename, user_filename);
+      $(".alert").css("display", "block").text("Schedule is saved!");
+    });
+      var all = []
+    $.get("../cache/schedule_history.json", function(val) {
+      all = JSON.parse(val);
+      all.push({'user_filename': user_filename, 'uuid': getUrlVars()["id"], 'filepath':filename});
+      $.post("../connect/schedule/schedule_history.pte?user_filename="+user_filename, JSON.stringify(all)).done(function(data) {
+        getHistory();
+      });      
+    })
+  } else {
+    
+  }
 
-      console.log('url id: '+getUrlVars()["id"]);
-      filename = 10000 + Math.floor(Math.random() * 90000);
-      $.post("../connect/schedule/schedule_save.pte?uuid="+getUrlVars()["id"]+"&filename="+filename, JSON.stringify(list)).done(function(data) {
-        window.opener.saveCalendarParent(getUrlVars()["id"], filename);
-      });
  });
     /**
      * Get current day on click in calendar

@@ -179,6 +179,20 @@
         </li>
     </ul>
 
+    <div ng-show="calendar" class="bs-callout bs-callout-warning" id="callout-tables-context-accessibility" style="
+    border-left-color: #aa6708;
+    border-left-color: #aa6708;
+    padding: 20px;    margin: 20px 0;    border: 1px solid #eee;    border-left-width: 5px;    border-radius: 3px;
+">
+    <h4>Attention, the schema is modified!</h4>
+    <p>The following schema modification <code>{{calendarname}}</code> is in use now. You can choose to <span ng-show="calendar" ng-click="removeCalendar()" style="cursor:pointer;margin-right:5px;margin-bottom: 4px;  padding: 2px 12px;" class="btn btn-danger">Remove</span> the schema.</p>
+  </div>
+
+
+
+
+
+
     <div ng-show="list2.type=='5' && schedule[0].days != null" style="padding: 10px;background: #aaa; border: 1px solid #101010; width: 100%; float: left; margin-bottom: 20px;">
         <div ng-click="schedule[0].days=null" style="color:white;"><span class="fa fa-close"></span> Close scheme</div>
         <hr style="border-top: 1px solid #000;margin-top:10px">

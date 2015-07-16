@@ -2,10 +2,21 @@
 $uuid = Request.Get["uuid"] || ''
 $filename = Request.Get["filename"] || ''
 $file = System.Path+'/sys/schedules/'+$uuid+'_'+$filename+'.pte'
+$history = System.Path+'/coolding/cache/calendar.json'
 
-if Request.Method=="POST"
+if File.Exists($file)
+ File.Delete($file)
+ Echo "delete"
+/if
+Echo $file
+
+
+  File.AppendLine($file, " ")
+  if Request.Method=="POST"
+
 echo Request.RawPost
   $post = Request.RawPost.Replace('":"', '"=>"').Replace('[', '{').Replace(']', '}')
+  Echo "create"
   File.AppendLine($file, "<%")
     File.AppendLine($file, "$days = "+$post)
   File.AppendLine($file, "%"+">")

@@ -85,28 +85,39 @@
           return $scope.run = false;
         }
       };
-      $window.saveCalendarParent = function(id, filename) {
-        return $scope.calendar = id + '_' + filename;
+      $window.saveCalendarParent = function(id, filepath, filename) {
+        $scope.calendar = id + '_' + filepath;
+        $scope.calendarname = filename;
+        $scope.$apply();
+      };
+      $scope.removeCalendar = function() {
+        $scope.calendarname = '';
+        $scope.calendar = '';
       };
       $scope.modifyexception = function(id) {
         var child, interval;
+        child = void 0;
+        interval = void 0;
         if (!$scope.windowOpen) {
           $scope.windowOpen = true;
-          child = $window.open("calendar.html?id=" + id, "_blank", "height=600,width=1000");
-          return interval = setInterval(function() {
+          child = $window.open('calendar.html?id=' + id, '_blank', 'height=600,width=1000');
+          return interval = setInterval((function() {
+            var _error;
             try {
               (function() {
                 if (child.document.domain === document.domain) {
                   return clearInterval(interval);
                 }
               });
-            } catch (_error) {}
+            } catch (_error) {
+              _error = _error;
+            }
             if (child.closed) {
-              console.log("closed");
+              console.log('closed');
               clearInterval(interval);
               $scope.windowOpen = false;
             }
-          }, 500);
+          }), 500);
         }
       };
       $scope.remove = function(id) {

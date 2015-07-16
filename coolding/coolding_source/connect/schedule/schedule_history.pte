@@ -1,0 +1,11 @@
+<%
+$file = System.Path+'/coolding/cache/schedule_history.json'
+
+if File.Exists($file)
+ File.Delete($file)
+/if
+
+if Request.Method=="POST"
+	File.AppendLine($file, Request.RawPost)
+/if
+%>

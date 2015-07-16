@@ -1,0 +1,13 @@
+<%
+
+$uuid = Request.Get["uuid"] || ''
+$filepath = Request.Get["filepath"] || ''
+
+$file = "sys/schedules/"+$uuid+"_"+$filepath+".pte";
+
+
+if File.Exists(System.Path+"/"+$file)
+ Include $file
+ Echo $days
+/if
+%>
