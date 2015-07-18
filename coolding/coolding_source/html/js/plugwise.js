@@ -120,7 +120,7 @@
           }), 500);
         }
       };
-      $scope.remove = function(id) {
+      $scope.remove = function(id, extraValue) {
         var deviceid, filename;
         console.log(id);
         filename = '';
@@ -135,7 +135,7 @@
           }
         });
         JsonService.serverRequests('../connect/save_coolding_setting.pte', 'POST', $scope.history).then((function(fetch) {}));
-        return JsonService.serverRequests('../connect/coolding_editEvent.pte?filename=' + filename + '&id=' + deviceid + '&remove=true&status=false').then((function(fetch) {}));
+        return JsonService.serverRequests('../connect/coolding_editEvent.pte?filename=' + filename + '&id=' + deviceid + '&extravalue=' + extraValue + '&remove=true&status=false').then((function(fetch) {}));
       };
       $scope.turnOff = function(id, extraValue) {
         var deviceid, filename, status;
