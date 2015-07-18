@@ -326,7 +326,7 @@ var history = getHistory();
     });
       var all = []
     $.get("../cache/schedule_history.json", function(val) {
-      all = JSON.parse(val);
+      if(val) all = JSON.parse(val);
       all.push({'user_filename': user_filename, 'uuid': getUrlVars()["id"], 'filepath':filename});
       $.post("../connect/schedule/schedule_history.pte?user_filename="+user_filename, JSON.stringify(all)).done(function(data) {
         getHistory();
