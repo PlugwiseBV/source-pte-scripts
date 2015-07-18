@@ -1,6 +1,6 @@
 <%file
 $filename   = Request.Get["user_filename"] || ''
-$file = System.Path+'/coolding/cache/schedules/coolding_setting.json'
+$file = System.Path+'/coolding/cache/coolding_setting.json'
 
 Echo Request.Method
 
