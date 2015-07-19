@@ -16,11 +16,40 @@ Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
   // Log is true
   $log = True
 
+  if($log)
+    if(!File.Exists($directories['log_file']))
+    File.AppendLine($directories['log_file'], "")
+    File.AppendLine($directories['log_file'], "  _____  _                      _ ")
+    File.AppendLine($directories['log_file'], " |  __ \\| |                    (_) ")
+    File.AppendLine($directories['log_file'], " | |__) | |_   _  __ ___      ___ ___  ___ ")
+    File.AppendLine($directories['log_file'], " |  ___/| | | | |/ _` \\ \\ /\\ / / / __|/ _ \\ ")
+    File.AppendLine($directories['log_file'], " | |    | | |_| | (_| |\\ V  V /| \\__ \\  __/ ")
+    File.AppendLine($directories['log_file'], " |_|    |_|\\__,_|\\__, | \\_/\\_/ |_|___/\\___| ")
+    File.AppendLine($directories['log_file'], "                  __/ | ")
+    File.AppendLine($directories['log_file'], "                 |___/")
+    File.AppendLine($directories['log_file'], "")
+    File.AppendLine($directories['log_file'], " Hi there, nice to meet you!");
+    /if
+    File.AppendLine($directories['log_file'], "")
+    File.AppendLine($directories['log_file'], "~~~~~~~~~~~~~~~~~~~~ Begin log")
+  /if
+
   // Request new ipaddress when cache is empty
+  File.AppendLine($directories['log_file'], "")
+  File.AppendLine($directories['log_file'], "--- IP Section ---")
   $ip = Renewip($id, $directories)
+  File.AppendLine($directories['log_file'], "--- End of IP Section ---")
+  File.AppendLine($directories['log_file'], "")
   
   if($log)
-    File.AppendLine($directories['log_file'], "Begin log; "+$sed_type+" : "+$type+" [ip: "+$ip+"] - Date: "+DateTime())
+    File.AppendLine($directories['log_file'], "")
+    File.AppendLine($directories['log_file'], "===========================")
+    File.AppendLine($directories['log_file'], " Timestamp: "+DateTime())
+    File.AppendLine($directories['log_file'], " SED: "+$sed_type)
+    File.AppendLine($directories['log_file'], " Type event: "+$type)
+    File.AppendLine($directories['log_file'], " ip: "+$ip)
+    File.AppendLine($directories['log_file'], "===========================")
+    File.AppendLine($directories['log_file'], "")
   /if
 
   if($sed_type==5)
@@ -42,7 +71,7 @@ Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
   /if
 
   if($log)
-    File.AppendLine($directories['log_file'], "=== End of logs")
+    File.AppendLine($directories['log_file'], "~~~~~~~~~~~~~~~~~~~~ End of logs")
     File.AppendLine($directories['log_file'], " ")
   /if
 /Function
@@ -253,11 +282,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
       if $lcommand == undefined
         $lcommands = '' 
       else
-        if $lcommand[0] == undefined
-          $lcommands = ''
-        else
-          $lcommands = $lcommand[0]
-        /if
+        $lcommands = $lcommand
       /if
 
       if($d.Weekday==0)
@@ -269,29 +294,28 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
 
       if($schedule.Values[($day)][$quarter]==0)
 
-        if($lcommands==($commands['off_id']+"_off"))
+        if($lcommands==($commands['off_id']))
           if($log)
-            File.AppendLine($directories['log_file'], "Just Turn Off - But it is already off!")
+            File.AppendLine($directories['log_file'], "[!] Hmm, according to the last command it seems its already off")
           /if
          else
            File.Delete($directories['last_command'])
            if($log)
-             File.AppendLine($directories['log_file'], "Just torn off - Turn off command!")
+             File.AppendLine($directories['log_file'], "[!] I will send an off command")
            /if
            $command_run = true
            $result = Http.Get($off_url, 'smile', $id)
            File.AppendLine($directories['last_command'], $commands['off_id']+'_off')
         /if
       Elseif($schedule.Values[($day)][$quarter]==-1)
-
-        if($lcommands==($commands['on_id']+'_on'))
+        if($lcommands==($commands['on_id']))
           if($log)
-            File.AppendLine($directories['log_file'], "Just Turn On - But it is already on!")
+            File.AppendLine($directories['log_file'], "[!] Hmm, according to the last command it seems its already on")
           /if
          else
            File.Delete($directories['last_command'])
            if($log)
-             File.AppendLine($directories['log_file'], "Just torn on - Turn on command!")
+             File.AppendLine($directories['log_file'], "[!] I will send an on command")
            /if
            $command_run = true
            $result = Http.Get($on_url, 'smile', $id)
@@ -316,14 +340,14 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
         /if
 
         if($upper_limit<$now)
-          if($lcommands==($commands['eco_on_id']+"_eco_on"))
+          if($lcommands==($commands['eco_on_id']))
             if($log)
-              File.AppendLine($directories['log_file'], "Exceeding the average - Already on!")
+              File.AppendLine($directories['log_file'], "[!] Exceeding the average - Already on!")
             /if
            else
              File.Delete($directories['last_command'])
              if($log)
-               File.AppendLine($directories['log_file'], "Exceeding the average - Turn on command!")
+               File.AppendLine($directories['log_file'], "[!] Exceeding the average - Turn on command!")
              /if
              $command_run = true
              $result = Http.Get($eco_on_url, 'smile', $id)
@@ -332,20 +356,39 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
         /if
 
        if($lower_limit>$now)
-         if($lcommands==($commands['eco_off_id']+'_eco_off'))
+         if($lcommands==($commands['eco_off_id']))
            if($log)
-             File.AppendLine($directories['log_file'], "Below the norm - already off")
+             File.AppendLine($directories['log_file'], "[!] Below the norm - already off")
            /if
          else
            File.Delete($directories['last_command'])
            if($log)
-             File.AppendLine($directories['log_file'], "Below the norm - Turn off command!")
+             File.AppendLine($directories['log_file'], "[!] Below the norm - Turn off command!")
            /if
            $command_run = true
            $result = Http.Get($eco_off_url, 'smile', $id)
            File.AppendLine($directories['last_command'], $commands['eco_off_id']+'_eco_off')
          /if
       /if
+
+
+
+        File.AppendLine($directories['log_file'], "lower limit "+$lower_limit)
+
+        File.AppendLine($directories['log_file'], "upper limit "+$upper_limit)
+
+        File.AppendLine($directories['log_file'], "now "+$now)
+// This one will ocur when there is a range; e.g. avg: 240, upper: 250, below: 230
+// When the current temp is 245 it will be between this range, and nothing will happen..
+   if($upper_limit>$now)
+     if($lower_limit<$now)
+       if($log)
+        File.AppendLine($directories['log_file'], "[!] Inside the limitations")
+       /if
+     /if
+   /if
+  
+
     /if
 
 
@@ -376,21 +419,12 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
         /if 
       /if
     /if
-
-// This one will ocur when there is a range; e.g. avg: 240, upper: 250, below: 230
-// When the current temp is 245 it will be between this range, and nothing will happen..
-   if($upper_limit>$now)
-     if($lower_limit<$now)
-       if($log)
-        File.AppendLine($directories['log_file'], "Inside limitations")
-       /if
-     /if
-   /if
-  /if
+/if
  /foreach
 
+
  if($log)
-  File.AppendLine($directories['log_file'], "End of function CooldingSense")
+  File.AppendLine($directories['log_file'], "End of function Coolding Sense")
  /if
 
  /Function
@@ -399,16 +433,17 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
 
 Function Renewip($id, $directories)
    $adres = 'https://smile.plugwise.net/?json=true&callback=smile&shortId='+$id
-     File.AppendLine($directories['log_file'], "Data get: "+$adres)
+
+  File.AppendLine($directories['log_file'], " Is the ip address already known?")
 
   if File.Exists($directories['coolding_ip'])
     $get_ip = File.Read($directories['coolding_ip'])
     $ip = $get_ip[0]
-    File.AppendLine($directories['log_file'], "IP is already known: "+$ip)
+    File.AppendLine($directories['log_file'], " Yes it is. IP is already known: "+$ip)
   else
      $data = Http.Get($adres)
 
-     File.AppendLine($directories['log_file'], "Beacon: "+$data)
+     File.AppendLine($directories['log_file'], " No its not, so we requested a new beacon from plugwise: "+$data)
 
      $wifi_ip = RegEx.Match('"wifi_ip":"(.*?)"', $data)
      $lan_ip = RegEx.Match('"lan_ip":"(.*?)"', $data)
@@ -472,21 +507,28 @@ Function CalculateQuarters()
 // Latest commando
 Function ReadLastCommand($directories, $id, $ip)
 
-  File.AppendLine($directories['log_file'], "Fetching last played command")
+  File.AppendLine($directories['log_file'], "--- Last command Section ---")
+
+
+  File.AppendLine($directories['log_file'], " Fetching last played command")
   $data = Http.Get('http://'+$ip+'/ir/sequences/lastplayed', 'smile', $id)
 
   $command = RegEx.Match("sequence id='(.*?)'", $data)
 
   // Check Last command file
   if $command[1] != undefined
-    File.AppendLine($directories['log_file'], "command 1 "+$command[1])
+    File.AppendLine($directories['log_file'], " We are communicating with coolding, last played coolding command: "+$command[1])
     File.AppendLine($directories['last_command'], $command[1])
+    $lcommand = $command[1]
   else
     File.AppendLine($directories['last_command'], "0")
     $lcommand = "0"
   /if
-  File.AppendLine($directories['log_file'], "Last command = "+$lcommand)
+  File.AppendLine($directories['log_file'], " Last command = "+$lcommand)
+  File.AppendLine($directories['log_file'], "--- End of last command Section ---")
+  File.AppendLine($directories['log_file'], "")
   return $lcommand
+
 /Function
 
 %>

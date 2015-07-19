@@ -50,7 +50,7 @@ else
        File.AppendLine($file, '   "lower_ratio" => "'+$lower_limit+'",')
         File.AppendLine($file, '   "calendar" => "'+$calendar+'"')
       File.AppendLine($file, "  }")
-      File.AppendLine($file, "  Airco($id, $commands, $sender.Temperature, $type, 'Sense', $uuid)")
+      File.AppendLine($file, "  Airco($id, $commands, $sender.Temperature, $type, 5, $uuid)")
     File.AppendLine($file, "/Function")
 
     // OnReport
@@ -121,7 +121,7 @@ else
     // switch
     File.AppendLine($file, "Function datasettings($sender, $switchedOn, $type)")
     File.AppendLine($file, '  $id     = "'+$password+'"')
-  /if
+  
 
     if($device==6)
       File.AppendLine($file, '  $uuid   = "scan_"+$id')
@@ -130,16 +130,19 @@ else
        File.AppendLine($file, '   "off_id" => "'+$sequence_id_off+'"')
       File.AppendLine($file, "  }")
       File.AppendLine($file, '  Airco($id, $commands, $switchedOn, $type, "'+$device+'", $uuid)')
+
     else
      File.AppendLine($file, '  $uuid   = "switch_"+$id')
      File.AppendLine($file, 'if File.Exists(System.Path+"/sys/switch/"+$sender+".pte")')
       File.AppendLine($file, 'Include "sys/switch/"+$sender+".pte";')
       File.AppendLine($file, '  Airco($id, $commands, $switchedOn, $type, "'+$device+'", $uuid)')
      File.AppendLine($file, '/if')
-    /if
+     /if
+  File.AppendLine($file, "/Function")
 
-   File.AppendLine($file, "/Function")
 
+
+  
    // OnBroadcast
    File.AppendLine($file, "Function OnBroadcast($sender, $switchedOn, $eventId)")
 
@@ -183,7 +186,7 @@ else
 /if
 
  File.AppendLine($file, "/Function")
-
+/if
 
 
 // Foreach
