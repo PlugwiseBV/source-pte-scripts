@@ -1,0 +1,32 @@
+<%
+$file = System.Path+'/coolding/cache/last/latest_places.json'
+$latest_coolding = System.Path+'/coolding/cache/last/latest_places.pte'
+
+if File.Exists($latest_coolding)
+
+  Include "coolding/cache/last/latest_places.pte"
+
+  $add = true;
+  $i = 0;
+
+  $data = '['
+  foreach $latest as $ids
+    ++$i;
+
+    $data += '{"name":"'+$ids+'"}'
+
+    if($latest.Count != $i)
+      $data += ','
+    /if
+  /foreach
+  $data += ']'
+
+  File.Delete($file)
+  File.AppendLine($file, $data)
+
+  Echo "ok"
+else
+  Echo "fail"
+/if
+
+%>

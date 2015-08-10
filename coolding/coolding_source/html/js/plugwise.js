@@ -486,6 +486,15 @@
           }
         });
       };
+      $scope.loadLatest = function() {
+        $scope.devices = {};
+        return JsonService.serverRequests('../connect/coolding_latest.pte').then((function(fetch) {
+          return JsonService.serverRequests('../cache/last/latest_places.json').then((function(fetch) {
+            $scope.devices.latest = fetch.data;
+          }), function(reason) {});
+        }));
+      };
+      $scope.loadLatest();
       $scope.request = function(identifier) {
         var devices;
         if (identifier === void 0) {
@@ -497,6 +506,7 @@
           return;
         }
         $scope.devices = {};
+        $scope.loadLatest();
         if (identifier == null) {
           $scope.devices.error = true;
           return $scope.error_message = "The MAC-address, UUID or shortid can not be empty.";

@@ -1,6 +1,13 @@
 <div class="container">
     <div class="input-group input-group-lg">
         <div class="input-group-addon">ShortID</div>
+        <div class="latest_ids">
+        	<table>
+        		<tr ng-repeat="latest in devices.latest">
+        			<td><a ng-href="/coolding/html/#/index/{{latest.name}}">{{latest.name}}</a></td>
+        		</tr>
+        	</table>
+        </div>
         <input id="inputPostMessage" class="form-control input-lg" ng-model="identifier" type="text" placeholder="{{ 'enter_shortid' | translate }}" check-Validid>
         <div class="input-group-btn">
             <div class="btn no-hover" ng-class="{'btn-danger': valid==false, 'btn-success': valid==true }">&nbsp;</div>

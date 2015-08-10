@@ -272,6 +272,27 @@ body {
     overflow: hidden;
     overflow-y: scroll;
 }
+.latest_ids {
+    display: none;
+    width: 94px;
+    position: absolute;
+    top: 42px;
+    z-index: 100;
+    left: 0px;
+    background-color: rgb(238, 238, 238);
+    padding: 10px;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 0 0 4px 4px;
+    color: rgb(85, 85, 85);
+    border-top: none;
+    font-size: 12px;
+}
+.latest_ids:hover {
+    display: block;
+}
+.shortid:hover + .latest_ids {
+    display: block;
+}
 .version {
     color: #aaa;
     float: left;

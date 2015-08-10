@@ -9,6 +9,8 @@ $file = System.Path+'/coolding/cache/coolding_info.xml'
 $last_coolding = System.Path+'/coolding/cache/last/last_connect.pte'
 
 
+$latest_coolding = System.Path+'/coolding/cache/last/latest_places.pte'
+
   if File.Exists($file)
    File.Delete($file)
   /if
@@ -24,10 +26,34 @@ $last_coolding = System.Path+'/coolding/cache/last/last_connect.pte'
       File.Delete($last_coolding)
       File.AppendLine($last_coolding, $id)
 
+      $latest = "{'"+$id+"'}"
+      if File.Exists($latest_coolding)
+       Include "coolding/cache/last/latest_places.pte"
+
+        $add = true;
+        foreach $latest as $ids
+          if($ids == $id)
+            $add = false
+          /if
+        /foreach
+
+        if($add)
+          $latest[] = $id
+        /if
+
+        if($latest.Count==6)
+           $latest.RemoveAt(0)
+        /if
+      /if
+
+      File.Delete($latest_coolding)
+      File.AppendLine($latest_coolding, "<"+"%")
+      File.AppendLine($latest_coolding, '$latest='+$latest)
+      File.AppendLine($latest_coolding, "%"+">")
+
     /if
    /if
   /if
   Echo $result
-
 
 %>
