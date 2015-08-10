@@ -272,6 +272,12 @@ body {
     overflow: hidden;
     overflow-y: scroll;
 }
+.latest_ids:hover {
+    display: block !important;
+}
+.shortid:hover + .latest_ids {
+    display: block !important;
+}
 .latest_ids {
     display: none;
     width: 94px;
@@ -286,12 +292,6 @@ body {
     color: rgb(85, 85, 85);
     border-top: none;
     font-size: 12px;
-}
-.latest_ids:hover {
-    display: block;
-}
-.shortid:hover + .latest_ids {
-    display: block;
 }
 .version {
     color: #aaa;
