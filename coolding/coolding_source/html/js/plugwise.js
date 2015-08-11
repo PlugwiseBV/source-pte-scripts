@@ -463,6 +463,7 @@
         console.log($scope.ip);
         return $.get('../connect/coolding_info.pte?ip=' + $scope.ip + '&id=' + identifier, function(xml) {
           if (xml === 'ok') {
+            $scope.loadLatest();
             JsonService.serverRequests('../cache/coolding_info.xml').then((function(xmll) {
               var json;
               console.log(xmll);
