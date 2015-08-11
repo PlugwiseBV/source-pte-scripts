@@ -280,9 +280,9 @@ body {
 }
 .latest_ids {
     display: none;
-    width: 97px;
+    width: 300px;
     position: absolute;
-    top: 42px;
+    top: 44px;
     z-index: 100;
     left: 0px;
     background-color: rgb(238, 238, 238);

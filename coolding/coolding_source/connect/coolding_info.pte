@@ -25,20 +25,24 @@ $latest_coolding = System.Path+'/coolding/cache/last/latest_places.pte'
      $result = 'ok'
       File.Delete($last_coolding)
       File.AppendLine($last_coolding, $id)
+      $match = RegEx.Match('\<description\>\<\!\[CDATA\[(.*?)\]\]\>\<\/description\>', $load)
 
-      $latest = "{'"+$id+"'}"
+      $latest = "{'"+$id+"' => '"+$match[1]+"'}"
       if File.Exists($latest_coolding)
        Include "coolding/cache/last/latest_places.pte"
 
         $add = true;
+        $i = 0
         foreach $latest as $ids
-          if($ids == $id)
+          
+          if($latest.keys[$i] == $id)
             $add = false
           /if
+          ++$i
         /foreach
 
         if($add)
-          $latest[] = $id
+          $latest[$id] = $match[1]
         /if
 
         if($latest.Count==6)

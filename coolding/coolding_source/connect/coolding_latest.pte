@@ -11,9 +11,9 @@ if File.Exists($latest_coolding)
 
   $data = '['
   foreach $latest as $ids
-    ++$i;
 
-    $data += '{"name":"'+$ids+'"}'
+    $data += '{"name":"'+$ids+'", "id":"'+$latest.keys[$i]+'"}'
+    ++$i;
 
     if($latest.Count != $i)
       $data += ','
