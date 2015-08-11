@@ -463,7 +463,6 @@
         console.log($scope.ip);
         return $.get('../connect/coolding_info.pte?ip=' + $scope.ip + '&id=' + identifier, function(xml) {
           if (xml === 'ok') {
-            $scope.loadLatest();
             JsonService.serverRequests('../cache/coolding_info.xml').then((function(xmll) {
               var json;
               console.log(xmll);
@@ -487,14 +486,17 @@
           }
         });
       };
+      $scope.emptyDevices = function() {
+        return $scope.devices = {};
+      };
       $scope.loadLatest = function() {
-        $scope.devices = {};
         return JsonService.serverRequests('../connect/coolding_latest.pte').then((function(fetch) {
           return JsonService.serverRequests('../cache/last/latest_places.json').then((function(fetch) {
             $scope.devices.latest = fetch.data;
           }), function(reason) {});
         }));
       };
+      $scope.emptyDevices();
       $scope.loadLatest();
       $scope.request = function(identifier) {
         var devices;
@@ -507,6 +509,7 @@
           return;
         }
         $scope.devices = {};
+        $scope.emptyDevices();
         $scope.loadLatest();
         if (identifier == null) {
           $scope.devices.error = true;
