@@ -52,6 +52,21 @@ Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
     File.AppendLine($directories['log_file'], "")
   /if
 
+
+  if($log)
+    File.AppendLine($directories['log_file'], "")
+    File.AppendLine($directories['log_file'], "=========== Extra debug information ===========")
+    File.AppendLine($directories['log_file'], " ID: "+($id))
+    File.AppendLine($directories['log_file'], " Commands: "+(commands))
+    File.AppendLine($directories['log_file'], " UUID: "+($uuid))
+    File.AppendLine($directories['log_file'], " Now: "+($now))
+    File.AppendLine($directories['log_file'], " IP: "+($ip))
+    File.AppendLine($directories['log_file'], " Directories: "+($directories))
+    File.AppendLine($directories['log_file'], " Log: "+($log))
+    File.AppendLine($directories['log_file'], "===========================")
+    File.AppendLine($directories['log_file'], "")
+  /if
+
   if($sed_type==5)
 
     // Multiply Plugwise Schedule 
@@ -237,6 +252,9 @@ Function CooldingScan($id, $commands, $now, $ip, $directories, $lcommand, $log)
 
 Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand, $log)
 
+  if($log)
+    File.AppendLine($directories['log_file'], "~~ Begin coolding Sense env ~~")
+  /if
 
   $year  = DateTime().Format("yyyy")
   $month = DateTime().Format("MM")
@@ -245,6 +263,9 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
   $schedule = $directories["schedules"]+$commands['calendar']+".pte"
   
   if File.Exists($schedule)
+    if($log)
+      File.AppendLine($directories['log_file'], "~~ Schedule exists "+($commands['calendar'])+" ~~")
+    /if
     Include "sys/schedules/"+$commands['calendar']+".pte";
 
     foreach $days as $dayloop
@@ -273,6 +294,10 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
 
   $d = DateTime()
 
+  if($log)
+    File.AppendLine($directories['log_file'], "~~ Quarter: "+($quarter)+" ~~")
+  /if
+
   // Begin the schedule loop
   foreach Plugwise.Schedules as $schedule
 
@@ -293,6 +318,12 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
 
 
       if($schedule.Values[($day)][$quarter]==0)
+        if($log)
+          File.AppendLine($directories['log_file'], "~~ Scheme value: "+($schedule.Values[$day][$quarter]))
+          File.AppendLine($directories['log_file'], "~~ Sense temp: "+($now))
+          File.AppendLine($directories['log_file'], "~~ All command: "+($commands))
+          File.AppendLine($directories['log_file'], "~~ Last command: "+($lcommands))
+        /if
 
         if($lcommands==($commands['off_id']))
           if($log)
@@ -308,6 +339,12 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
            File.AppendLine($directories['last_command'], $commands['off_id']+'_off')
         /if
       Elseif($schedule.Values[($day)][$quarter]==-1)
+        if($log)
+          File.AppendLine($directories['log_file'], "~~ Scheme value: "+($schedule.Values[$day][$quarter]))
+          File.AppendLine($directories['log_file'], "~~ Sense temp: "+($now))
+          File.AppendLine($directories['log_file'], "~~ All command: "+($commands))
+          File.AppendLine($directories['log_file'], "~~ Last command: "+($lcommands))
+        /if
         if($lcommands==($commands['on_id']))
           if($log)
             File.AppendLine($directories['log_file'], "[!] Hmm, according to the last command it seems its already on")
@@ -319,7 +356,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
            /if
            $command_run = true
            $result = Http.Get($on_url, 'smile', $id)
-           File.AppendLine($directories['last_command'], $commands['on_id']+'_on')
+           File.AppendLine($directories['last_command'], ($commands['on_id'])+'_on')
         /if
       else
 
@@ -336,7 +373,6 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
 
           File.AppendLine($directories['log_file'], "All command: "+$commands)
           File.AppendLine($directories['log_file'], "Last command: "+$lcommands)
-          
         /if
 
         if($upper_limit<$now)

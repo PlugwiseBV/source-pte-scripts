@@ -44,6 +44,8 @@
 ; The stuff to install
 Section "" ;No components page, name is not important
 
+  RMDir "$INSTDIR\Plugwise Coolding\"
+
   CreateDirectory "$INSTDIR\www\sys\switch\"
   CreateDirectory "$INSTDIR\www\sys\schedules\"
   ; Set output path to the installation directory.
