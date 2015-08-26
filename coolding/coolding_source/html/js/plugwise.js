@@ -189,6 +189,8 @@
         if ($scope.list2.type === '3') {
           extraValue = $scope.trigger.place;
         }
+        console.log("schema --> ");
+        console.log(filename);
         console.log($scope.chosen_schedule);
         if ($scope.list2.type === '5') {
           extraValue = "Sense&upper_limit=" + $scope.upper_limit + "&lower_limit=" + $scope.lower_limit + "&schedule=" + $scope.chosen_schedule + "&eco_on=" + $scope.list4.id + "&eco_off=" + $scope.list5.id;
