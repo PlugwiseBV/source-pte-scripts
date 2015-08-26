@@ -547,7 +547,9 @@
                 JsonService.serverRequests('../connect/plugincheck.pte').then((function(plugin) {
                   if (plugin.data === 'true') {
                     return JsonService.serverRequests('../connect/writable.pte').then((function(writable) {
+                      console.log(writable);
                       if (writable.data === 'true') {
+                        console.log("writable");
                         $scope.devices.show = true;
                         $scope.devices.devices = fetch.data;
                         return callback(true);

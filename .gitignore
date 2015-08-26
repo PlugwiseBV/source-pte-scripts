@@ -1,1 +1,10 @@
 .DS_Store
+coolding/coffee/
+coolding/Cakefile
+coolding/.idea/
+coolding/coolding_source/cache/coolding_info.xml
+coolding/coolding_source/cache/coolding_sequences.xml
+coolding/coolding_source/cache/last/last_connect.pte
+coolding/coolding_source/cache/last/latest_places.json
+coolding/coolding_source/cache/last/latest_places.pte
+coolding/coolding_source/cache/modules.json
