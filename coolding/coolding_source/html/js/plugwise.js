@@ -168,6 +168,10 @@
         $scope.list5 = {};
         $scope.chosen_schedule = {};
         $scope.removeCalendar();
+        JsonService.serverRequests('../connect/schedules.pte').then((function(fetch) {
+          $scope.schedules = fetch.data;
+          return $scope.chosen_schedule = $scope.schedules[0].uuid;
+        }));
         return console.log($scope);
       };
       $scope.schedules = '';
