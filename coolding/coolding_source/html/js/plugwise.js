@@ -167,6 +167,7 @@
         $scope.list4 = {};
         $scope.list5 = {};
         $scope.chosen_schedule = {};
+        $scope.removeCalendar();
         return console.log($scope);
       };
       $scope.schedules = '';
