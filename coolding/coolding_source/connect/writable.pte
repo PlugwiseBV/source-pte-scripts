@@ -2,10 +2,12 @@
 $writable = System.Path+'/coolding/cache/writeable.txt'
 
 if File.Exists($writable)
+  File.Delete($writable)
   Echo 'true'
 else
   File.AppendLine($writable, 'true')
   if File.Exists($writable)
+    File.Delete($writable)
     Echo 'true'
   else
     Echo 'false'
