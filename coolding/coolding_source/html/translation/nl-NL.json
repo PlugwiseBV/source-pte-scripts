@@ -29,5 +29,6 @@
 	"licensemissing": "Source licentieoptie ontbreekt. <br /> Contacteer uw leverancier voor het toevoegen van de Event scripting / Web server licentieoptie.",
 	"dragdrop_temperaturelimits": "Temperatuur limieten:",
 	"dragdrop_cooldingcommandecoon": "Sleep hier uw Coolding Commando wanneer de temperatuur <u>boven</u> de ingestelde waarde is.",
-	"dragdrop_cooldingcommandecooff": "Sleep hier uw Coolding Commando wanneer de temperatuur <u>beneden</u> de ingestelde waarde is."
+	"dragdrop_cooldingcommandecooff": "Sleep hier uw Coolding Commando wanneer de temperatuur <u>beneden</u> de ingestelde waarde is.",
+	"writepermissions": "Toegang geweigerd: kan configuratiebestand niet schrijven, voer Plugwise Source uit als administrator gebruiker. Selecteer 'Run this program as administrator'. <img src='img/permissions.png'>"
 }

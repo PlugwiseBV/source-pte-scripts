@@ -546,9 +546,20 @@
                 $scope.error_device = false;
                 JsonService.serverRequests('../connect/plugincheck.pte').then((function(plugin) {
                   if (plugin.data === 'true') {
-                    $scope.devices.show = true;
-                    $scope.devices.devices = fetch.data;
-                    return callback(true);
+                    return JsonService.serverRequests('../connect/writable.pte').then((function(writable) {
+                      if (writable.data === 'true') {
+                        $scope.devices.show = true;
+                        $scope.devices.devices = fetch.data;
+                        return callback(true);
+                      } else {
+                        $scope.loader_device = false;
+                        $scope.error_device = true;
+                        $scope.devices.error = true;
+                        $scope.error_message = '';
+                        $scope.write_permissions = true;
+                        return callback(false);
+                      }
+                    }));
                   } else {
                     $scope.loader_device = false;
                     $scope.error_device = true;

@@ -1,0 +1,14 @@
+<%
+$writable = System.Path+'/coolding/cache/writeable.txt'
+
+if File.Exists($writable)
+  Echo 'true'
+else
+  File.AppendLine($writable, 'true')
+  if File.Exists($writable)
+    Echo 'true'
+  else
+    Echo 'false'
+  /if
+/if
+%>

@@ -27,5 +27,6 @@
 	"licensemissing": "Missing Source license feature. <br>Please purchase the Event scripting / Web server License feature key at your local reseller.",
 	"dragdrop_temperaturelimits": "In case of temperature limits:",
 	"coolding_name_command": "Coolding Command",
-	"coolding_icon": "Icon"
+	"coolding_icon": "Icon",
+	"writepermissions": "Cannot write file, please check the Plugwise Source permissions. Select 'Run this program as administrator'. <img src='img/permissions.png'>"
 }
