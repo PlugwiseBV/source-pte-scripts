@@ -246,7 +246,9 @@ var history = getHistory();
       var filepath = $(this).attr("data-filepath");
       var filename = $(this).attr("data-filename");
       var uuid = $(this).attr("data-uuid");
+	  swal("Exception loaded", "Please close this window to return to the main screen", "success");
       window.opener.saveCalendarParent(getUrlVars()["id"], parseInt(filepath), filename);
+
 
       $.get("../connect/schedule/schedule_load.pte?filepath="+filepath+"&uuid="+uuid, function(val) {
             var load = (JSON.parse("["+val.replace(new RegExp("'",'g'), '"').replace(new RegExp('"=>"','g'), '":"').slice(1,-1)+"]"));
@@ -268,7 +270,7 @@ var history = getHistory();
               $(".list").prepend('<div class="day-event" date-year="'+load[i].year+'" date-month="'+load[i].month+'" date-day="'+load[i].day+'" data-number="1" backcolor="'+back+'" color="'+color+'" id="'+load[i].id+'"></div>');
             }
             setEvent();
-          -->
+
 
       });
     });
@@ -276,21 +278,13 @@ var history = getHistory();
 
 
     $('.history').on('click', '.remove', function(e) {
-
-
-
       var filename = $(this).attr("data-filename");
       $.get("../cache/schedule_history.json", function(val) {
-
         arr = JSON.parse(val)
 
-      console.log(arr);
-      console.log("aaaa");
         for(var i=0; i<=arr.length-1; i++) {
           if(filename === arr[i].user_filename) arr.splice(i, 1);
         }
-        console.log("post");
-        console.log(arr);
         $.post("../connect/schedule/schedule_history.pte", JSON.stringify(arr)).done(function(data) {
           getHistory();
         });
@@ -302,9 +296,7 @@ var history = getHistory();
 
  $('#savecalendar').on('click', function(e) {
     var user_filename = prompt("Give a name for the calendar");
-    console.log(user_filename);
     if(user_filename) {
-      console.log("bhhh");
     var list = []
       $('.list > div').each(function(i) {
         list.push(
@@ -323,6 +315,7 @@ var history = getHistory();
     $.post("../connect/schedule/schedule_save.pte?filename="+filename+"&uuid="+getUrlVars()["id"], JSON.stringify(list)).done(function(data) {
       window.opener.saveCalendarParent(getUrlVars()["id"], filename, user_filename);
       $(".alert").css("display", "block").text("Schedule is saved!");
+
     });
       var all = []
     $.get("../cache/schedule_history.json", function(val) {

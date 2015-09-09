@@ -36,7 +36,7 @@
 
   controller = angular.module('hardware.controllers', []);
 
-  controller.controller('HardwareController', function() {}).controller('authenticated', [function() {}]);
+  controller.controller('HardwareController', function() {});
 
   controller.controller('languageInit', [
     '$translate', '$scope', function($translate, $scope) {
@@ -49,24 +49,6 @@
         if ($translate.use() !== $scope.changedLanguageIn) {
           return $translate.use($scope.changedLanguageIn);
         }
-      };
-    }
-  ]).controller('HardwareLogin', [
-    '$scope', '$http', 'JsonService', '$filter', '$rootScope', '$location', 'AuthenticationsService', '$q', "logoutButton", function($scope, $http, JsonService, $filter, $rootScope, $location, AuthenticationsService, $q, logoutButton) {
-      return $scope.login = function() {
-        AuthenticationsService.ClearCredentials();
-        AuthenticationsService.AddBasicAuth($scope.username, $scope.password);
-        return AuthenticationsService.Status(function(callback) {
-          if (callback.loggedin === true) {
-            AuthenticationsService.SetCredentials($scope.username, $scope.password);
-            logoutButton.showButton();
-            $location.path("/index");
-          }
-          if (callback.loggedin === false) {
-            $scope.errorMessage = true;
-            return $scope.errorMessageBody = 'Your username and/or password is invalid. Please try again.';
-          }
-        });
       };
     }
   ]).controller('AddressIdentifier', [
@@ -188,7 +170,6 @@
         $scope.list3 = '';
         $scope.list4 = '';
         $scope.list5 = '';
-        console.log($scope);
         $scope.list1 = {};
         $scope.list2 = {};
         $scope.list3 = {};
