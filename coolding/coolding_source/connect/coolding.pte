@@ -163,19 +163,25 @@ File.AppendLine($directories['log_file'], "Coolding Switch function")
   File.AppendLine($directories['log_file'], "lcommand="+$lcommand)
 
   if($now==true)
-    File.AppendLine($directories['log_file'], "Switch turned on; now is true")
+    if($lcommand==$on_url)
+      File.AppendLine($directories['log_file'], "[!] Switch turned on; now is true")
 
-    $result = Http.Get($on_url, 'smile', $id)
-    File.AppendLine($directories['last_command'], $commands['on_id'])
-
+      $result = Http.Get($on_url, 'smile', $id)
+      File.AppendLine($directories['last_command'], $commands['on_id'])
+    Else
+      File.AppendLine($directories['log_file'], "Switch is already on, nothing to do..")
+    /if
   Else
-    File.AppendLine($directories['log_file'], "Switch turned off; now is false")
+    if($lcommand==$off_url)
+      File.AppendLine($directories['log_file'], "[!] Switch turned off; now is false")
 
-    $result = Http.Get($off_url, 'smile', $id)
-    File.AppendLine($directories['last_command'], $commands['off_id'])
+      $result = Http.Get($off_url, 'smile', $id)
+      File.AppendLine($directories['last_command'], $commands['off_id'])
 
-    File.AppendLine($directories['log_file'], "url: "+$off_url)
-
+      File.AppendLine($directories['log_file'], "url: "+$off_url)
+    Else
+      File.AppendLine($directories['log_file'], "Switch is already off, nothing to do..")
+    /if
   /If
 
 
@@ -264,19 +270,25 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
     File.AppendLine($directories['log_file'], "~~ year "+($year)+" - month "+($month)+" - day "+($day)+" ~~")
   /if
 
-  $schedule = $directories["schedules"]+$commands['calendar']+".pte"
+  $schedule = ($directories["schedules"])+($commands['calendar'])+".pte"
 
   if($log)
+    File.AppendLine($directories['log_file'], "~~ directorie schedule "+($directories["schedules"])+" ~~")
+    File.AppendLine($directories['log_file'], "~~ command calendar "+($commands["calendar"])+" ~~")
     File.AppendLine($directories['log_file'], "~~ schedule "+($schedule)+" ~~")
   /if
 
 
   
   if File.Exists($schedule)
+    File.AppendLine($directories['log_file'], "~~ schedule exists ~~")
+
     if($log)
       File.AppendLine($directories['log_file'], "~~ Schedule exists "+($commands['calendar'])+" ~~")
     /if
     Include "sys/schedules/"+$commands['calendar']+".pte";
+
+    File.AppendLine($directories['log_file'], "~~ loops in days "+($days)+" ~~")
 
     foreach $days as $dayloop
       if float($dayloop.year) == float($year)
@@ -304,19 +316,19 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
   $eco_off_url = 'http://'+$ip+'/ir/play?id='+$commands['eco_off_id']
 
   if($log)
-    File.AppendLine($directories['log_file'], "~~ eco on url "+($eco_off_url)+" ~~")
+    File.AppendLine($directories['log_file'], "~~ eco off url "+($eco_off_url)+" ~~")
   /if
 
   $on_url = 'http://'+$ip+'/ir/play?id='+$commands['on_id']
 
   if($log)
-    File.AppendLine($directories['log_file'], "~~ eco on url "+($on_url)+" ~~")
+    File.AppendLine($directories['log_file'], "~~ on url "+($on_url)+" ~~")
   /if
 
   $off_url = 'http://'+$ip+'/ir/play?id='+$commands['off_id']
 
   if($log)
-    File.AppendLine($directories['log_file'], "~~ eco on url "+($off_url)+" ~~")
+    File.AppendLine($directories['log_file'], "~~ off url "+($off_url)+" ~~")
   /if
 
   // When command is run, switch to true
