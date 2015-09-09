@@ -164,23 +164,26 @@ File.AppendLine($directories['log_file'], "Coolding Switch function")
 
   if($now==true)
     if($lcommand==$on_url)
+        File.AppendLine($directories['log_file'], "Switch is already on, nothing to do..")
+    Else
       File.AppendLine($directories['log_file'], "[!] Switch turned on; now is true")
 
       $result = Http.Get($on_url, 'smile', $id)
       File.AppendLine($directories['last_command'], $commands['on_id'])
-    Else
-      File.AppendLine($directories['log_file'], "Switch is already on, nothing to do..")
+
     /if
   Else
     if($lcommand==$off_url)
+     File.AppendLine($directories['log_file'], "Switch is already off, nothing to do..")
+    Else
       File.AppendLine($directories['log_file'], "[!] Switch turned off; now is false")
 
       $result = Http.Get($off_url, 'smile', $id)
       File.AppendLine($directories['last_command'], $commands['off_id'])
 
       File.AppendLine($directories['log_file'], "url: "+$off_url)
-    Else
-      File.AppendLine($directories['log_file'], "Switch is already off, nothing to do..")
+
+
     /if
   /If
 

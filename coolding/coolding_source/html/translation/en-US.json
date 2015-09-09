@@ -1,5 +1,5 @@
 {
-	"project_name": "Coolding Source Plug-in",
+	"coolding_plugin": "Coolding Source Plug-in",
 	"enter_shortid": "Please enter the shortid of Coolding",
 	"request": "Request",
 	"name": "Name",
