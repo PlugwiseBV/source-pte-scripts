@@ -2,7 +2,7 @@
 (function() {
   var controller, myApp, services;
 
-  angular.module('hardware', ['pascalprecht.translate', 'ngRoute', 'hardware.filters', 'hardware.services', 'hardware.controllers', 'hardware.directives', 'ngCookies', 'ngDragDrop', 'ui.bootstrap', 'ui.bootstrap.modal']).config(function($httpProvider) {
+  angular.module('hardware', ['pascalprecht.translate', 'plugwise.ngSweetAlert', 'ngRoute', 'hardware.filters', 'hardware.services', 'hardware.controllers', 'hardware.directives', 'ngCookies', 'ngDragDrop', 'ui.bootstrap', 'ui.bootstrap.modal']).config(function($httpProvider) {
     $httpProvider.defaults.useXDomain = true;
     return delete $httpProvider.defaults.headers.common['X-Requested-With'];
   }).config(function($translateProvider) {
@@ -70,7 +70,7 @@
       };
     }
   ]).controller('AddressIdentifier', [
-    '$scope', '$location', '$http', 'JsonService', '$filter', '$route', 'regexValidate', '$timeout', '$window', 'generate', function($scope, $location, $http, JsonService, $filter, $route, regexValidate, $timeout, $window, generate) {
+    '$scope', '$location', '$http', 'JsonService', '$filter', '$route', 'regexValidate', '$timeout', '$window', 'generate', 'SweetAlert', function($scope, $location, $http, JsonService, $filter, $route, regexValidate, $timeout, $window, generate, SweetAlert) {
       var visible;
       $scope.valid = false;
       $scope.windowOpen = false;
@@ -91,6 +91,7 @@
         uuid = generate.uuid();
         JsonService.serverRequests('../connect/clonecommand.pte?new_uuid=' + uuid + '&name=' + name + '&clone_to_id=' + id + '&clone_command_id=' + commandid + '&clone_from_id=' + $scope.identifier + '&clone_from_ip=' + $scope.ip).then((function(fetch) {
           console.log(fetch);
+          SweetAlert.swal("Successfully", "The coolding command is cloned!", "success");
         }));
         visible = '';
       };
@@ -967,6 +968,49 @@
       }
     };
   });
+
+  angular.module('plugwise.ngSweetAlert', []).factory('SweetAlert', [
+    '$rootScope', function($rootScope) {
+      var self, swal;
+      swal = window.swal;
+      self = {
+        swal: function(arg1, arg2, arg3) {
+          $rootScope.$evalAsync(function() {
+            if (typeof arg2 === 'function') {
+              swal(arg1, (function(isConfirm) {
+                $rootScope.$evalAsync(function() {
+                  arg2(isConfirm);
+                });
+              }), arg3);
+            } else {
+              swal(arg1, arg2, arg3);
+            }
+          });
+        },
+        success: function(title, message) {
+          $rootScope.$evalAsync(function() {
+            swal(title, message, 'success');
+          });
+        },
+        error: function(title, message) {
+          $rootScope.$evalAsync(function() {
+            swal(title, message, 'error');
+          });
+        },
+        warning: function(title, message) {
+          $rootScope.$evalAsync(function() {
+            swal(title, message, 'warning');
+          });
+        },
+        info: function(title, message) {
+          $rootScope.$evalAsync(function() {
+            swal(title, message, 'info');
+          });
+        }
+      };
+      return self;
+    }
+  ]);
 
   "use strict";
 
