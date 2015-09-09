@@ -12,7 +12,7 @@
             {{status.show}}
             <td><div  class="btn btn-primary btn-draggable pw-drag" data-drag="true" data-jqyoui-options="{revert: 'invalid',appendTo: 'body',appendTo: 'body', containment: 'window',scroll: false, helper: 'clone'}" ng-model="record" jqyoui-draggable="{animate:false, placeholder:'keep'}" ng-init="record.title=status.name; record.id=status['$'].id" ng-dblclick="placeCooldingcom(status['$'].id,status.name);">Drag</div></td>
             <td>{{status.name}}</td>
-            <td><span class="icon-{{status.icon}}" style="font-size:18px" ng-click="openclonemenu($index)" send-command send-id="{{status['$'].id}}" ng-class="clone"></span>
+            <td><span class="icon-{{status.icon}}" style="font-size:18px" send-command send-index="{{$index}}" send-id="{{status['$'].id}}" ng-class="clone"></span>
 
                 <div class="clonemenu" ng-show="clonemenu($index)">
                     <b>Clone to

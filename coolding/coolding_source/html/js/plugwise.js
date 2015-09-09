@@ -80,8 +80,8 @@
       $scope.calendar = '';
       visible = '';
       $scope.openclonemenu = function(index) {
-        if (visible !== index) {
-          visible = index;
+        if (visible !== parseInt(index)) {
+          visible = parseInt(index);
         } else {
           visible = '';
         }
@@ -95,7 +95,7 @@
         visible = '';
       };
       $scope.clonemenu = function(index) {
-        if (visible === index) {
+        if (visible === parseInt(index)) {
           return true;
         } else {
           return false;
@@ -742,12 +742,24 @@
     return function(scope, element, attrs) {
       var fn;
       fn = $parse(attrs.ngRightClick);
+      element.bind('mousedown', function(e) {
+        e.stopPropagation();
+        if (e.button === 0) {
+          scope.$apply(function() {
+            scope.sendCooldingCommand(attrs.sendId);
+            return false;
+          });
+          return;
+        }
+        if (e.button === 2) {
+          scope.$apply(function() {
+            scope.openclonemenu(attrs.sendIndex);
+          });
+          return;
+        }
+      });
       element.bind('contextmenu', function(e) {
-        var sendid;
-        sendid = attrs.sendId;
-        scope.$apply(function() {
-          scope.sendCooldingCommand(sendid);
-        });
+        return false;
       });
     };
   }).directive('checkValidid', [
