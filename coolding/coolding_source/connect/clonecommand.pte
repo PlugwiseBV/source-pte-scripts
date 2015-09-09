@@ -30,7 +30,7 @@ $command = $commandsdata.Replace('<?xml version="1.0" encoding="UTF-8"?>', "")
 
 $xml = Http.DoRequest("http://"+($ip)+"/ir/commands/"+$command_id[1], "PUT", "xml", ($command), "smile", $clone_to_id)
 
-$sequence = '<sequences><sequence id="'+($new_uuid)+'"><order>0</order><name><![CDATA['+($name)+']]></name><last_played_date><![CDATA[ 2015-08-28T14:19:22+02:00 ]]></last_played_date><icon>blow</icon><ordered_commands><ordered_command>'+($command.Replace('<commands>', "").Replace('</commands>', ""))+'</ordered_command></ordered_commands></sequence><sequences>'
+$sequence = '<sequences><sequence id="'+($new_uuid)+'"><order>0</order><name><![CDATA['+($name)+']]></name><last_played_date><![CDATA[ 2015-08-28T14:19:22+02:00 ]]></last_played_date><icon>turbo</icon><ordered_commands><ordered_command>'+($command.Replace('<commands>', "").Replace('</commands>', ""))+'</ordered_command></ordered_commands></sequence><sequences>'
 
 $seq = Http.DoRequest("http://"+($ip)+"/ir/sequences/"+($new_uuid), "PUT", "xml", ($sequence), "smile", $clone_to_id)
 
