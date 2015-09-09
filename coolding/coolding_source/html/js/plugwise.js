@@ -341,7 +341,9 @@
           }
           console.log("history");
           console.log($scope.history);
-          return JsonService.serverRequests('../connect/save_coolding_setting.pte', 'POST', $scope.history).then((function(fetch) {}));
+          return JsonService.serverRequests('../connect/save_coolding_setting.pte', 'POST', $scope.history).then((function(fetch) {
+            SweetAlert.swal("Successfully", "Event script is generated!", "success");
+          }));
         }
       };
       $scope.emptyList = function(id) {
@@ -471,13 +473,16 @@
         });
       };
       $scope.cooldingInfo = function(identifier) {
+        $scope.reload = 'Loading...';
         console.log('identifier - coolding info');
         console.log($scope.ip);
         return $.get('../connect/coolding_info.pte?ip=' + $scope.ip + '&id=' + identifier, function(xml) {
+          var error;
           if (xml === 'ok') {
             $scope.loadLatest();
             JsonService.serverRequests('../cache/coolding_info.xml').then((function(xmll) {
               var json;
+              $scope.cooldingSequence(identifier);
               console.log(xmll);
               if (xmll != null) {
                 json = $.xml2json(xmll.data);
@@ -485,16 +490,24 @@
               }
             }), function(reason) {});
           } else {
+            error = true;
             if ($scope.ip === $scope.wifiip) {
               if ($scope.lanip != null) {
+                error = false;
                 $scope.ip = $scope.lanip;
                 $scope.cooldingInfo(identifier);
               }
             } else {
               if ($scope.wifiip != null) {
+                error = false;
                 $scope.ip = $scope.wifiip;
                 $scope.cooldingInfo(identifier);
               }
+            }
+            if (error) {
+              SweetAlert.swal("Coolding not found", "Could not connect to coolding!", "error");
+              $scope.loader_current = false;
+              $scope.error_current = true;
             }
           }
         });
@@ -635,7 +648,6 @@
                   }));
                   $scope.show_last = false;
                   $scope.cooldingInfo(identifier);
-                  $scope.cooldingSequence(identifier);
                   $scope.order = function(predicate, reverse) {
                     if (predicate === 'last_only') {
                       if ($scope.show_last === false) {

@@ -192,29 +192,22 @@ File.AppendLine($directories['log_file'], "Coolding Switch function")
 
 
   if($result!="ok\n")
+    if($log)
+      File.AppendLine($directories['log_file'], "Coolding can not be found, ip address is changed?")
+      File.AppendLine($directories['log_file'], "Renewing ip address; Current ip address: "+$ip+" and result page: "+$result)
+    /if
+    File.Delete($directories['last_command'])
+    File.AppendLine($directories['last_command'], "0")
+    File.Delete($directories['coolding_ip'])
 
-    if($result.Substring(3)=="err")
-      if($log)
-        File.AppendLine($directories['log_file'], "Error, probably commando is deleted "+($result))
-      /if
-    Else
-        if($log)
-          File.AppendLine($directories['log_file'], "Coolding can not be found, ip address is changed?")
-          File.AppendLine($directories['log_file'], "Renewing ip address; Current ip address: "+$ip+" and result page: "+$result)
-        /if
-        File.Delete($directories['last_command'])
-        File.AppendLine($directories['last_command'], "0")
-        File.Delete($directories['coolding_ip'])
+    $ip = Renewip($id, $directories)
 
-        $ip = Renewip($id, $directories)
+    // Now the ip address is fixed, run the command one more time!
+    CooldingScan($id, $commands, $now, $ip, $directories, $lcommand, $log)
 
-        // Now the ip address is fixed, run the command one more time!
-        CooldingScan($id, $commands, $now, $ip, $directories, $lcommand, $log)
-
-        if($log)
-          File.AppendLine($directories['log_file'], "New ip address"+$ip)
-        /if
-     /if
+    if($log)
+      File.AppendLine($directories['log_file'], "New ip address"+$ip)
+    /if
   /if
 /Function
 
