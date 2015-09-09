@@ -1,0 +1,35 @@
+<%
+$new_uuid    = Request.Get["new_uuid"] || ''
+$name        = Request.Get["name"] || ''
+$clone_to_id   = Request.Get["clone_to_id"] || ''
+$clone_from_id = Request.Get["clone_from_id"] || ''
+$clone_from_ip = Request.Get["clone_from_ip"] || ''
+$clone_command_id  = Request.Get["clone_command_id"] || ''
+
+// Get command from sequence
+$sequences_data = Http.Get("http://"+($clone_from_ip)+"/ir/sequences/"+($clone_command_id), 'smile', $clone_from_id)
+$command_id = RegEx.Match("command id='(.*?)'", $sequences_data)
+
+// request ip address
+$adres = 'https://smile.plugwise.net/?json=true&callback=smile&shortId='+$clone_to_id
+$data = Http.Get($adres)
+
+$wifi_ip = RegEx.Match('"wifi_ip":"(.*?)"', $data)
+$lan_ip = RegEx.Match('"lan_ip":"(.*?)"', $data)
+
+if $wifi_ip[1] == undefined
+  $ip = $lan_ip[1]
+else
+  $ip = $wifi_ip[1]
+/if
+
+$command_url = "http://"+($clone_from_ip)+"/ir/commands/"+($command_id[1])
+$commandsdata = Http.Get($command_url, 'smile', $clone_from_id)
+
+$command = $commandsdata.Replace('<?xml version="1.0" encoding="UTF-8"?>', "")
+
+$xml = Http.DoRequest("http://"+($ip)+"/ir/commands/"+$command_id[1], "PUT", "xml", ($command), "smile", $clone_to_id)
+
+$sequence = '<sequences><sequence id="'+($new_uuid)+'"><order>0</order><name><![CDATA['+($name)+']]></name><last_played_date><![CDATA[ 2015-08-28T14:19:22+02:00 ]]></last_played_date><icon>blow</icon><ordered_commands><ordered_command>'+($command.Replace('<commands>', "").Replace('</commands>', ""))+'</ordered_command></ordered_commands></sequence><sequences>'
+
+$seq = Http.DoRequest("http://"+($ip)+"/ir/sequences/"+($new_uuid), "PUT", "xml", ($sequence), "smile", $clone_to_id)

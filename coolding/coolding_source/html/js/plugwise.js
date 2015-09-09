@@ -70,13 +70,40 @@
       };
     }
   ]).controller('AddressIdentifier', [
-    '$scope', '$location', '$http', 'JsonService', '$filter', '$route', 'regexValidate', '$timeout', '$window', function($scope, $location, $http, JsonService, $filter, $route, regexValidate, $timeout, $window) {
+    '$scope', '$location', '$http', 'JsonService', '$filter', '$route', 'regexValidate', '$timeout', '$window', 'generate', function($scope, $location, $http, JsonService, $filter, $route, regexValidate, $timeout, $window, generate) {
+      var visible;
       $scope.valid = false;
       $scope.windowOpen = false;
       $scope.trigger = {
         'place': 'both'
       };
       $scope.calendar = '';
+      visible = '';
+      $scope.openclonemenu = function(index) {
+        if (visible !== index) {
+          visible = index;
+        } else {
+          visible = '';
+        }
+      };
+      $scope.clonecommand = function(index, commandid, id, name) {
+        var uuid;
+        uuid = generate.uuid();
+        JsonService.serverRequests('../connect/clonecommand.pte?new_uuid=' + uuid + '&name=' + name + '&clone_to_id=' + id + '&clone_command_id=' + commandid + '&clone_from_id=' + $scope.identifier + '&clone_from_ip=' + $scope.ip).then((function(fetch) {
+          console.log(fetch);
+        }));
+        visible = '';
+      };
+      $scope.clonemenu = function(index) {
+        if (visible === index) {
+          return true;
+        } else {
+          return false;
+        }
+      };
+      $scope.closeclonemenu = function() {
+        visible = '';
+      };
       $scope.runScript = function() {
         if ($scope.run === false) {
           $scope.run = true;
@@ -711,6 +738,18 @@
     };
   }).directive('logoutButton', function() {
     return {};
+  }).directive('sendCommand', function($parse) {
+    return function(scope, element, attrs) {
+      var fn;
+      fn = $parse(attrs.ngRightClick);
+      element.bind('contextmenu', function(e) {
+        var sendid;
+        sendid = attrs.sendId;
+        scope.$apply(function() {
+          scope.sendCooldingCommand(sendid);
+        });
+      });
+    };
   }).directive('checkValidid', [
     'regexValidate', function(regexValidate) {
       return function(scope, element) {
@@ -801,6 +840,18 @@
           return true;
         }
         return false;
+      };
+    })(this);
+    return this;
+  }).factory("generate", function() {
+    this.s8 = (function(_this) {
+      return function() {
+        return Math.floor((1 + Math.random()) * 0x100000000).toString(16).substring(1);
+      };
+    })(this);
+    this.uuid = (function(_this) {
+      return function() {
+        return _this.s8() + _this.s8() + _this.s8() + _this.s8();
       };
     })(this);
     return this;

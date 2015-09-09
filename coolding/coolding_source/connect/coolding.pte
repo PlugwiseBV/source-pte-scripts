@@ -260,7 +260,17 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
   $month = DateTime().Format("MM")
   $day   = DateTime().Format("dd")
 
+  if($log)
+    File.AppendLine($directories['log_file'], "~~ year "+($year)+" - month "+($month)+" - day "+($day)+" ~~")
+  /if
+
   $schedule = $directories["schedules"]+$commands['calendar']+".pte"
+
+  if($log)
+    File.AppendLine($directories['log_file'], "~~ schedule "+($schedule)+" ~~")
+  /if
+
+
   
   if File.Exists($schedule)
     if($log)
@@ -280,11 +290,34 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
     /foreach
   /if
 
+  if($log)
+    File.AppendLine($directories['log_file'], "~~ End of file exists schedule ~~")
+  /if
+
   // Coolding play URL
   $eco_on_url = 'http://'+$ip+'/ir/play?id='+$commands['eco_on_id']
+
+  if($log)
+    File.AppendLine($directories['log_file'], "~~ eco on url "+($eco_on_url)+" ~~")
+  /if
+
   $eco_off_url = 'http://'+$ip+'/ir/play?id='+$commands['eco_off_id']
+
+  if($log)
+    File.AppendLine($directories['log_file'], "~~ eco on url "+($eco_off_url)+" ~~")
+  /if
+
   $on_url = 'http://'+$ip+'/ir/play?id='+$commands['on_id']
+
+  if($log)
+    File.AppendLine($directories['log_file'], "~~ eco on url "+($on_url)+" ~~")
+  /if
+
   $off_url = 'http://'+$ip+'/ir/play?id='+$commands['off_id']
+
+  if($log)
+    File.AppendLine($directories['log_file'], "~~ eco on url "+($off_url)+" ~~")
+  /if
 
   // When command is run, switch to true
   $command_run = false
@@ -514,7 +547,16 @@ Function Renewip($id, $directories)
 
 // Time calculation
 Function CalculateQuarters()
+  if($log)
+    File.AppendLine($directories['log_file'], "~~ Calculate quarters ~~")
+  /if
+
   $d = DateTime()
+
+  if($log)
+    File.AppendLine($directories['log_file'], "~~ eco on url "+($d)+" ~~")
+  /if
+
   $quarter = 0
   if($d.Hour>0)
     $quarter += ($d.Hour*4)
@@ -557,6 +599,7 @@ Function ReadLastCommand($directories, $id, $ip)
     File.AppendLine($directories['last_command'], $command[1])
     $lcommand = $command[1]
   else
+    File.AppendLine($directories['log_file'], " Connection errors/Retrieving problems: "+($data))
     File.AppendLine($directories['last_command'], "0")
     $lcommand = "0"
   /if
