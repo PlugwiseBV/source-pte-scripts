@@ -114,7 +114,7 @@ Function checkLastCommand($id, $command, $url, $log, $lcommand, $directories, $n
     if($log)
       File.AppendLine($directories['log_file'], $new_status)
     /if
-    $command_run = true
+    $command_run = 1
     $result = Http.Get($url, 'smile', $id)
     File.AppendLine($directories['last_command'], $command)
   /if
@@ -125,7 +125,7 @@ Function validateResult($id, $result, $command_run, $directories, $log)
     // When a command is called
 
       File.AppendLine($directories['log_file'], "validate result")
-    if($command_run==true)
+    if($command_run==1)
       if($log)
         File.AppendLine($directories['log_file'], "Command called = true")
         File.AppendLine($directories['log_file'], "Result page: " +$result[0]+$result[1])
@@ -142,9 +142,12 @@ Function validateResult($id, $result, $command_run, $directories, $log)
         File.Delete($directories['coolding_ip'])
 
         $ip = Renewip($id, $directories)
+        if($log)
+            File.AppendLine($directories['log_file'], "IP has found: "+$ip)
+        /if
 
         // Now the ip address is fixed, run the command one more time!
-        CooldingSense($id, $commands, $uuid, $now, $ip, $directories['last_command'], $lcommand, $directories['log_file'])
+        CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand, $log)
 
         if($log)
           File.AppendLine($directories['log_file'], "New ip address"+$ip)
@@ -259,6 +262,7 @@ Function CooldingScan($id, $commands, $now, $ip, $directories, $lcommand, $log)
   /if
 /Function
 
+
 Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand, $log)
 
   if($log)
@@ -273,23 +277,29 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
     File.AppendLine($directories['log_file'], "~~ year "+($year)+" - month "+($month)+" - day "+($day)+" ~~")
   /if
 
-  $schedule = ($directories["schedules"])+($commands['calendar'])+".pte"
+  $calendar = $commands['calendar']
+  if($commands['calendar']=='')
+    $calendar_ = ''
+  /if
+  $schedule_ = ($directories["schedules"])+''+($calendar_)+".pte"
+  $schedule = $schedule_
 
   if($log)
+   File.AppendLine($directories['log_file'], "~~ calendar "+($calendar_)+" ~~")
     File.AppendLine($directories['log_file'], "~~ directorie schedule "+($directories["schedules"])+" ~~")
     File.AppendLine($directories['log_file'], "~~ command calendar "+($commands["calendar"])+" ~~")
-    File.AppendLine($directories['log_file'], "~~ schedule "+($schedule)+" ~~")
+    File.AppendLine($directories['log_file'], "~~ schedule "+($schedule_)+" ~~")
   /if
 
 
   
-  if File.Exists($schedule)
-    File.AppendLine($directories['log_file'], "~~ schedule exists ~~")
+  if File.Exists($schedule_)
 
     if($log)
-      File.AppendLine($directories['log_file'], "~~ Schedule exists "+($commands['calendar'])+" ~~")
+      File.AppendLine($directories['log_file'], "~~ Schedule exists "+($calendar_)+" ~~")
+
     /if
-    Include "sys/schedules/"+$commands['calendar']+".pte";
+    Include "sys/schedules/"+$calendar_+".pte";
 
     File.AppendLine($directories['log_file'], "~~ loops in days "+($days)+" ~~")
 
@@ -335,10 +345,10 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
   /if
 
   // When command is run, switch to true
-  $command_run = false
+  $command_run = 0
 
   // Calculate the mount of Quarters
-  $quarter = CalculateQuarters()
+  $quarter = CalculateQuarters($log, $directories)
 
   $d = DateTime()
 
@@ -382,7 +392,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
            if($log)
              File.AppendLine($directories['log_file'], "[!] I will send an off command")
            /if
-           $command_run = true
+           $command_run = 1
            $result = Http.Get($off_url, 'smile', $id)
            File.AppendLine($directories['last_command'], $commands['off_id']+'_off')
         /if
@@ -402,7 +412,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
            if($log)
              File.AppendLine($directories['log_file'], "[!] I will send an on command")
            /if
-           $command_run = true
+           $command_run = 1
            $result = Http.Get($on_url, 'smile', $id)
            File.AppendLine($directories['last_command'], ($commands['on_id'])+'_on')
         /if
@@ -433,7 +443,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
              if($log)
                File.AppendLine($directories['log_file'], "[!] Exceeding the average - Turn on command!")
              /if
-             $command_run = true
+             $command_run = 1
              $result = Http.Get($eco_on_url, 'smile', $id)
              File.AppendLine($directories['last_command'], $commands['eco_on_id']+"_eco_on")
           /if
@@ -449,7 +459,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
            if($log)
              File.AppendLine($directories['log_file'], "[!] Below the norm - Turn off command!")
            /if
-           $command_run = true
+           $command_run = 1
            $result = Http.Get($eco_off_url, 'smile', $id)
            File.AppendLine($directories['last_command'], $commands['eco_off_id']+'_eco_off')
          /if
@@ -477,7 +487,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
 
 
     // When a command is called
-    if($command_run==true)
+    if($command_run==1)
       if($log)
         File.AppendLine($directories['log_file'], "Command called = true")
         File.AppendLine($directories['log_file'], "Result page: " +$result[0]+$result[1])
@@ -486,7 +496,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
       if($result!="ok\n")
         if($log)
           File.AppendLine($directories['log_file'], "Coolding can not be found, ip address is changed?")
-          File.AppendLine($directories['log_file'], "Renewing ip address; Current ip address: "+$ip+" and result page: "+$result)
+          File.AppendLine($directories['log_file'], "Renewing ip address; Current ip address: "+$ip+" and result page : "+$result)
         /if
 
         File.Delete($directories['last_command'])
@@ -496,11 +506,9 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
         $ip = Renewip($id, $directories)
 
         // Now the ip address is fixed, run the command one more time!
-        CooldingSense($id, $commands, $uuid, $now, $ip, $directories['last_command'], $lcommand, $directories['log_file'])
+        CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand, $log)
 
-        if($log)
-          File.AppendLine($directories['log_file'], "New ip address"+$ip)
-        /if 
+
       /if
     /if
 /if
@@ -555,13 +563,14 @@ Function Renewip($id, $directories)
     File.AppendLine($directories['coolding_ip'], $ip)
     File.AppendLine($directories['log_file'], "new ip: "+$ip+" - "+$directories['coolding_ip'])
   /if
-  return $ip
+  File.AppendLine($directories['log_file'], "returning new ip: "+$ip)
+  return ($ip)
 /Function
 
 
 
 // Time calculation
-Function CalculateQuarters()
+Function CalculateQuarters($log, $directories)
   if($log)
     File.AppendLine($directories['log_file'], "~~ Calculate quarters ~~")
   /if

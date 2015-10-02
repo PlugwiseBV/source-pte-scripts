@@ -32,6 +32,30 @@
                     <div class="list-block height-auto block padding-ten" coolding-Info></div>
                 </div>
 
+                <!-- Plugwise SED Modules -->
+                <div class="block authentication-widget">
+                    <div class="block-title">
+                        <h2 translate="plugwise_sed_modules">Plugwise SED Modules</h2>
+                        <div class="block-options pull-right">
+                            <span class="fa fa-cog fa-spin loader_color ng-hide" ng-show="loader_status"></span> <span class="ng-hide" ng-show="loader_status">Loading...</span>
+                            <span class="ng-hide" ng-show="error_status"><span translate="failedtoload"><b>Error</b>, this block has <u>failed</u> to load</span> <span class="glyphicon glyphicon-remove pw-error"></span></span>
+                        </div>
+                    </div>
+                    <div style="width: 100%; padding-top: 10px;" ng-hide="button_status" class="block_sed" ng-show="devices.statuses.show">
+                        <div class="sed_button" ng-class="{'active':sedSelect === 'switch'}" ng-click="load_sed('switch');sedSelect='switch'">Switch</div>
+                        <div class="sed_button" ng-class="{'active':sedSelect === 'scan' || sedSelect === undefined}" ng-click="load_sed('scan');sedSelect='scan'">Scan</div>
+                        <div class="sed_button" ng-class="{'active':sedSelect === 'sense'}" ng-click="load_sed('sense');sedSelect='sense'">Sense</div>
+
+                        <span class="ng-hide" ng-show="sed_loading"><i class="fa fa-cog fa-spin loader_color"></i> Loading..</span>
+                    </div>
+                    <style>
+                        .low-opacity {
+                            opacity: 0.2;
+                        }
+                    </style>
+                    <div class="list-block height-fixed block" style="width:100%;margin:0; padding:0" ng-class="{'low-opacity':sed_loading === true}" load_seds ng-show="devices.statuses.show"></div>
+                </div>
+
                 <!-- All Coolding records -->
                 <div class="block authentication-widget" ng-class="{'pw-error-background': error_current == true, 'currentinfo': error_current != true }">
                     <div class="block-title">
@@ -48,30 +72,6 @@
 
             <!-- Right Side -->
             <div class="row col-sm-6">
-
-                <!-- Plugwise SED Modules -->
-                <div class="block authentication-widget">
-                    <div class="block-title">
-                        <h2 translate="plugwise_sed_modules">Plugwise SED Modules</h2>
-                        <div class="block-options pull-right">
-                            <span class="fa fa-cog fa-spin loader_color ng-hide" ng-show="loader_status"></span> <span class="ng-hide" ng-show="loader_status">Loading...</span>
-                            <span class="ng-hide" ng-show="error_status"><span translate="failedtoload"><b>Error</b>, this block has <u>failed</u> to load</span> <span class="glyphicon glyphicon-remove pw-error"></span></span>
-                        </div>
-                    </div>
-                    <div style="width: 100%; padding-top: 10px;" ng-hide="button_status" class="block_sed" ng-show="devices.statuses.show">
-                            <div class="sed_button" ng-class="{'active':sedSelect === 'switch'}" ng-click="load_sed('switch');sedSelect='switch'">Switch</div>
-    <div class="sed_button" ng-class="{'active':sedSelect === 'scan' || sedSelect === undefined}" ng-click="load_sed('scan');sedSelect='scan'">Scan</div>
-    <div class="sed_button" ng-class="{'active':sedSelect === 'sense'}" ng-click="load_sed('sense');sedSelect='sense'">Sense</div>
-
-    <span class="ng-hide" ng-show="sed_loading"><i class="fa fa-cog fa-spin loader_color"></i> Loading..</span>
-                    </div>
-                    <style>
-                    .low-opacity {
-                        opacity: 0.2;
-                    }
-                    </style>
-                    <div class="list-block height-fixed block" style="width:100%;margin:0; padding:0" ng-class="{'low-opacity':sed_loading === true}" load_seds ng-show="devices.statuses.show"></div>
-                </div>
 
                 <!-- Drag Drop -->
                 <div class="block authentication-widget" style="padding-bottom: 10px;">
