@@ -265,7 +265,7 @@
                   "commandname1": $scope.list1.title,
                   "command2": $scope.list3.id,
                   "commandname2": $scope.list3.title,
-                  "seddeviceid": $scope.list2.deviceid,
+                  "seddeviceid": $scope.list2.type,
                   "sedid": $scope.list2.id + "_right",
                   "sedname": sedname
                 }, {
@@ -276,7 +276,7 @@
                   "commandname1": $scope.list1.title,
                   "command2": $scope.list3.id,
                   "commandname2": $scope.list3.title,
-                  "seddeviceid": $scope.list2.deviceid,
+                  "seddeviceid": $scope.list2.type,
                   "sedid": $scope.list2.id + "_left",
                   "sedname": sedname
                 }
@@ -291,7 +291,7 @@
                   "commandname1": $scope.list1.title,
                   "command2": $scope.list3.id,
                   "commandname2": $scope.list3.title,
-                  "seddeviceid": $scope.list2.deviceid,
+                  "seddeviceid": $scope.list2.type,
                   "sedid": $scope.list2.id + "_" + $scope.trigger.place,
                   "sedname": sedname
                 }
@@ -313,7 +313,7 @@
                 "upper_limit": $scope.upper_limit,
                 "lower_limit": $scope.lower_limit,
                 "schedule": $scope.chosen_schedule,
-                "seddeviceid": $scope.list2.deviceid,
+                "seddeviceid": $scope.list2.type,
                 "sedid": $scope.list2.id,
                 "sedname": sedname
               }
@@ -327,7 +327,7 @@
                 "commandname1": $scope.list1.title,
                 "command2": $scope.list3.id,
                 "commandname2": $scope.list3.title,
-                "seddeviceid": $scope.list2.deviceid,
+                "seddeviceid": $scope.list2.type,
                 "sedid": $scope.list2.id,
                 "sedname": sedname
               }
@@ -478,7 +478,9 @@
         console.log($scope.ip);
         return $.get('../connect/coolding_info.pte?ip=' + $scope.ip + '&id=' + identifier, function(xml) {
           var error;
+          console.log("Response van coolding info");
           if (xml === 'ok') {
+            console.log("response is oke");
             $scope.loadLatest();
             JsonService.serverRequests('../cache/coolding_info.xml').then((function(xmll) {
               var json;
@@ -491,6 +493,7 @@
             }), function(reason) {});
           } else {
             error = true;
+            console.log("response is niet oke");
             if ($scope.ip === $scope.wifiip) {
               if ($scope.lanip != null) {
                 error = false;
@@ -537,6 +540,7 @@
         $scope.devices = {};
         $scope.emptyDevices();
         $scope.loadLatest();
+        $scope.loading = true;
         if (identifier == null) {
           $scope.devices.error = true;
           return $scope.error_message = "The MAC-address, UUID or shortid can not be empty.";
@@ -613,6 +617,7 @@
                 if (found) {
                   $scope.loader_current = true;
                   $scope.loader_status = true;
+                  $scope.loading = false;
                   $scope.button_status = true;
                   orderBy = $filter('orderBy');
                   $scope.error_current = false;
@@ -732,6 +737,23 @@
     };
   }).directive('logoutButton', function() {
     return {};
+  }).directive("dragingDrop", function($parse) {
+    return function(scope, element, attrs) {
+      $(element[0]).sortable({
+        handle: ".draghandle",
+        items: ".dropblock ",
+        appendTo: element[0],
+        start: function(event, ui) {},
+        stop: function(event, ui) {
+          var i;
+          i = 0;
+          $("#blocks li").each(function(v, k) {
+            console.log(v);
+            return console.log(k);
+          });
+        }
+      });
+    };
   }).directive('sendCommand', function($parse) {
     return function(scope, element, attrs) {
       var fn;

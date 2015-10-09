@@ -5,20 +5,29 @@
             <th>Running</th>
             <th>SED ID</th>
             <th>SED Name</th>
-            <th>Extra Value</th>
-            <th>Command 1 when ON</th>
-            <th>Command 2 when OFF</th>
             <th>Edit</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="hist in history">
-            <td>{{hist.running}}</td>
+            <td>
+                <div ng-if="hist.running == true">
+                    Yes
+                </div>
+                <div ng-if="hist.running != true">
+                    No
+                </div>
+
+                <div ng-if="hist.seddeviceid == 3 || hist.seddeviceid == 5 || hist.seddeviceid == 6">
+                    <img src="./img/image_{{hist.seddeviceid}}.png" width="40">
+                </div>
+            </td>
             <td>{{hist.sedid}}</td>
             <td>{{hist.sedname}}</td>
+            <!--
             <td>{{hist.extravalue}}</td>
             <td>{{hist.commandname1 }}</td>
-            <td>{{hist.commandname2 }}</td>
+            <td>{{hist.commandname2 }}</td>-->
             <td> <span ng-click="turnOff(hist.sedid, hist.extravalue)" style="cursor:pointer; margin-bottom: 10px;margin-right:5px;" class="btn btn-info">(In)activate</span> <span ng-click="remove(hist.sedid, hist.extravalue)" style="cursor:pointer;margin-bottom: 10px;margin-right:5px;" class="btn btn-danger">Remove</span> </td>
         </tr>
         </tbody>
