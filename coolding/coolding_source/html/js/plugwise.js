@@ -530,7 +530,6 @@
       $scope.request = function(identifier) {
         var devices;
         if (identifier === void 0) {
-          console.log('stop');
           return;
         }
         if ($location.path() !== '/index/' + identifier) {
@@ -543,10 +542,12 @@
         $scope.loading = true;
         if (identifier == null) {
           $scope.devices.error = true;
+          $scope.loading = false;
           return $scope.error_message = "The MAC-address, UUID or shortid can not be empty.";
         } else {
           if (!$scope.valid) {
             $scope.devices.error = true;
+            $scope.loading = false;
             return $scope.error_message = "The MAC-address, UUID or shortid is not valid.";
           } else {
             identifier = identifier.toLowerCase();
@@ -555,7 +556,7 @@
               identifier = identifier.replace(/(.)(.)(?!$)/g, '$1$2:');
             }
             devices = function(callback) {
-              JsonService.serverRequests('https://smile.plugwise.net/?json=true&callback=JSON_CALLBACK&shortId=' + identifier, 'jsonp').then((function(fetch) {
+              JsonService.serverRequests('https://auth.plugwise.net/announce/' + identifier + '.json?callback=JSON_CALLBACK', 'jsonp').then((function(fetch) {
                 var lan_ip;
                 lan_ip = '';
                 if ((fetch.data.lan_ip != null)) {
@@ -607,6 +608,7 @@
                 $scope.error_device = true;
                 $scope.devices.error = true;
                 $scope.error_message = "The MAC-address, UUID or shortid can not be found. This could be due to a problem with your Internet connection.";
+                $scope.loading = false;
                 return callback(false);
               });
               return callback(false);
