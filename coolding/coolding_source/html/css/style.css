@@ -76,7 +76,7 @@ body {
 
 }
 .authentication-widget .list-block, .beacon-widget .list-block {
-    height: 464px;
+    height: 200px;
     /*display: none;*/
 }
 .list-block.height-auto {
