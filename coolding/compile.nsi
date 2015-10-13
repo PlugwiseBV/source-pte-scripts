@@ -45,6 +45,7 @@
 Section "" ;No components page, name is not important
 
   RMDir "$INSTDIR\Plugwise Coolding\"
+  RMDir "$INSTDIR\www\coolding\"
 
   CreateDirectory "$INSTDIR\www\sys\switch\"
   CreateDirectory "$INSTDIR\www\sys\schedules\"
