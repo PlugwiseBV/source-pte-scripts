@@ -18,7 +18,6 @@
 
         <!-- Device; Beacon found! -->
         <div ng-show="devices.show" draging-Drop>
-
             <!-- Left Side -->
             <div class="col-sm-6">
                 <!-- Plugwise SED Modules -->
@@ -63,12 +62,10 @@
 
             <!-- Right Side -->
             <div class="row col-sm-6">
-
                 <!-- Coolding info Block -->
                 <div class="block dropblock authentication-widget" ng-class="{'pw-error-background': error_device == true, 'deviceinfo': error_device != true }">
                     <div class="block-title">
                         <h2 translate="device_info">Device information</h2>
-                        <span class="glyphicon glyphicon glyphicon-align-justify draghandle"></span>
                         <div class="block-options pull-right">
                             <span class="fa fa-cog fa-spin ng-hide" ng-show="loader_device"></span>
                             <span class="ng-hide" ng-show="error_device"><span translate="failedtoload"><b>Error</b>, this block has <u>failed</u> to load</span> <span class="glyphicon glyphicon-remove pw-error"></span></span>
