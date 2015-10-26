@@ -10,17 +10,41 @@
         <tbody>
         <tr ng-repeat="status in devices.current.sequence | orderBy:preOrder:reverse">
             {{status.show}}
-            <td><div  class="btn btn-primary btn-draggable pw-drag" data-drag="true" data-jqyoui-options="{revert: 'invalid',appendTo: 'body',appendTo: 'body', containment: 'window',scroll: false, helper: 'clone'}" ng-model="record" jqyoui-draggable="{animate:false, placeholder:'keep'}" ng-init="record.title=status.name; record.id=status['$'].id" ng-dblclick="placeCooldingcom(status['$'].id,status.name);">Drag</div></td>
+            <td>
+                <div
+                    class="btn btn-primary btn-draggable pw-drag"
+                    data-drag="true"
+                    data-jqyoui-options="{
+                                 revert: 'invalid',
+                                 appendTo: 'body',
+                                 appendTo: 'body',
+                                 containment: 'window',
+                                 scroll: false,
+                                 helper: 'clone'
+                              }"
+                    ng-model="record"
+                    jqyoui-draggable="{
+                                animate:false,
+                                placeholder:'keep'
+                               }"
+                    ng-init="record.title=status.name; record.id=status['$'].id"
+                    ng-dblclick="placeCooldingcom(status['$'].id,status.name);"
+                    translate="drag">Drag</div>
+            </td>
+
             <td>{{status.name}}</td>
-            <td><span class="icon-{{status.icon}}" style="font-size:18px" send-command send-index="{{$index}}" send-id="{{status['$'].id}}" ng-class="clone"></span>
+            <td>
+                <span class="icon-{{status.icon}} clone_command" send-command send-index="{{$index}}" send-id="{{status['$'].id}}" ng-class="clone"></span>
 
                 <div class="clonemenu" ng-show="clonemenu($index)">
-                    <b>Clone to
-                        <i class="fa fa-times closeclonemenu" ng-click="closeclonemenu()"></i></b>
+                    <b>
+                        <span translate="clone_to">Clone to</span>
+                        <i class="fa fa-times closeclonemenu" ng-click="closeclonemenu()"></i>
+                    </b>
                     <hr class="cloneline">
                     <table>
                         <tr ng-repeat="latest in devices.latest">
-                            <td ng-click="clonecommand($index, status['$'].id, latest.id, status.name)" style="cursor:pointer">{{latest.id}} - {{latest.name}}</td>
+                            <td ng-click="clonecommand($index, status['$'].id, latest.id, status.name)" class="point_clone">{{latest.id}} - {{latest.name}}</td>
                         </tr>
                     </table>
                 </div>

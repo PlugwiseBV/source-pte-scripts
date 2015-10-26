@@ -296,6 +296,18 @@ body {
 .shortid:hover + .latest_ids {
     display: block !important;
 }
+.clone_command {
+    font-size:18px
+}
+.point_clone {
+    cursor:pointer;
+}
+.clonemenu tr.ng-scope:hover {
+    background: #aaa;
+}
+.translation_right {
+    float:right
+}
 .latest_ids {
     display: none;
     width: 300px;

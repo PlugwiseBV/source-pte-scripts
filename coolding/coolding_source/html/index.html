@@ -17,15 +17,9 @@
     <div id="navbar">
         <div class="navbar navbar-default navbar-static-top" role="navigation">
             <span class="version"><i class="fa fa-code-fork" style="color:black;font-size: 14px;"></i> v. 0.03 RC</span>
-
-
             <a class="navbar-brand center" href="javascript:void(0)" translate="coolding_plugin">Plugwise Coolding Plugin</a>
-            <div style="float:right">
-                <ul class="nav navbar-nav lang-select" ng-init="init()" ng-controller="languageInit">
-                    <li ng-class="{'active':languageSelect === 'nl-NL' || languageSelect === undefined}"><a change-Language ng-click="languageSelect='nl-NL'" data="nl-NL">Nederlands</a></li>
-                    <li ng-class="{'active':languageSelect === 'en-US'}"><a change-Language ng-click="languageSelect='en-US'" data="en-US">English</a></li>
-                </ul>
-            </div>
+
+            <div ng-include="'view/blocks/translation.html'"></div>
         </div>
     </div>
 

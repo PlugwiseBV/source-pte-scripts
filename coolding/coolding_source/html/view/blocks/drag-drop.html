@@ -1,31 +1,31 @@
-
 <div class="block-title">
     <h2 translate="dragdropblock">Drag / Drop place</h2>
     <span class="glyphicon glyphicon glyphicon-align-justify draghandle"></span>
 </div>
+
 <div translate="dragdrop_sed">Drop here your SED:</div>
 <div class="thumbnail" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=record])'}" ng-model="list2" jqyoui-droppable="{deepCopy: true}" style='height:61px;'>
     <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="list2" jqyoui-draggable ng-hide="!list2.title" ng-dblclick="emptyList(2);"><span>{{list2.id}}</span><br>{{list2.title}}</div>
 </div>
 
 <div translate="dragdrop_cooldingcommandon">Drop here your Coolding record when switch is on (blue):</div>
-<div class="thumbnail" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=module])'}" ng-model="list1" jqyoui-droppable="{deepCopy: true}" style='height:50px;'>
+<div class="thumbnail coolding_drag" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=module])'}" ng-model="list1" jqyoui-droppable="{deepCopy: true}" style='height:50px;'>
     <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="list1" jqyoui-draggable ng-hide="!list1.title" ng-dblclick="emptyList(1);">{{list1.title}}</div>
 </div>
 
 <div translate="dragdrop_cooldingcommandoff">Drop here your Coolding record when switch is off (white):</div>
-<div class="thumbnail" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=module])'}" ng-model="list3" jqyoui-droppable="{deepCopy: true}" style='height:50px;'>
+<div class="thumbnail coolding_drag" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=module])'}" ng-model="list3" jqyoui-droppable="{deepCopy: true}" style='height:50px;'>
     <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="list3" jqyoui-draggable ng-hide="!list3.title" ng-dblclick="emptyList(3);">{{list3.title}}</div>
 </div>
 
 <div ng-if="list2.type=='5'">
     <div translate="dragdrop_cooldingcommandecoon">Drop here your Coolding record when on (green):</div>
-    <div class="thumbnail" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=module])'}" ng-model="$parent.list4" jqyoui-droppable="{deepCopy: true}" style='height:50px;'>
+    <div class="thumbnail coolding_drag" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=module])'}" ng-model="$parent.list4" jqyoui-droppable="{deepCopy: true}" style='height:50px;'>
         <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="$parent.list4" jqyoui-draggable ng-hide="!$parent.list4.title" ng-dblclick="emptyList(4);">{{list4.title}}</div>
     </div>
 
     <div translate="dragdrop_cooldingcommandecooff">Drop here your Coolding record when off (green):</div>
-    <div class="thumbnail" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=module])'}" ng-model="$parent.list5" jqyoui-droppable="{deepCopy: true}" style='height:50px;'>
+    <div class="thumbnail coolding_drag" data-drop="true" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=module])'}" ng-model="$parent.list5" jqyoui-droppable="{deepCopy: true}" style='height:50px;'>
         <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="$parent.list5" jqyoui-draggable ng-hide="!$parent.list5.title" ng-dblclick="emptyList(5);">{{list5.title}}</div>
     </div>
 
@@ -176,7 +176,7 @@
 
     <ul style="padding: 0 10px; ">
         <li ng-repeat="allsched in schedules" style="list-style-type: none">
-            <label for="{{$index}}"><input type="radio" id="{{$index}}" ng-model="$parent.chosen_schedule" ng-value="allsched.uuid" name="schedule">{{allsched.name}} - [ <a href="javascript:void(0)" ng-click="loadSchedule(allsched.uuid)">View Schema</a> ] [ <a href="javascript:void(0)" ng-click="modifyexception(allsched.uuid)">Modify Exceptions</a> ]</label>
+            <label for="{{$index}}"><input type="radio" id="{{$index}}" ng-model="$parent.chosen_schedule" ng-value="allsched.uuid" name="schedule">{{allsched.name}} - [ <a href="javascript:void(0)" ng-click="loadSchedule(allsched.uuid)" translate="view_schema">View Schema</a> ] [ <a href="javascript:void(0)" ng-click="modifyexception(allsched.uuid)" translate="modify_exceptions">Modify Exceptions</a> ]</label>
         </li>
     </ul>
 
@@ -185,8 +185,8 @@
     border-left-color: #aa6708;
     padding: 20px;    margin: 20px 0;    border: 1px solid #eee;    border-left-width: 5px;    border-radius: 3px;
 ">
-    <h4>Attention, the schema is modified!</h4>
-    <p>The following schema modification <code>{{calendarname}}</code> is in use now. You can choose to <span ng-show="calendar" ng-click="removeCalendar()" style="cursor:pointer;margin-right:5px;margin-bottom: 4px;  padding: 2px 12px;" class="btn btn-danger">Remove</span> the schema.</p>
+    <h4 translate="attention_schema_modified">Attention, the schema is modified!</h4>
+    <p><span translate="following_modification">The following schema modification</span> <code>{{calendarname}}</code> <span translate="is_in_use_choose">is in use now. You can choose to</span> <span ng-show="calendar" ng-click="removeCalendar()" style="cursor:pointer;margin-right:5px;margin-bottom: 4px;  padding: 2px 12px;" class="btn btn-danger" translate="remove">Remove</span> <span translate="the_schema">the schema</span>.</p>
   </div>
 
 

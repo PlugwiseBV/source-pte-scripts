@@ -2,14 +2,14 @@
 (function() {
   var controller, myApp, services;
 
-  angular.module('hardware', ['pascalprecht.translate', 'plugwise.ngSweetAlert', 'ngRoute', 'hardware.filters', 'hardware.services', 'hardware.controllers', 'hardware.directives', 'ngCookies', 'ngDragDrop', 'ui.bootstrap', 'ui.bootstrap.modal']).config(function($httpProvider) {
-    $httpProvider.defaults.useXDomain = true;
-    return delete $httpProvider.defaults.headers.common['X-Requested-With'];
-  }).config(function($translateProvider) {
+  angular.module('hardware', ['pascalprecht.translate', 'plugwise.ngSweetAlert', 'ngRoute', 'hardware.filters', 'hardware.services', 'hardware.controllers', 'hardware.directives', 'ngCookies', 'ngDragDrop', 'ui.bootstrap', 'ui.bootstrap.modal']).config(function($translateProvider) {
     return $translateProvider.useStaticFilesLoader({
       prefix: 'translation/',
       suffix: '.json'
     }).preferredLanguage('nl-NL').fallbackLanguage(['en-US']).useLocalStorage();
+  }).config(function($httpProvider) {
+    $httpProvider.defaults.useXDomain = true;
+    return delete $httpProvider.defaults.headers.common['X-Requested-With'];
   }).config([
     '$routeProvider', function($routeProvider) {
       $routeProvider.when('/index/:id*', {
@@ -45,7 +45,6 @@
       };
       $scope.init();
       return $scope.changeLanguage = function() {
-        console.log($translate.use());
         if ($translate.use() !== $scope.changedLanguageIn) {
           return $translate.use($scope.changedLanguageIn);
         }
@@ -72,7 +71,6 @@
         var uuid;
         uuid = generate.uuid();
         JsonService.serverRequests('../connect/clonecommand.pte?new_uuid=' + uuid + '&name=' + name + '&clone_to_id=' + id + '&clone_command_id=' + commandid + '&clone_from_id=' + $scope.identifier + '&clone_from_ip=' + $scope.ip).then((function(fetch) {
-          console.log(fetch);
           SweetAlert.swal("Successfully", "The coolding command is cloned!", "success");
         }));
         visible = '';
@@ -743,7 +741,7 @@
     return function(scope, element, attrs) {
       $(element[0]).sortable({
         handle: ".draghandle",
-        items: ".dropblock ",
+        items: ".dropblock",
         appendTo: element[0],
         start: function(event, ui) {},
         stop: function(event, ui) {
