@@ -277,7 +277,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
     File.AppendLine($directories['log_file'], "~~ year "+($year)+" - month "+($month)+" - day "+($day)+" ~~")
   /if
 
-  $calendar = $commands['calendar']
+  $calendar_ = $commands['calendar']
   if($commands['calendar']=='')
     $calendar_ = ''
   /if
