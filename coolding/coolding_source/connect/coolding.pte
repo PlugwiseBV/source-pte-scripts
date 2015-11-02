@@ -524,9 +524,9 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
 
 
 Function Renewip($id, $directories)
-   $adres = 'https://auth.plugwise.net/announce/'+$id+'.json?callback=coolding
+   $adres = 'https://auth.plugwise.net/announce/'+$id+'.json?callback=coolding'
 
-  File.AppendLine($directories['log_file'], " Is the ip address already known for /"+($id)+"?")
+  File.AppendLine($directories['log_file'], " Is the ip address already known for: "+($id)+"?")
 
   if File.Exists($directories['coolding_ip'])
     $get_ip = File.Read($directories['coolding_ip'])
