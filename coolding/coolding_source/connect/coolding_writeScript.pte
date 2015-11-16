@@ -195,9 +195,9 @@ else
 
   if ($module.Id==$sed_id)
     Echo '[{ "return": "'
-    
+    Echo $name
     if($device==5)
-      Echo $module.SetEvents($name+'.pte', 'OnReport,OnBroadcast')
+      Echo $module.SetEvents(($name)+'.pte', 'OnReport')
     else
       Echo $module.SetEvents($name+'.pte', 'OnBroadcast')
     /if

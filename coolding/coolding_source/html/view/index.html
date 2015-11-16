@@ -7,7 +7,7 @@
         <!-- Error box -->
         <div ng-show="devices.error">
             <div class="callout callout-danger" id="callout-tables-striped-ie8">
-                <h4>Unfortunately!</h4>
+                <h4 translate="unfortunately">Unfortunately!</h4>
                 <p>{{error_message}}</p>
                 <p translate="licensemissing" ng-show="license_missing" class="ng-hide"></p>
                 <p translate="writepermissions" ng-show="write_permissions" class="ng-hide"></p>
@@ -31,9 +31,9 @@
                         </div>
                     </div>
                     <div style="width: 100%; padding-top: 10px;" ng-hide="button_status" class="block_sed" ng-show="devices.statuses.show">
-                        <div class="sed_button" ng-class="{'active':sedSelect === 'switch'}" ng-click="load_sed('switch');sedSelect='switch'">Switch</div>
-                        <div class="sed_button" ng-class="{'active':sedSelect === 'scan' || sedSelect === undefined}" ng-click="load_sed('scan');sedSelect='scan'">Scan</div>
-                        <div class="sed_button" ng-class="{'active':sedSelect === 'sense'}" ng-click="load_sed('sense');sedSelect='sense'">Sense</div>
+                        <div class="sed_button" ng-class="{'active':sedSelect === 'switch'}" ng-click="load_sed('switch');sedSelect='switch'" translate="switch">Switch</div>
+                        <div class="sed_button" ng-class="{'active':sedSelect === 'scan' || sedSelect === undefined}" ng-click="load_sed('scan');sedSelect='scan'" translate="scan">Scan</div>
+                        <div class="sed_button" ng-class="{'active':sedSelect === 'sense'}" ng-click="load_sed('sense');sedSelect='sense'" translate="sense">Sense</div>
 
                         <span class="ng-hide" ng-show="sed_loading"><i class="fa fa-cog fa-spin loader_color"></i> Loading..</span>
                     </div>

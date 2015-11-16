@@ -4,21 +4,25 @@ $filename = Request.Get["filename"] || ''
 $file = System.Path+'/sys/schedules/'+$uuid+'_'+$filename+'.pte'
 $history = System.Path+'/coolding/cache/calendar.json'
 
-if File.Exists($file)
- File.Delete($file)
- Echo "delete"
+if(!File.IsDirectory(System.Path+'/sys/schedules/'))
+    File.CreatePath(System.Path+'/sys/schedules/')
 /if
+
+if File.Exists($file)
+    File.Delete($file)
+    Echo "delete"
+/if
+
 Echo $file
 
+File.AppendLine($file, " ")
 
-  File.AppendLine($file, " ")
-  if Request.Method=="POST"
-
-echo Request.RawPost
-  $post = Request.RawPost.Replace('":"', '"=>"').Replace('[', '{').Replace(']', '}')
-  Echo "create"
-  File.AppendLine($file, "<%")
+if Request.Method=="POST"
+    echo Request.RawPost
+    $post = Request.RawPost.Replace('":"', '"=>"').Replace('[', '{').Replace(']', '}')
+    Echo "create"
+    File.AppendLine($file, "<%")
     File.AppendLine($file, "$days = "+$post)
-  File.AppendLine($file, "%"+">")
+    File.AppendLine($file, "%"+">")
 /if
 %>

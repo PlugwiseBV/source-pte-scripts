@@ -51,7 +51,7 @@
       };
     }
   ]).controller('AddressIdentifier', [
-    '$scope', '$location', '$http', 'JsonService', '$filter', '$route', 'regexValidate', '$timeout', '$window', 'generate', 'SweetAlert', function($scope, $location, $http, JsonService, $filter, $route, regexValidate, $timeout, $window, generate, SweetAlert) {
+    '$scope', '$location', '$http', 'JsonService', '$filter', '$route', 'regexValidate', '$timeout', '$window', 'generate', 'SweetAlert', '$translate', function($scope, $location, $http, JsonService, $filter, $route, regexValidate, $timeout, $window, generate, SweetAlert, $translate) {
       var visible;
       $scope.valid = false;
       $scope.windowOpen = false;
@@ -71,7 +71,9 @@
         var uuid;
         uuid = generate.uuid();
         JsonService.serverRequests('../connect/clonecommand.pte?new_uuid=' + uuid + '&name=' + name + '&clone_to_id=' + id + '&clone_command_id=' + commandid + '&clone_from_id=' + $scope.identifier + '&clone_from_ip=' + $scope.ip).then((function(fetch) {
-          SweetAlert.swal("Successfully", "The coolding command is cloned!", "success");
+          $translate(["successfully", "coolding_command_cloned"]).then(function(translations) {
+            return SweetAlert.swal(translations.successfully, translations.coolding_command_cloned, "success");
+          });
         }));
         visible = '';
       };
@@ -97,6 +99,11 @@
         $scope.calendar = id + '_' + filepath;
         $scope.calendarname = filename;
         $scope.$apply();
+      };
+      $window.getTranslationsCalendar = function() {
+        return $translate(["calendar", "save_calendar_exception", "schema", "exception_days", "close", "history", "mon", "tue", "wed", "thur", "fri", "sat", "sun", "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sept", "oct", "nov", "dec", "calendar_saved", "calendar_reset", "calendar_exception", "calendar_return", "calendar_remove", "calendar_give_name", "calendar_select_load"]).then(function(translations) {
+          return translations;
+        });
       };
       $scope.removeCalendar = function() {
         $scope.calendarname = '';
@@ -125,7 +132,6 @@
       };
       $scope.remove = function(id, extraValue) {
         var deviceid, filename;
-        console.log(id);
         filename = '';
         deviceid = '';
         angular.forEach($scope.history, function(v, k) {
@@ -163,23 +169,22 @@
         return JsonService.serverRequests('../connect/coolding_editEvent.pte?filename=' + filename + '&id=' + deviceid + '&extravalue=' + extraValue + '&status=' + status).then((function(fetch) {}));
       };
       $scope.reset = function() {
-        $scope.list1 = '';
-        $scope.list2 = '';
-        $scope.list3 = '';
-        $scope.list4 = '';
-        $scope.list5 = '';
-        $scope.list1 = {};
-        $scope.list2 = {};
-        $scope.list3 = {};
-        $scope.list4 = {};
-        $scope.list5 = {};
+        $scope.first_command = '';
+        $scope.oursed = '';
+        $scope.second_command = '';
+        $scope.third_command = '';
+        $scope.fourth_command = '';
+        $scope.first_command = {};
+        $scope.oursed = {};
+        $scope.second_command = {};
+        $scope.third_command = {};
+        $scope.fourth_command = {};
         $scope.chosen_schedule = {};
         $scope.removeCalendar();
-        JsonService.serverRequests('../connect/schedules.pte').then((function(fetch) {
+        return JsonService.serverRequests('../connect/schedules.pte').then((function(fetch) {
           $scope.schedules = fetch.data;
           return $scope.chosen_schedule = $scope.schedules[0].uuid;
         }));
-        return console.log($scope);
       };
       $scope.schedules = '';
       $scope.loadAllSchedules = function() {
@@ -197,85 +202,71 @@
         var data, extraValue, filename, sedname;
         filename = Math.floor(Math.random() * 900000) + 10000;
         extraValue = '';
-        if ($scope.list2.type === '3') {
+        if ($scope.oursed.type === '3') {
           extraValue = $scope.trigger.place;
         }
-        console.log("schema --> ");
-        console.log(filename);
-        console.log($scope.chosen_schedule);
-        if ($scope.list2.type === '5') {
-          extraValue = "Sense&upper_limit=" + $scope.upper_limit + "&lower_limit=" + $scope.lower_limit + "&schedule=" + $scope.chosen_schedule + "&eco_on=" + $scope.list4.id + "&eco_off=" + $scope.list5.id;
+        if ($scope.oursed.type === '5') {
+          extraValue = "Sense&upper_limit=" + $scope.upper_limit + "&lower_limit=" + $scope.lower_limit + "&schedule=" + $scope.chosen_schedule + "&eco_on=" + $scope.third_command.id + "&eco_off=" + $scope.fourth_command.id;
         }
-        JsonService.serverRequests('../connect/coolding_writeScript.pte?id=' + $scope.identifier + '&device=' + $scope.list2.type + '&extra=' + extraValue + '&ip=' + $scope.ip + '&sequence_id=' + $scope.list1.id + '&sequence_id_off=' + $scope.list3.id + '&sed_id=' + $scope.list2.deviceid + '&name=' + filename + '&calendar=' + $scope.calendar, 'jsonp').then((function(fetch) {}));
-        if ($scope.list2.id != null) {
-          console.log("remove existing");
-          console.log($scope.history);
+        JsonService.serverRequests('../connect/coolding_writeScript.pte?id=' + $scope.identifier + '&device=' + $scope.oursed.type + '&extra=' + extraValue + '&ip=' + $scope.ip + '&sequence_id=' + $scope.first_command.id + '&sequence_id_off=' + $scope.second_command.id + '&sed_id=' + $scope.oursed.deviceid + '&name=' + filename + '&calendar=' + $scope.calendar, 'jsonp').then((function(fetch) {}));
+        if ($scope.oursed.id != null) {
           angular.forEach($scope.history, function(v, k) {
-            console.log($scope.history);
             if (v.sedid != null) {
-              if ($scope.list2.type === '3') {
-                console.log("concat");
-                console.log($scope.list2.type);
-                console.log($scope.list2.id);
-                console.log(v.sedid);
+              if ($scope.oursed.type === '3') {
                 if ($scope.trigger.place === 'right') {
-                  if (v.sedid === $scope.list2.id + '_right') {
+                  if (v.sedid === $scope.oursed.id + '_right') {
                     $scope.history.splice(k, 1);
                   }
                 }
                 if ($scope.trigger.place === 'left') {
-                  if (v.sedid === $scope.list2.id + '_left') {
+                  if (v.sedid === $scope.oursed.id + '_left') {
                     $scope.history.splice(k, 1);
                   }
                 }
                 if ($scope.trigger.place === 'both') {
-                  if (v.sedid === $scope.list2.id + '_left') {
+                  if (v.sedid === $scope.oursed.id + '_left') {
                     $scope.history.splice(k, 1);
-                    console.log('after splice left');
-                    console.log($scope.history);
                   }
-                  if (v.sedid === $scope.list2.id + '_right') {
-                    $scope.history.splice(k, 1);
-                    console.log('after splice right');
-                    return console.log($scope.history);
+                  if (v.sedid === $scope.oursed.id + '_right') {
+                    return $scope.history.splice(k, 1);
                   }
                 }
               } else {
-                if (v.sedid === $scope.list2.id) {
+                if (v.sedid === $scope.oursed.id) {
                   return $scope.history.splice(k, 1);
                 }
               }
             }
           });
-          if ($scope.list2.title != null) {
-            sedname = $scope.list2.title;
+          if ($scope.oursed.title != null) {
+            sedname = $scope.oursed.title;
           } else {
             sedname = 'No name';
           }
-          if ($scope.list2.type === '3') {
+          if ($scope.oursed.type === '3') {
             if ($scope.trigger.place === 'both') {
               data = [
                 {
                   "filename": filename,
                   "running": true,
                   "extravalue": "right",
-                  "command1": $scope.list1.id,
-                  "commandname1": $scope.list1.title,
-                  "command2": $scope.list3.id,
-                  "commandname2": $scope.list3.title,
-                  "seddeviceid": $scope.list2.type,
-                  "sedid": $scope.list2.id + "_right",
+                  "command1": $scope.first_command.id,
+                  "commandname1": $scope.first_command.title,
+                  "command2": $scope.second_command.id,
+                  "commandname2": $scope.second_command.title,
+                  "seddeviceid": $scope.oursed.type,
+                  "sedid": $scope.oursed.id + "_right",
                   "sedname": sedname
                 }, {
                   "filename": filename,
                   "running": true,
                   "extravalue": "left",
-                  "command1": $scope.list1.id,
-                  "commandname1": $scope.list1.title,
-                  "command2": $scope.list3.id,
-                  "commandname2": $scope.list3.title,
-                  "seddeviceid": $scope.list2.type,
-                  "sedid": $scope.list2.id + "_left",
+                  "command1": $scope.first_command.id,
+                  "commandname1": $scope.first_command.title,
+                  "command2": $scope.second_command.id,
+                  "commandname2": $scope.second_command.title,
+                  "seddeviceid": $scope.oursed.type,
+                  "sedid": $scope.oursed.id + "_left",
                   "sedname": sedname
                 }
               ];
@@ -285,35 +276,39 @@
                   "filename": filename,
                   "running": true,
                   "extravalue": $scope.trigger.place,
-                  "command1": $scope.list1.id,
-                  "commandname1": $scope.list1.title,
-                  "command2": $scope.list3.id,
-                  "commandname2": $scope.list3.title,
-                  "seddeviceid": $scope.list2.type,
-                  "sedid": $scope.list2.id + "_" + $scope.trigger.place,
+                  "command1": $scope.first_command.id,
+                  "commandname1": $scope.first_command.title,
+                  "command2": $scope.second_command.id,
+                  "commandname2": $scope.second_command.title,
+                  "seddeviceid": $scope.oursed.type,
+                  "sedid": $scope.oursed.id + "_" + $scope.trigger.place,
                   "sedname": sedname
                 }
               ];
             }
-          } else if ($scope.list2.type === '5') {
+          } else if ($scope.oursed.type === '5') {
             data = [
               {
                 "filename": filename,
                 "running": true,
-                "command1": $scope.list1.id,
-                "commandname1": $scope.list1.title,
-                "command2": $scope.list3.id,
-                "commandname2": $scope.list3.title,
-                "command3": $scope.list4.id,
-                "commandname3": $scope.list4.title,
-                "command4": $scope.list5.id,
-                "commandname4": $scope.list5.title,
+                "command1": $scope.first_command.id,
+                "commandname1": $scope.first_command.title,
+                "command2": $scope.second_command.id,
+                "commandname2": $scope.second_command.title,
+                "command3": $scope.third_command.id,
+                "commandname3": $scope.third_command.title,
+                "command4": $scope.fourth_command.id,
+                "commandname4": $scope.fourth_command.title,
                 "upper_limit": $scope.upper_limit,
                 "lower_limit": $scope.lower_limit,
                 "schedule": $scope.chosen_schedule,
-                "seddeviceid": $scope.list2.type,
-                "sedid": $scope.list2.id,
-                "sedname": sedname
+                "seddeviceid": $scope.oursed.type,
+                "sedid": $scope.oursed.id,
+                "sed_id": $scope.oursed.deviceid,
+                "sedname": sedname,
+                "calendar_path": $scope.calendar,
+                "calendar_name": $scope.calendarname,
+                "schema_id": $scope.chosen_schedule
               }
             ];
           } else {
@@ -321,87 +316,84 @@
               {
                 "filename": filename,
                 "running": true,
-                "command1": $scope.list1.id,
-                "commandname1": $scope.list1.title,
-                "command2": $scope.list3.id,
-                "commandname2": $scope.list3.title,
-                "seddeviceid": $scope.list2.type,
-                "sedid": $scope.list2.id,
+                "command1": $scope.first_command.id,
+                "commandname1": $scope.first_command.title,
+                "command2": $scope.second_command.id,
+                "commandname2": $scope.second_command.title,
+                "seddeviceid": $scope.oursed.type,
+                "sedid": $scope.oursed.id,
                 "sedname": sedname
               }
             ];
           }
-          console.log(data);
           if ($scope.history != null) {
             $scope.history = $scope.history.concat(data);
           } else {
             $scope.history = data;
           }
-          console.log("history");
-          console.log($scope.history);
           return JsonService.serverRequests('../connect/save_coolding_setting.pte', 'POST', $scope.history).then((function(fetch) {
-            SweetAlert.swal("Successfully", "Event script is generated!", "success");
+            $translate(["successfully", "command_generated"]).then(function(translations) {
+              return SweetAlert.swal(translations.successfully, translations.command_generated, "success");
+            });
+            $scope.reset();
           }));
         }
       };
       $scope.emptyList = function(id) {
-        console.log('remove');
-        console.log(id);
         if (id === 1) {
-          $scope.list1 = '';
-          $scope.list1 = {};
+          $scope.first_command = '';
+          $scope.first_command = {};
         }
         if (id === 2) {
-          $scope.list2 = '';
-          $scope.list2 = {};
-          $scope.list4 = '';
-          $scope.list4 = {};
-          $scope.list5 = '';
-          $scope.list5 = {};
+          $scope.oursed = '';
+          $scope.oursed = {};
+          $scope.third_command = '';
+          $scope.third_command = {};
+          $scope.fourth_command = '';
+          $scope.fourth_command = {};
         }
         if (id === 3) {
-          $scope.list3 = '';
-          $scope.list3 = {};
+          $scope.second_command = '';
+          $scope.second_command = {};
         }
         if (id === 4) {
-          $scope.list4 = '';
-          $scope.list4 = {};
+          $scope.third_command = '';
+          $scope.third_command = {};
         }
         if (id === 5) {
-          $scope.list5 = '';
-          return $scope.list5 = {};
+          $scope.fourth_command = '';
+          return $scope.fourth_command = {};
         }
       };
       $scope.placeSed = function(id, type, title, deviceid) {
-        console.log(id);
-        $scope.list2.id = id;
-        $scope.list2.type = type;
-        $scope.list2.title = title;
-        return $scope.list2.deviceid = deviceid;
+        $scope.oursed.id = id;
+        $scope.oursed.type = type;
+        $scope.oursed.title = title;
+        return $scope.oursed.deviceid = deviceid;
       };
       $scope.placeCooldingcom = function(id, title) {
         var open;
         open = false;
-        if ($scope.list1.id == null) {
+        if ($scope.first_command.id == null) {
           open = true;
-          $scope.list1.id = id;
-          $scope.list1.title = title;
+          $scope.first_command.id = id;
+          $scope.first_command.title = title;
         }
-        if (($scope.list3.id == null) && !open) {
+        if (($scope.second_command.id == null) && !open) {
           open = true;
-          $scope.list3.id = id;
-          $scope.list3.title = title;
+          $scope.second_command.id = id;
+          $scope.second_command.title = title;
         }
-        if ($scope.list2.type === '5') {
-          if (($scope.list4.id == null) && !open) {
+        if ($scope.oursed.type === '5') {
+          if (($scope.third_command.id == null) && !open) {
             open = true;
-            $scope.list4.id = id;
-            $scope.list4.title = title;
+            $scope.third_command.id = id;
+            $scope.third_command.title = title;
           }
-          if (($scope.list5.id == null) && !open) {
+          if (($scope.fourth_command.id == null) && !open) {
             open = true;
-            $scope.list5.id = id;
-            return $scope.list5.title = title;
+            $scope.fourth_command.id = id;
+            return $scope.fourth_command.title = title;
           }
         }
       };
@@ -438,6 +430,9 @@
       };
       $scope.cooldingSequence = function(identifier) {
         $scope.reload = 'Loading...';
+        $translate(["loading"]).then(function(translations) {
+          return $scope.reload = translations.loading;
+        });
         return $.get('../connect/coolding_sequences.pte?ip=' + $scope.ip + '&id=' + identifier, function(xmls) {
           if (xmls === 'ok') {
             JsonService.serverRequests('../cache/coolding_sequences.xml').then((function(xmll) {
@@ -447,12 +442,13 @@
               if (xmll != null) {
                 jsonn = $.xml2json(xmll.data);
                 $scope.devices.current = jsonn.sequences;
-                console.log("current:");
-                console.log($scope.devices.current);
                 if ($scope.devices.current != null) {
                   $scope.devices.current.show = true;
                 }
                 $scope.reload = 'Reload';
+                $translate(["reload"]).then(function(translations) {
+                  return $scope.reload = translations.reload;
+                });
               }
             }), function(reason) {});
           } else {
@@ -472,18 +468,16 @@
       };
       $scope.cooldingInfo = function(identifier) {
         $scope.reload = 'Loading...';
-        console.log('identifier - coolding info');
-        console.log($scope.ip);
+        $translate(["loading"]).then(function(translations) {
+          return $scope.reload = translations.loading;
+        });
         return $.get('../connect/coolding_info.pte?ip=' + $scope.ip + '&id=' + identifier, function(xml) {
           var error;
-          console.log("Response van coolding info");
           if (xml === 'ok') {
-            console.log("response is oke");
             $scope.loadLatest();
             JsonService.serverRequests('../cache/coolding_info.xml').then((function(xmll) {
               var json;
               $scope.cooldingSequence(identifier);
-              console.log(xmll);
               if (xmll != null) {
                 json = $.xml2json(xmll.data);
                 $scope.coolding_name = json.info;
@@ -491,7 +485,6 @@
             }), function(reason) {});
           } else {
             error = true;
-            console.log("response is niet oke");
             if ($scope.ip === $scope.wifiip) {
               if ($scope.lanip != null) {
                 error = false;
@@ -506,7 +499,9 @@
               }
             }
             if (error) {
-              SweetAlert.swal("Coolding not found", "Could not connect to coolding!", "error");
+              $translate(["error_coolding_not_found", "error_coolding_not_connect"]).then(function(translations) {
+                return SweetAlert.swal(translations.error_coolding_not_found, translations.error_coolding_not_connect, "error");
+              });
               $scope.loader_current = false;
               $scope.error_current = true;
             }
@@ -515,6 +510,49 @@
       };
       $scope.emptyDevices = function() {
         return $scope.devices = {};
+      };
+      $scope.load_history = function(h) {
+        return angular.forEach($scope.history, function(v, k) {
+          var count_schedule;
+          if (v.sedid === h) {
+            $scope.placeSed(v.sedid, v.seddeviceid, v.sedname, v.sed_id);
+            if (v.command1 != null) {
+              $scope.first_command.id = v.command1;
+              $scope.first_command.title = v.commandname1;
+            }
+            if (v.command2 != null) {
+              $scope.second_command.id = v.command2;
+              $scope.second_command.title = v.commandname2;
+            }
+            if (v.command3 != null) {
+              $scope.third_command.id = v.command3;
+              $scope.third_command.title = v.commandname3;
+            }
+            if (v.command4 != null) {
+              $scope.fourth_command.id = v.command4;
+              $scope.fourth_command.title = v.commandname4;
+            }
+            if (v.upper_limit != null) {
+              $scope.upper_limit = v.upper_limit;
+              $scope.advanced = true;
+            }
+            if (v.lower_limit != null) {
+              $scope.lower_limit = v.lower_limit;
+              $scope.advanced = true;
+            }
+            if (v.schedule != null) {
+              $scope.calendarname = v.calendar_name;
+              $scope.calendar = v.calendar_path;
+              count_schedule = 0;
+              return angular.forEach($scope.schedules, function(i, l) {
+                if (i.uuid === v.schedule) {
+                  $scope.chosen_schedule = $scope.schedules[count_schedule].uuid;
+                }
+                return count_schedule += 1;
+              });
+            }
+          }
+        });
       };
       $scope.loadLatest = function() {
         return JsonService.serverRequests('../connect/coolding_latest.pte').then((function(fetch) {
@@ -541,12 +579,18 @@
         if (identifier == null) {
           $scope.devices.error = true;
           $scope.loading = false;
-          return $scope.error_message = "The MAC-address, UUID or shortid can not be empty.";
+          $scope.error_message = "The MAC-address, UUID or shortid can not be empty.";
+          return $translate(["error_empty_id"]).then(function(translations) {
+            return $scope.error_message = translations.error_empty_id;
+          });
         } else {
           if (!$scope.valid) {
             $scope.devices.error = true;
             $scope.loading = false;
-            return $scope.error_message = "The MAC-address, UUID or shortid is not valid.";
+            $scope.error_message = "The MAC-address, UUID or shortid is not valid.";
+            return $translate(["error_invalid_id"]).then(function(translations) {
+              return $scope.error_message = translations.error_invalid_id;
+            });
           } else {
             identifier = identifier.toLowerCase();
             $scope.identifier = identifier;
@@ -575,15 +619,14 @@
                 JsonService.serverRequests('../connect/plugincheck.pte').then((function(plugin) {
                   if (plugin.data === 'true') {
                     return JsonService.serverRequests('../connect/writable.pte').then((function(writable) {
-                      console.log(writable);
                       if (writable.data === 'true') {
-                        console.log("writable");
                         $scope.devices.show = true;
                         $scope.devices.devices = fetch.data;
                         return callback(true);
                       } else {
                         $scope.loader_device = false;
                         $scope.error_device = true;
+                        $scope.loading = false;
                         $scope.devices.error = true;
                         $scope.error_message = '';
                         $scope.write_permissions = true;
@@ -606,6 +649,9 @@
                 $scope.error_device = true;
                 $scope.devices.error = true;
                 $scope.error_message = "The MAC-address, UUID or shortid can not be found. This could be due to a problem with your Internet connection.";
+                $translate(["error_not_found"]).then(function(translations) {
+                  return $scope.error_message = translations.error_not_found;
+                });
                 $scope.loading = false;
                 return callback(false);
               });
@@ -621,17 +667,16 @@
                   $scope.button_status = true;
                   orderBy = $filter('orderBy');
                   $scope.error_current = false;
-                  $scope.list4 = {};
-                  $scope.list5 = {};
-                  $scope.list3 = {};
-                  $scope.list2 = {};
-                  $scope.list1 = {};
+                  $scope.third_command = {};
+                  $scope.fourth_command = {};
+                  $scope.second_command = {};
+                  $scope.oursed = {};
+                  $scope.first_command = {};
                   $scope.lower_limit = 0;
                   $scope.upper_limit = 0;
                   $scope.chosen_schedule = {};
                   $.get('../cache/coolding_setting.json', function(settings) {
                     $scope.history = angular.fromJson(settings);
-                    console.log($scope.history);
                   });
                   JsonService.serverRequests('../connect/schedules.pte').then((function(fetch) {
                     $scope.schedules = fetch.data;

@@ -12,7 +12,9 @@ body {
 a {
     text-decoration: none;
 }
-
+a:hover {
+    text-decoration: none !important;
+}
 h2 {
     font-size: 22px;
     line-height: 20px;

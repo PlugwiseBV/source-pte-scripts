@@ -6,16 +6,11 @@ $flush   = Request.Get["flush"] || true
 
 $file = System.Path+'/coolding/cache/coolding_sequences.xml'
 
-$date_file = File.Date($file)
-$diff_minute = String(DateTime()-$date_file, 'ms')
 
-if $flush==true
-  $diff_minute = 200
-/if
-
-if ($diff_minute>=200)
+function load_page($id, $ip, $file)
+  // Remove old file
   if File.Exists($file)
-   File.Delete($file)
+    File.Delete($file)
   /if
 
   $load = Http.Get('http://'+$ip+'/ir/sequences?json=true', 'smile',$id)
@@ -30,9 +25,19 @@ if ($diff_minute>=200)
    /if
   /if
   Echo $result
+/function
 
+if $flush==true
+  load_page($id, $ip, $file)
 else
-  Echo 'Cache'
+  $date_file = File.Date($file)
+  $diff_minute = String(DateTime()-$date_file, 'ms')
+
+  if ($diff_minute>=200)
+    load_page($id, $ip, $file)
+  else
+    Echo 'Cache'
+  /if
 /if
 
 %>

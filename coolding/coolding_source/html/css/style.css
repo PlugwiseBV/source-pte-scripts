@@ -308,6 +308,171 @@ body {
 .translation_right {
     float:right
 }
+
+.big_dragdrop_location {
+    height: 61px;
+}
+.dragdrop_location {
+    height: 50px;
+}
+.limit_box {
+    height: 107px;
+    border-bottom: 1px solid #aaa;
+    border-top: 1px solid #aaa;
+    padding-top: 15px;
+}
+.limit_box > div {
+    float: left;
+    clear: left;
+    margin-bottom: 10px;
+}
+.limit_text {
+    float: left;
+    width: 130px;
+    padding-top: 5px;
+}
+.limits {
+    float: left;
+    padding: 5px;
+    font-size: 18px;
+    width: 60px;
+    height: 32px;
+}
+.advanced_settings {
+    margin-bottom: 20px;
+}
+.advanced_settings .gear {
+    padding-right: 10px;
+}
+.input-group {
+    position: relative;
+    display: table;
+    border-collapse: separate;
+    margin-bottom: 10px;
+}
+.input-group-btn {
+    position: relative;
+    font-size: 0;
+    white-space: nowrap;
+}
+.input-group-btn {
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+.input-group-btn, .input-group .form-control {
+    display: table-cell;
+}
+.input-group .form-control:not(:first-child):not(:last-child) {
+    border-radius: 0;
+}
+.input-group .form-control {
+    display: table-cell;
+}
+.input-group .form-control {
+    position: relative;
+    z-index: 2;
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+}
+.input-group .form-control {
+    position: relative;
+    z-index: 2;
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+}
+.form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.temp_limits {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.limit-padding {
+    padding-right: 10px;
+}
+.schedule {
+    float:left;
+    diplay:block;
+    width:3px;
+    height: 15px;
+    border: 1px solid black;
+    margin-right:1px;
+}
+.sheduleBelow {
+    background: cornflowerblue;
+}
+.sheduleNull {
+    background: white;
+}
+.sheduleUp {
+    background: lawngreen;
+}
+.div_switch {
+    padding: 10px;
+}
+.clear_both {
+    clear:both
+}
+.modification_box {
+    border-left-color: #aa6708;
+    border-left-color: #aa6708;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+.remove_calendar {
+    cursor: pointer;
+    margin-right: 5px;
+    margin-bottom: 4px;
+    padding: 2px 12px;
+}
+.schedule_box {
+    padding: 10px;
+    background: #aaa;
+    border: 1px solid #101010;
+    width: 100%;
+    float: left;
+    margin-bottom: 20px;
+}
+.white_color {
+    color:white;
+}
+.thin_line {
+    border-top: 1px solid #000;
+    margin-top:10px
+}
+.setpoint {
+    margin-bottom: 10px;
+}
+.center_text {
+    text-align: center;
+}
+.no_list {
+    list-style-type: none
+}
+.schedule_list {
+    padding: 0 10px;
+}
 .latest_ids {
     display: none;
     width: 300px;
