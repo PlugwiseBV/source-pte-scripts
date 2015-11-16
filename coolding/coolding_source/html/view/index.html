@@ -26,23 +26,18 @@
                         <h2 translate="plugwise_sed_modules">Plugwise SED Modules</h2>
                         <span class="glyphicon glyphicon glyphicon-align-justify draghandle"></span>
                         <div class="block-options pull-right">
-                            <span class="fa fa-cog fa-spin loader_color ng-hide" ng-show="loader_status"></span> <span class="ng-hide" ng-show="loader_status">Loading...</span>
+                            <span class="fa fa-cog fa-spin loader_color ng-hide" ng-show="loader_status"></span> <span class="ng-hide" ng-show="loader_status" translate="loading">Loading...</span>
                             <span class="ng-hide" ng-show="error_status"><span translate="failedtoload"><b>Error</b>, this block has <u>failed</u> to load</span> <span class="glyphicon glyphicon-remove pw-error"></span></span>
                         </div>
                     </div>
-                    <div style="width: 100%; padding-top: 10px;" ng-hide="button_status" class="block_sed" ng-show="devices.statuses.show">
-                        <div class="sed_button" ng-class="{'active':sedSelect === 'switch'}" ng-click="load_sed('switch');sedSelect='switch'" translate="switch">Switch</div>
-                        <div class="sed_button" ng-class="{'active':sedSelect === 'scan' || sedSelect === undefined}" ng-click="load_sed('scan');sedSelect='scan'" translate="scan">Scan</div>
-                        <div class="sed_button" ng-class="{'active':sedSelect === 'sense'}" ng-click="load_sed('sense');sedSelect='sense'" translate="sense">Sense</div>
+                    <div ng-hide="button_status" class="block_sed sed_menu" ng-show="devices.statuses.show">
+                        <div class="sed_button" ng-class="{'active':sedSelect === 'switch'}" ng-click="load_sed('switch');sedSelect='switch'"><span translate="switch">Switch</span></div>
+                        <div class="sed_button" ng-class="{'active':sedSelect === 'scan' || sedSelect === undefined}" ng-click="load_sed('scan');sedSelect='scan'"><span translate="scan">Scan</span></div>
+                        <div class="sed_button" ng-class="{'active':sedSelect === 'sense'}" ng-click="load_sed('sense');sedSelect='sense'"><span translate="sense">Sense</span></div>
 
-                        <span class="ng-hide" ng-show="sed_loading"><i class="fa fa-cog fa-spin loader_color"></i> Loading..</span>
+                        <span class="ng-hide" ng-show="sed_loading"><i class="fa fa-cog fa-spin loader_color"></i> <i translate="loading">Loading..</i></span>
                     </div>
-                    <style>
-                        .low-opacity {
-                            opacity: 0.2;
-                        }
-                    </style>
-                    <div class="list-block height-fixed block" style="width:100%;margin:0; padding:0" ng-class="{'low-opacity':sed_loading === true}" load_seds ng-show="devices.statuses.show"></div>
+                    <div class="list-block height-fixed block sed_show" ng-class="{'low-opacity':sed_loading === true}" load_seds ng-show="devices.statuses.show"></div>
                 </div>
 
                 <!-- All Coolding records -->

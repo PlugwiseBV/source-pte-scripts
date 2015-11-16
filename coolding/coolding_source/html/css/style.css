@@ -338,8 +338,20 @@ body {
     width: 60px;
     height: 32px;
 }
+.low-opacity {
+    opacity: 0.2;
+}
 .advanced_settings {
     margin-bottom: 20px;
+}
+.sed_menu {
+    width: 100%;
+    padding-top: 10px;
+}
+.sed_show {
+    width:100%;
+    margin:0;
+    padding:0
 }
 .advanced_settings .gear {
     padding-right: 10px;
