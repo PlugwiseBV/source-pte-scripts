@@ -104,5 +104,8 @@
 	"invalid_id": "Het MAC-adres, UUID of shortid is niet valide.",
 	"error_empty_id": "Het MAC-adres, UUID of shortid kan niet worden gevonden.",
 	"error_coolding_not_found": "Coolding niet gevonden",
-	"error_coolding_not_connect": "Kan niet verbinden met de coolding!"
+	"error_coolding_not_connect": "Kan niet verbinden met de coolding!",
+	"dutch": "Nederlands",
+	"english": "English",
+	"japanese": "Japanese"
 }

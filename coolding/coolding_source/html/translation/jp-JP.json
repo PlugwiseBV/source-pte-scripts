@@ -31,7 +31,7 @@
 	"dragdrop_cooldingcommandecooff": "ドラッグ Coolding 温度があるときにコマンドを実行すること <u>以下</u> 設定値.",
 	"coolding_name_command": "Coolding コマンド",
 	"coolding_icon": "アイコン",
-	"writepermissions": "ファイルを書き込むことができません、ご確認下さい Plugwise Source パーミッション. 選択して「管理者としてこのプログラムを実行します'. <br><img src='img/permissions.png'>",
+	"writepermissions": "ファイルを書き込むことができません、ご確認下さい Plugwise Source パーミッション. 選択して「管理者としてこのプログラムを実行します'. ",
 	"edit": "編集",
 	"running": "ランニング",
 	"sed_id": "SED イド",
@@ -104,5 +104,8 @@
 	"invalid_id": "MACアドレス、UUIDまたはshortidが有効ではありません。",
 	"error_empty_id": "MACアドレス、UUIDまたはshortid空にすることはできません。",
 	"error_coolding_not_found": "見つからないCoolding",
-	"error_coolding_not_connect": "cooldingに接続できませんでした！"
+	"error_coolding_not_connect": "cooldingに接続できませんでした！",
+	"dutch": "オランダ語",
+	"english": "英語",
+	"japanese": "日本人"
 }

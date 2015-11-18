@@ -1,7 +1,7 @@
 <div class="translation_right">
     <ul class="nav navbar-nav lang-select" ng-init="init()" ng-controller="languageInit">
-        <li ng-class="{'active':languageSelect === 'nl-NL' || languageSelect === undefined}"><a change-Language ng-click="languageSelect='nl-NL'" data="nl-NL">Nederlands</a></li>
-        <li ng-class="{'active':languageSelect === 'en-US'}"><a change-Language ng-click="languageSelect='en-US'" data="en-US">English</a></li>
-        <li ng-class="{'active':languageSelect === 'jp-JP'}"><a change-Language ng-click="languageSelect='jp-JP'" data="jp-JP">Japanese</a></li>
+        <li ng-class="{'active':languageSelect === 'nl-NL' || languageSelect === undefined}"><a change-Language ng-click="languageSelect='nl-NL'" data="nl-NL"><span translate="dutch">Nederlands</span></a></li>
+        <li ng-class="{'active':languageSelect === 'en-US'}"><a change-Language ng-click="languageSelect='en-US'" data="en-US"><span translate="english">English</span></a></li>
+        <li ng-class="{'active':languageSelect === 'jp-JP'}"><a change-Language ng-click="languageSelect='jp-JP'" data="jp-JP"><span translate="japanese">Japanese</span></a></li>
     </ul>
 </div>
