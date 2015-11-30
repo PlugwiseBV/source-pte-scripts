@@ -68,7 +68,7 @@ Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
   /if
 
 
-  onlineLog($sed_type, $uuid, $id, '[{ "type": "init", "now": "'+($now)+'", "type": "'+($type)+'", "ip": "'+($ip)+'" }], 0)
+// onlineLog($sed_type, $uuid, $id, '[{ "type": "init", "now": "'+($now)+'", "type": "'+($type)+'", "ip": "'+($ip)+'" }]', 0)
 
   if($sed_type==5)
 
@@ -176,11 +176,11 @@ writeFile($directories, $directories['log_file'], "Coolding Switch function")
   if($now==true)
     if($lcommand==$on_url)
         writeFile($directories, $directories['log_file'], "Switch is already on, nothing to do..")
-        onlineLog(3, $commands['on_id'], $id, '[{ "type": "should turn on (already on)", "last_command": "'+($lcommand)+'", "on_url": "'+($on_url)+'" }], 0)
+        onlineLog(3, $commands['on_id'], $id, '[{ "type": "should turn on (already on)", "last_command": "'+($lcommand)+'", "on_url": "'+($on_url)+'" }]', 0)
     Else
       writeFile($directories, $directories['log_file'], "[!] Switch turned on; now is true")
 
-      onlineLog(3, $commands['on_id'], $id, '[{ "type": "turn on", "now": "'+($now)+'", "last_command": "'+($lcommand)+'", "on_url": "'+($on_url)+'" }], 1)
+      onlineLog(3, $commands['on_id'], $id, '[{ "type": "turn on", "now": "'+($now)+'", "last_command": "'+($lcommand)+'", "on_url": "'+($on_url)+'" }]', 1)
 
       $result = Http.Get($on_url, 'smile', $id)
       writeFile($directories, $directories['last_command'], $commands['on_id'])
@@ -189,11 +189,11 @@ writeFile($directories, $directories['log_file'], "Coolding Switch function")
   Else
     if($lcommand==$off_url)
      writeFile($directories, $directories['log_file'], "Switch is already off, nothing to do..")
-     onlineLog(3, $commands['off_id'], $id, '[{ "type": "should turn off (already off)", "last_command": "'+($lcommand)+'", "off_url": "'+($off_url)+'" }], 1)
+     onlineLog(3, $commands['off_id'], $id, '[{ "type": "should turn off (already off)", "last_command": "'+($lcommand)+'", "off_url": "'+($off_url)+'" }]', 1)
     Else
       writeFile($directories, $directories['log_file'], "[!] Switch turned off; now is false")
 
-      onlineLog(3, $commands['off_id'], $id, '[{ "type": "turn off", "last_command": "'+($lcommand)+'", "off_url": "'+($off_url)+'" }], 1)
+      onlineLog(3, $commands['off_id'], $id, '[{ "type": "turn off", "last_command": "'+($lcommand)+'", "off_url": "'+($off_url)+'" }]', 1)
 
       $result = Http.Get($off_url, 'smile', $id)
       writeFile($directories, $directories['last_command'], $commands['off_id'])
@@ -238,14 +238,14 @@ Function CooldingScan($id, $commands, $now, $ip, $directories, $lcommand, $log)
   if($now==true)
     writeFile($directories, $directories['log_file'], "Scan turned on; now is true")
 
-    onlineLog(6, $commands['on_id'], $id, '[{ "type": "turn on" }], 1)
+    onlineLog(6, $commands['on_id'], $id, '[{ "type": "turn on" }]', 1)
 
     $result = Http.Get($on_url, 'smile', $id)
     writeFile($directories, $directories['last_command'], $commands['on_id'])
 
   Else
     writeFile($directories, $directories['log_file'], "Scan turned off; now is false")
-    onlineLog(6, $commands['off_id'], $id, '[{ "type": "turn off" }], 0)
+    onlineLog(6, $commands['off_id'], $id, '[{ "type": "turn off" }]', 0)
 
     $result = Http.Get($off_url, 'smile', $id)
     writeFile($directories, $directories['last_command'], $commands['off_id'])
@@ -402,7 +402,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
         if($lcommands==($commands['off_id']))
           if($log)
             writeFile($directories, $directories['log_file'], "[!] Hmm, according to the last command it seems its already off")
-            onlineLog(5, $uuid, $id, '[{ "type": "sense - already off", "quarter": "'+($quarter)+'", "schema_value": "'+($schedule.Values[$day][$quarter])+'" }], 0)
+            onlineLog(5, $uuid, $id, '[{ "type": "sense - already off", "quarter": "'+($quarter)+'", "schema_value": "'+($schedule.Values[$day][$quarter])+'" }]', 0)
           /if
          else
            File.Delete($directories['last_command'])
@@ -412,7 +412,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
            $command_run = 1
            $result = Http.Get($off_url, 'smile', $id)
            writeFile($directories, $directories['last_command'], $commands['off_id']+'_off')
-           onlineLog(5, $uuid, $id, '[{ "type": "sense - send off command", "quarter": "'+($quarter)+'", "schema_value": "'+($schedule.Values[$day][$quarter])+'" }], 1)
+           onlineLog(5, $uuid, $id, '[{ "type": "sense - send off command", "quarter": "'+($quarter)+'", "schema_value": "'+($schedule.Values[$day][$quarter])+'" }]', 1)
         /if
       Elseif($schedule.Values[($day)][$quarter]==-1)
         if($log)
@@ -424,7 +424,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
         if($lcommands==($commands['on_id']))
           if($log)
             writeFile($directories, $directories['log_file'], "[!] Hmm, according to the last command it seems its already on")
-            onlineLog(5, $uuid, $id, '[{ "type": "sense - already on", "quarter": "'+($quarter)+'", "schema_value": "'+($schedule.Values[$day][$quarter])+'" }], 0)
+            onlineLog(5, $uuid, $id, '[{ "type": "sense - already on", "quarter": "'+($quarter)+'", "schema_value": "'+($schedule.Values[$day][$quarter])+'" }]', 0)
           /if
          else
            File.Delete($directories['last_command'])
@@ -434,7 +434,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
            $command_run = 1
            $result = Http.Get($on_url, 'smile', $id)
            writeFile($directories, $directories['last_command'], ($commands['on_id'])+'_on')
-           onlineLog(5, $uuid, $id, '[{ "type": "sense - send on command", "quarter": "'+($quarter)+'", "schema_value": "'+($schedule.Values[$day][$quarter])+'" }], 1)
+           onlineLog(5, $uuid, $id, '[{ "type": "sense - send on command", "quarter": "'+($quarter)+'", "schema_value": "'+($schedule.Values[$day][$quarter])+'" }]', 1)
         /if
       else
 
@@ -457,7 +457,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
           if($lcommands==($commands['eco_on_id']))
             if($log)
               writeFile($directories, $directories['log_file'], "[!] Exceeding the average - Already on!")
-              onlineLog(5, $uuid, $id, '[{ "type": "sense - exceeding the average - already on ", "command_now": "'+($commands['eco_off_id'])+'", "last_command": "'+($lcommands)+'", "upper_limit": "'+($lower_limit)+'", "now": "'+($now)+'", "quarter": "'+($quarter)+'", "schema_value": "'+($schedule.Values[$day][$quarter])+'" }], 0)
+              onlineLog(5, $uuid, $id, '[{ "type": "sense - exceeding the average - already on ", "command_now": "'+($commands['eco_off_id'])+'", "last_command": "'+($lcommands)+'", "upper_limit": "'+($lower_limit)+'", "now": "'+($now)+'", "quarter": "'+($quarter)+'", "schema_value": "'+($schedule.Values[$day][$quarter])+'" }]', 0)
             /if
            else
              File.Delete($directories['last_command'])
@@ -467,7 +467,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
              $command_run = 1
              $result = Http.Get($eco_on_url, 'smile', $id)
              writeFile($directories, $directories['last_command'], $commands['eco_on_id']+"_eco_on")
-             onlineLog(5, $uuid, $id, '[{ "type": "sense - exceeding the average - send on ", "command_now": "'+($commands['eco_off_id'])+'", "last_command": "'+($lcommands)+'", "upper_limit": "'+($lower_limit)+'", "now": "'+($now)+'", "quarter": "'+($quarter)+'", "schema_value": "'+($schedule.Values[$day][$quarter])+'" }], 1)
+             onlineLog(5, $uuid, $id, '[{ "type": "sense - exceeding the average - send on ", "command_now": "'+($commands['eco_off_id'])+'", "last_command": "'+($lcommands)+'", "upper_limit": "'+($lower_limit)+'", "now": "'+($now)+'", "quarter": "'+($quarter)+'", "schema_value": "'+($schedule.Values[$day][$quarter])+'" }]', 1)
           /if
         /if
 
@@ -475,7 +475,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
          if($lcommands==($commands['eco_off_id']))
            if($log)
              writeFile($directories, $directories['log_file'], "[!] Below the norm - already off")
-             onlineLog(5, $uuid, $id, '[{ "type": "sense - below the norm - already off ", "command_now": "'+($commands['eco_off_id'])+'", "last_command": "'+($lcommands)+'", "upper_limit": "'+($lower_limit)+'", "now": "'+($now)+'", "quarter": "'+($quarter)+'", "schema_value": "'+($schedule.Values[$day][$quarter])+'" }], 0)
+             onlineLog(5, $uuid, $id, '[{ "type": "sense - below the norm - already off ", "command_now": "'+($commands['eco_off_id'])+'", "last_command": "'+($lcommands)+'", "upper_limit": "'+($lower_limit)+'", "now": "'+($now)+'", "quarter": "'+($quarter)+'", "schema_value": "'+($schedule.Values[$day][$quarter])+'" }]', 0)
            /if
          else
            File.Delete($directories['last_command'])
@@ -485,7 +485,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
            $command_run = 1
            $result = Http.Get($eco_off_url, 'smile', $id)
            writeFile($directories, $directories['last_command'], $commands['eco_off_id']+'_eco_off')
-           onlineLog(5, $uuid, $id, '[{ "type": "sense - below the norm - send off ", "command_now": "'+($commands['eco_off_id'])+'", "last_command": "'+($lcommands)+'", "upper_limit": "'+($lower_limit)+'", "now": "'+($now)+'", "quarter": "'+($quarter)+'", "schema_value": "'+($schedule.Values[$day][$quarter])+'" }], 1)
+           onlineLog(5, $uuid, $id, '[{ "type": "sense - below the norm - send off ", "command_now": "'+($commands['eco_off_id'])+'", "last_command": "'+($lcommands)+'", "upper_limit": "'+($lower_limit)+'", "now": "'+($now)+'", "quarter": "'+($quarter)+'", "schema_value": "'+($schedule.Values[$day][$quarter])+'" }]', 1)
          /if
       /if
 
