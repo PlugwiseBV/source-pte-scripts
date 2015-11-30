@@ -18,53 +18,55 @@ Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
 
   if($log)
     if(!File.Exists($directories['log_file']))
-    File.AppendLine($directories['log_file'], "")
-    File.AppendLine($directories['log_file'], "  _____  _                      _ ")
-    File.AppendLine($directories['log_file'], " |  __ \\| |                    (_) ")
-    File.AppendLine($directories['log_file'], " | |__) | |_   _  __ ___      ___ ___  ___ ")
-    File.AppendLine($directories['log_file'], " |  ___/| | | | |/ _` \\ \\ /\\ / / / __|/ _ \\ ")
-    File.AppendLine($directories['log_file'], " | |    | | |_| | (_| |\\ V  V /| \\__ \\  __/ ")
-    File.AppendLine($directories['log_file'], " |_|    |_|\\__,_|\\__, | \\_/\\_/ |_|___/\\___| ")
-    File.AppendLine($directories['log_file'], "                  __/ | ")
-    File.AppendLine($directories['log_file'], "                 |___/")
-    File.AppendLine($directories['log_file'], "")
-    File.AppendLine($directories['log_file'], " Hi there, nice to meet you!");
+    writeFile($directories, $directories['log_file'], "")
+    writeFile($directories, $directories['log_file'], "  _____  _                      _ ")
+    writeFile($directories, $directories['log_file'], " |  __ \\| |                    (_) ")
+    writeFile($directories, $directories['log_file'], " | |__) | |_   _  __ ___      ___ ___  ___ ")
+    writeFile($directories, $directories['log_file'], " |  ___/| | | | |/ _` \\ \\ /\\ / / / __|/ _ \\ ")
+    writeFile($directories, $directories['log_file'], " | |    | | |_| | (_| |\\ V  V /| \\__ \\  __/ ")
+    writeFile($directories, $directories['log_file'], " |_|    |_|\\__,_|\\__, | \\_/\\_/ |_|___/\\___| ")
+    writeFile($directories, $directories['log_file'], "                  __/ | ")
+    writeFile($directories, $directories['log_file'], "                 |___/")
+    writeFile($directories, $directories['log_file'], "")
+    writeFile($directories, $directories['log_file'], " Hi there, nice to meet you!");
     /if
-    File.AppendLine($directories['log_file'], "")
-    File.AppendLine($directories['log_file'], "~~~~~~~~~~~~~~~~~~~~ Begin log")
+    writeFile($directories, $directories['log_file'], "")
+    writeFile($directories, $directories['log_file'], "~~~~~~~~~~~~~~~~~~~~ Begin log")
   /if
 
   // Request new ipaddress when cache is empty
-  File.AppendLine($directories['log_file'], "")
-  File.AppendLine($directories['log_file'], "--- IP Section ---")
+  writeFile($directories, $directories['log_file'], "")
+  writeFile($directories, $directories['log_file'], "--- IP Section ---")
   $ip = Renewip($id, $directories)
-  File.AppendLine($directories['log_file'], "--- End of IP Section ---")
-  File.AppendLine($directories['log_file'], "")
+  writeFile($directories, $directories['log_file'], "--- End of IP Section ---")
+  writeFile($directories, $directories['log_file'], "")
   
   if($log)
-    File.AppendLine($directories['log_file'], "")
-    File.AppendLine($directories['log_file'], "===========================")
-    File.AppendLine($directories['log_file'], " Timestamp: "+DateTime())
-    File.AppendLine($directories['log_file'], " SED: "+$sed_type)
-    File.AppendLine($directories['log_file'], " Type event: "+$type)
-    File.AppendLine($directories['log_file'], " ip: "+$ip)
-    File.AppendLine($directories['log_file'], "===========================")
-    File.AppendLine($directories['log_file'], "")
+    writeFile($directories, $directories['log_file'], "")
+    writeFile($directories, $directories['log_file'], "===========================")
+    writeFile($directories, $directories['log_file'], " Timestamp: "+DateTime())
+    writeFile($directories, $directories['log_file'], " SED: "+$sed_type)
+    writeFile($directories, $directories['log_file'], " Type event: "+$type)
+    writeFile($directories, $directories['log_file'], " ip: "+$ip)
+    writeFile($directories, $directories['log_file'], "===========================")
+    writeFile($directories, $directories['log_file'], "")
   /if
 
+  onlineLog($sed_type, $uuid, $id, 'now:'+($now)+' - LastCommand: '+(ReadLastCommand($directories, $id, $ip))+', 0)
+  onlineLog($sedtype, $sedid, $cooldingid, $options, $command_called)
 
   if($log)
-    File.AppendLine($directories['log_file'], "")
-    File.AppendLine($directories['log_file'], "=========== Extra debug information ===========")
-    File.AppendLine($directories['log_file'], " ID: "+($id))
-    File.AppendLine($directories['log_file'], " Commands: "+($commands))
-    File.AppendLine($directories['log_file'], " UUID: "+($uuid))
-    File.AppendLine($directories['log_file'], " Now: "+($now))
-    File.AppendLine($directories['log_file'], " IP: "+($ip))
-    File.AppendLine($directories['log_file'], " Directories: "+($directories))
-    File.AppendLine($directories['log_file'], " Log: "+($log))
-    File.AppendLine($directories['log_file'], "===========================")
-    File.AppendLine($directories['log_file'], "")
+    writeFile($directories, $directories['log_file'], "")
+    writeFile($directories, $directories['log_file'], "=========== Extra debug information ===========")
+    writeFile($directories, $directories['log_file'], " ID: "+($id))
+    writeFile($directories, $directories['log_file'], " Commands: "+($commands))
+    writeFile($directories, $directories['log_file'], " UUID: "+($uuid))
+    writeFile($directories, $directories['log_file'], " Now: "+($now))
+    writeFile($directories, $directories['log_file'], " IP: "+($ip))
+    writeFile($directories, $directories['log_file'], " Directories: "+($directories))
+    writeFile($directories, $directories['log_file'], " Log: "+($log))
+    writeFile($directories, $directories['log_file'], "===========================")
+    writeFile($directories, $directories['log_file'], "")
   /if
 
   if($sed_type==5)
@@ -76,18 +78,18 @@ Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
   /if
 
   if($sed_type==6)
-      File.AppendLine($directories['log_file'], "uitvoeren Scan")
+      writeFile($directories, $directories['log_file'], "uitvoeren Scan")
     CooldingScan($id, $commands, $now, $ip, $directories, ReadLastCommand($directories, $id, $ip), $log)
   /if
 
   if($sed_type==3)
-      File.AppendLine($directories['log_file'], "uitvoeren Switch")
+      writeFile($directories, $directories['log_file'], "uitvoeren Switch")
     CooldingSwitch($id, $commands, $now, $ip, $directories, ReadLastCommand($directories, $id, $ip), $log)
   /if
 
   if($log)
-    File.AppendLine($directories['log_file'], "~~~~~~~~~~~~~~~~~~~~ End of logs")
-    File.AppendLine($directories['log_file'], " ")
+    writeFile($directories, $directories['log_file'], "~~~~~~~~~~~~~~~~~~~~ End of logs")
+    writeFile($directories, $directories['log_file'], " ")
   /if
 /Function
 
@@ -104,19 +106,19 @@ Function checkLastCommand($id, $command, $url, $log, $lcommand, $directories, $n
     if File.Exists($directories['last_command'])
       File.Delete($directories['last_command'])
     /if
-    File.AppendLine($directories['last_command'], $command)
+    writeFile($directories, $directories['last_command'], $command)
 
     if($log)
-      File.AppendLine($directories['log_file'], $old_status)
+      writeFile($directories, $directories['log_file'], $old_status)
     /if
   else
     File.Delete($directories['last_command'])
     if($log)
-      File.AppendLine($directories['log_file'], $new_status)
+      writeFile($directories, $directories['log_file'], $new_status)
     /if
     $command_run = 1
     $result = Http.Get($url, 'smile', $id)
-    File.AppendLine($directories['last_command'], $command)
+    writeFile($directories, $directories['last_command'], $command)
   /if
   return {"result"=>$result, "command_run"=>$command_run}
 /Function
@@ -124,83 +126,83 @@ Function checkLastCommand($id, $command, $url, $log, $lcommand, $directories, $n
 Function validateResult($id, $result, $command_run, $directories, $log)
     // When a command is called
 
-      File.AppendLine($directories['log_file'], "validate result")
+      writeFile($directories, $directories['log_file'], "validate result")
     if($command_run==1)
       if($log)
-        File.AppendLine($directories['log_file'], "Command called = true")
-        File.AppendLine($directories['log_file'], "Result page: " +$result[0]+$result[1])
+        writeFile($directories, $directories['log_file'], "Command called = true")
+        writeFile($directories, $directories['log_file'], "Result page: " +$result[0]+$result[1])
       /if
 
       if($result!="ok\n")
         if($log)
-          File.AppendLine($directories['log_file'], "Coolding can not be found, ip address is changed?")
-          File.AppendLine($directories['log_file'], "Renewing ip address; Current ip address: "+$ip+" and result page: "+$result)
+          writeFile($directories, $directories['log_file'], "Coolding can not be found, ip address is changed?")
+          writeFile($directories, $directories['log_file'], "Renewing ip address; Current ip address: "+$ip+" and result page: "+$result)
         /if
 
         File.Delete($directories['last_command'])
-        File.AppendLine($directories['last_command'], "0")
+        writeFile($directories, $directories['last_command'], "0")
         File.Delete($directories['coolding_ip'])
 
         $ip = Renewip($id, $directories)
         if($log)
-            File.AppendLine($directories['log_file'], "IP has found: "+$ip)
+            writeFile($directories, $directories['log_file'], "IP has found: "+$ip)
         /if
 
         // Now the ip address is fixed, run the command one more time!
         CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand, $log)
 
         if($log)
-          File.AppendLine($directories['log_file'], "New ip address"+$ip)
+          writeFile($directories, $directories['log_file'], "New ip address"+$ip)
         /if 
       /if
     /if
 /Function
 
 Function CooldingSwitch($id, $commands, $now, $ip, $directories, $lcommand, $log)
-File.AppendLine($directories['log_file'], "Coolding Switch function")
+writeFile($directories, $directories['log_file'], "Coolding Switch function")
   $on_url = 'http://'+$ip+'/ir/play?id='+$commands['on_id']
   $off_url = 'http://'+$ip+'/ir/play?id='+$commands['off_id']
 
 
-  File.AppendLine($directories['log_file'], "now="+$now)
-  File.AppendLine($directories['log_file'], "lcommand="+$lcommand)
+  writeFile($directories, $directories['log_file'], "now="+$now)
+  writeFile($directories, $directories['log_file'], "lcommand="+$lcommand)
 
   if($now==true)
     if($lcommand==$on_url)
-        File.AppendLine($directories['log_file'], "Switch is already on, nothing to do..")
+        writeFile($directories, $directories['log_file'], "Switch is already on, nothing to do..")
     Else
-      File.AppendLine($directories['log_file'], "[!] Switch turned on; now is true")
+      writeFile($directories, $directories['log_file'], "[!] Switch turned on; now is true")
 
       $result = Http.Get($on_url, 'smile', $id)
-      File.AppendLine($directories['last_command'], $commands['on_id'])
+      writeFile($directories, $directories['last_command'], $commands['on_id'])
 
     /if
   Else
     if($lcommand==$off_url)
-     File.AppendLine($directories['log_file'], "Switch is already off, nothing to do..")
+     writeFile($directories, $directories['log_file'], "Switch is already off, nothing to do..")
     Else
-      File.AppendLine($directories['log_file'], "[!] Switch turned off; now is false")
+      writeFile($directories, $directories['log_file'], "[!] Switch turned off; now is false")
 
       $result = Http.Get($off_url, 'smile', $id)
-      File.AppendLine($directories['last_command'], $commands['off_id'])
+      writeFile($directories, $directories['last_command'], $commands['off_id'])
 
-      File.AppendLine($directories['log_file'], "url: "+$off_url)
+      writeFile($directories, $directories['log_file'], "url: "+$off_url)
 
 
     /if
   /If
 
 
-    File.AppendLine($directories['log_file'], "result: "+$result[0]+$result[1])
+    writeFile($directories, $directories['log_file'], "result: "+$result[0]+$result[1])
 
 
   if($result!="ok\n")
     if($log)
-      File.AppendLine($directories['log_file'], "Coolding can not be found, ip address is changed?")
-      File.AppendLine($directories['log_file'], "Renewing ip address; Current ip address: "+$ip+" and result page: "+$result)
+      writeFile($directories, $directories['log_file'], "Coolding can not be found, ip address is changed?")
+      writeFile($directories, $directories['log_file'], "Renewing ip address; Current ip address: "+$ip+" and result page: "+$result)
     /if
     File.Delete($directories['last_command'])
-    File.AppendLine($directories['last_command'], "0")
+    writeFile($directories, $directories['last_command'], "0")
     File.Delete($directories['coolding_ip'])
 
     $ip = Renewip($id, $directories)
@@ -209,7 +211,7 @@ File.AppendLine($directories['log_file'], "Coolding Switch function")
     CooldingScan($id, $commands, $now, $ip, $directories, $lcommand, $log)
 
     if($log)
-      File.AppendLine($directories['log_file'], "New ip address"+$ip)
+      writeFile($directories, $directories['log_file'], "New ip address"+$ip)
     /if
   /if
 /Function
@@ -222,33 +224,33 @@ Function CooldingScan($id, $commands, $now, $ip, $directories, $lcommand, $log)
 
 
   if($now==true)
-    File.AppendLine($directories['log_file'], "Scan turned on; now is true")
+    writeFile($directories, $directories['log_file'], "Scan turned on; now is true")
 
     $result = Http.Get($on_url, 'smile', $id)
-    File.AppendLine($directories['last_command'], $commands['on_id'])
+    writeFile($directories, $directories['last_command'], $commands['on_id'])
 
   Else
-    File.AppendLine($directories['log_file'], "Scan turned off; now is false")
+    writeFile($directories, $directories['log_file'], "Scan turned off; now is false")
 
     $result = Http.Get($off_url, 'smile', $id)
-    File.AppendLine($directories['last_command'], $commands['off_id'])
+    writeFile($directories, $directories['last_command'], $commands['off_id'])
 
-    File.AppendLine($directories['log_file'], "url: "+$off_url)
+    writeFile($directories, $directories['log_file'], "url: "+$off_url)
 
   /If
 
 
-    File.AppendLine($directories['log_file'], "result: "+$result[0]+$result[1])
+    writeFile($directories, $directories['log_file'], "result: "+$result[0]+$result[1])
 
 
 
   if($result!="ok\n")
     if($log)
-      File.AppendLine($directories['log_file'], "Coolding can not be found, ip address is changed?")
-      File.AppendLine($directories['log_file'], "Renewing ip address; Current ip address: "+$ip+" and result page: "+$result)
+      writeFile($directories, $directories['log_file'], "Coolding can not be found, ip address is changed?")
+      writeFile($directories, $directories['log_file'], "Renewing ip address; Current ip address: "+$ip+" and result page: "+$result)
     /if
     File.Delete($directories['last_command'])
-    File.AppendLine($directories['last_command'], "0")
+    writeFile($directories, $directories['last_command'], "0")
     File.Delete($directories['coolding_ip'])
 
     $ip = Renewip($id, $directories)
@@ -257,7 +259,7 @@ Function CooldingScan($id, $commands, $now, $ip, $directories, $lcommand, $log)
     CooldingScan($id, $commands, $now, $ip, $directories, $lcommand, $log)
 
     if($log)
-      File.AppendLine($directories['log_file'], "New ip address"+$ip)
+      writeFile($directories, $directories['log_file'], "New ip address"+$ip)
     /if
   /if
 /Function
@@ -266,7 +268,7 @@ Function CooldingScan($id, $commands, $now, $ip, $directories, $lcommand, $log)
 Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand, $log)
 
   if($log)
-    File.AppendLine($directories['log_file'], "~~ Begin coolding Sense env ~~")
+    writeFile($directories, $directories['log_file'], "~~ Begin coolding Sense env ~~")
   /if
 
   $year  = DateTime().Format("yyyy")
@@ -274,7 +276,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
   $day   = DateTime().Format("dd")
 
   if($log)
-    File.AppendLine($directories['log_file'], "~~ year "+($year)+" - month "+($month)+" - day "+($day)+" ~~")
+    writeFile($directories, $directories['log_file'], "~~ year "+($year)+" - month "+($month)+" - day "+($day)+" ~~")
   /if
 
   $calendar_ = $commands['calendar']
@@ -285,10 +287,10 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
   $schedule = $schedule_
 
   if($log)
-   File.AppendLine($directories['log_file'], "~~ calendar "+($calendar_)+" ~~")
-    File.AppendLine($directories['log_file'], "~~ directorie schedule "+($directories["schedules"])+" ~~")
-    File.AppendLine($directories['log_file'], "~~ command calendar "+($commands["calendar"])+" ~~")
-    File.AppendLine($directories['log_file'], "~~ schedule "+($schedule_)+" ~~")
+   writeFile($directories, $directories['log_file'], "~~ calendar "+($calendar_)+" ~~")
+    writeFile($directories, $directories['log_file'], "~~ directorie schedule "+($directories["schedules"])+" ~~")
+    writeFile($directories, $directories['log_file'], "~~ command calendar "+($commands["calendar"])+" ~~")
+    writeFile($directories, $directories['log_file'], "~~ schedule "+($schedule_)+" ~~")
   /if
 
 
@@ -296,12 +298,12 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
   if File.Exists($schedule_)
 
     if($log)
-      File.AppendLine($directories['log_file'], "~~ Schedule exists "+($calendar_)+" ~~")
+      writeFile($directories, $directories['log_file'], "~~ Schedule exists "+($calendar_)+" ~~")
 
     /if
     Include "sys/schedules/"+$calendar_+".pte";
 
-    File.AppendLine($directories['log_file'], "~~ loops in days "+($days)+" ~~")
+    writeFile($directories, $directories['log_file'], "~~ loops in days "+($days)+" ~~")
 
     foreach $days as $dayloop
       if float($dayloop.year) == float($year)
@@ -316,32 +318,32 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
   /if
 
   if($log)
-    File.AppendLine($directories['log_file'], "~~ End of file exists schedule ~~")
+    writeFile($directories, $directories['log_file'], "~~ End of file exists schedule ~~")
   /if
 
   // Coolding play URL
   $eco_on_url = 'http://'+$ip+'/ir/play?id='+$commands['eco_on_id']
 
   if($log)
-    File.AppendLine($directories['log_file'], "~~ eco on url "+($eco_on_url)+" ~~")
+    writeFile($directories, $directories['log_file'], "~~ eco on url "+($eco_on_url)+" ~~")
   /if
 
   $eco_off_url = 'http://'+$ip+'/ir/play?id='+$commands['eco_off_id']
 
   if($log)
-    File.AppendLine($directories['log_file'], "~~ eco off url "+($eco_off_url)+" ~~")
+    writeFile($directories, $directories['log_file'], "~~ eco off url "+($eco_off_url)+" ~~")
   /if
 
   $on_url = 'http://'+$ip+'/ir/play?id='+$commands['on_id']
 
   if($log)
-    File.AppendLine($directories['log_file'], "~~ on url "+($on_url)+" ~~")
+    writeFile($directories, $directories['log_file'], "~~ on url "+($on_url)+" ~~")
   /if
 
   $off_url = 'http://'+$ip+'/ir/play?id='+$commands['off_id']
 
   if($log)
-    File.AppendLine($directories['log_file'], "~~ off url "+($off_url)+" ~~")
+    writeFile($directories, $directories['log_file'], "~~ off url "+($off_url)+" ~~")
   /if
 
   // When command is run, switch to true
@@ -353,7 +355,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
   $d = DateTime()
 
   if($log)
-    File.AppendLine($directories['log_file'], "~~ Quarter: "+($quarter)+" ~~")
+    writeFile($directories, $directories['log_file'], "~~ Quarter: "+($quarter)+" ~~")
   /if
 
   // Begin the schedule loop
@@ -377,44 +379,44 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
 
       if($schedule.Values[($day)][$quarter]==0)
         if($log)
-          File.AppendLine($directories['log_file'], "~~ Scheme value: "+($schedule.Values[$day][$quarter]))
-          File.AppendLine($directories['log_file'], "~~ Sense temp: "+($now))
-          File.AppendLine($directories['log_file'], "~~ All command: "+($commands))
-          File.AppendLine($directories['log_file'], "~~ Last command: "+($lcommands))
+          writeFile($directories, $directories['log_file'], "~~ Scheme value: "+($schedule.Values[$day][$quarter]))
+          writeFile($directories, $directories['log_file'], "~~ Sense temp: "+($now))
+          writeFile($directories, $directories['log_file'], "~~ All command: "+($commands))
+          writeFile($directories, $directories['log_file'], "~~ Last command: "+($lcommands))
         /if
 
         if($lcommands==($commands['off_id']))
           if($log)
-            File.AppendLine($directories['log_file'], "[!] Hmm, according to the last command it seems its already off")
+            writeFile($directories, $directories['log_file'], "[!] Hmm, according to the last command it seems its already off")
           /if
          else
            File.Delete($directories['last_command'])
            if($log)
-             File.AppendLine($directories['log_file'], "[!] I will send an off command")
+             writeFile($directories, $directories['log_file'], "[!] I will send an off command")
            /if
            $command_run = 1
            $result = Http.Get($off_url, 'smile', $id)
-           File.AppendLine($directories['last_command'], $commands['off_id']+'_off')
+           writeFile($directories, $directories['last_command'], $commands['off_id']+'_off')
         /if
       Elseif($schedule.Values[($day)][$quarter]==-1)
         if($log)
-          File.AppendLine($directories['log_file'], "~~ Scheme value: "+($schedule.Values[$day][$quarter]))
-          File.AppendLine($directories['log_file'], "~~ Sense temp: "+($now))
-          File.AppendLine($directories['log_file'], "~~ All command: "+($commands))
-          File.AppendLine($directories['log_file'], "~~ Last command: "+($lcommands))
+          writeFile($directories, $directories['log_file'], "~~ Scheme value: "+($schedule.Values[$day][$quarter]))
+          writeFile($directories, $directories['log_file'], "~~ Sense temp: "+($now))
+          writeFile($directories, $directories['log_file'], "~~ All command: "+($commands))
+          writeFile($directories, $directories['log_file'], "~~ Last command: "+($lcommands))
         /if
         if($lcommands==($commands['on_id']))
           if($log)
-            File.AppendLine($directories['log_file'], "[!] Hmm, according to the last command it seems its already on")
+            writeFile($directories, $directories['log_file'], "[!] Hmm, according to the last command it seems its already on")
           /if
          else
            File.Delete($directories['last_command'])
            if($log)
-             File.AppendLine($directories['log_file'], "[!] I will send an on command")
+             writeFile($directories, $directories['log_file'], "[!] I will send an on command")
            /if
            $command_run = 1
            $result = Http.Get($on_url, 'smile', $id)
-           File.AppendLine($directories['last_command'], ($commands['on_id'])+'_on')
+           writeFile($directories, $directories['last_command'], ($commands['on_id'])+'_on')
         /if
       else
 
@@ -423,61 +425,61 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
         $lower_limit = ($schedule.Values[($day)][$quarter]-$commands['lower_ratio']);
 
         if($log)
-          File.AppendLine($directories['log_file'], "quarter: "+$quarter)
-          File.AppendLine($directories['log_file'], "Upper limit: "+$upper_limit)
-          File.AppendLine($directories['log_file'], "Lower limit: "+$lower_limit)
-          File.AppendLine($directories['log_file'], "Scheme value: "+$schedule.Values[$day][$quarter])
-          File.AppendLine($directories['log_file'], "Sense temp: "+$now)
+          writeFile($directories, $directories['log_file'], "quarter: "+$quarter)
+          writeFile($directories, $directories['log_file'], "Upper limit: "+$upper_limit)
+          writeFile($directories, $directories['log_file'], "Lower limit: "+$lower_limit)
+          writeFile($directories, $directories['log_file'], "Scheme value: "+$schedule.Values[$day][$quarter])
+          writeFile($directories, $directories['log_file'], "Sense temp: "+$now)
 
-          File.AppendLine($directories['log_file'], "All command: "+$commands)
-          File.AppendLine($directories['log_file'], "Last command: "+$lcommands)
+          writeFile($directories, $directories['log_file'], "All command: "+$commands)
+          writeFile($directories, $directories['log_file'], "Last command: "+$lcommands)
         /if
 
         if($upper_limit<$now)
           if($lcommands==($commands['eco_on_id']))
             if($log)
-              File.AppendLine($directories['log_file'], "[!] Exceeding the average - Already on!")
+              writeFile($directories, $directories['log_file'], "[!] Exceeding the average - Already on!")
             /if
            else
              File.Delete($directories['last_command'])
              if($log)
-               File.AppendLine($directories['log_file'], "[!] Exceeding the average - Turn on command!")
+               writeFile($directories, $directories['log_file'], "[!] Exceeding the average - Turn on command!")
              /if
              $command_run = 1
              $result = Http.Get($eco_on_url, 'smile', $id)
-             File.AppendLine($directories['last_command'], $commands['eco_on_id']+"_eco_on")
+             writeFile($directories, $directories['last_command'], $commands['eco_on_id']+"_eco_on")
           /if
         /if
 
        if($lower_limit>$now)
          if($lcommands==($commands['eco_off_id']))
            if($log)
-             File.AppendLine($directories['log_file'], "[!] Below the norm - already off")
+             writeFile($directories, $directories['log_file'], "[!] Below the norm - already off")
            /if
          else
            File.Delete($directories['last_command'])
            if($log)
-             File.AppendLine($directories['log_file'], "[!] Below the norm - Turn off command!")
+             writeFile($directories, $directories['log_file'], "[!] Below the norm - Turn off command!")
            /if
            $command_run = 1
            $result = Http.Get($eco_off_url, 'smile', $id)
-           File.AppendLine($directories['last_command'], $commands['eco_off_id']+'_eco_off')
+           writeFile($directories, $directories['last_command'], $commands['eco_off_id']+'_eco_off')
          /if
       /if
 
 
 
-        File.AppendLine($directories['log_file'], "lower limit "+$lower_limit)
+        writeFile($directories, $directories['log_file'], "lower limit "+$lower_limit)
 
-        File.AppendLine($directories['log_file'], "upper limit "+$upper_limit)
+        writeFile($directories, $directories['log_file'], "upper limit "+$upper_limit)
 
-        File.AppendLine($directories['log_file'], "now "+$now)
+        writeFile($directories, $directories['log_file'], "now "+$now)
 // This one will ocur when there is a range; e.g. avg: 240, upper: 250, below: 230
 // When the current temp is 245 it will be between this range, and nothing will happen..
    if($upper_limit>$now)
      if($lower_limit<$now)
        if($log)
-        File.AppendLine($directories['log_file'], "[!] Inside the limitations")
+        writeFile($directories, $directories['log_file'], "[!] Inside the limitations")
        /if
      /if
    /if
@@ -489,18 +491,18 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
     // When a command is called
     if($command_run==1)
       if($log)
-        File.AppendLine($directories['log_file'], "Command called = true")
-        File.AppendLine($directories['log_file'], "Result page: " +$result[0]+$result[1])
+        writeFile($directories, $directories['log_file'], "Command called = true")
+        writeFile($directories, $directories['log_file'], "Result page: " +$result[0]+$result[1])
       /if
 
       if($result!="ok\n")
         if($log)
-          File.AppendLine($directories['log_file'], "Coolding can not be found, ip address is changed?")
-          File.AppendLine($directories['log_file'], "Renewing ip address; Current ip address: "+$ip+" and result page : "+$result)
+          writeFile($directories, $directories['log_file'], "Coolding can not be found, ip address is changed?")
+          writeFile($directories, $directories['log_file'], "Renewing ip address; Current ip address: "+$ip+" and result page : "+$result)
         /if
 
         File.Delete($directories['last_command'])
-        File.AppendLine($directories['last_command'], "0")
+        writeFile($directories, $directories['last_command'], "0")
         File.Delete($directories['coolding_ip'])
 
         $ip = Renewip($id, $directories)
@@ -516,7 +518,7 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
 
 
  if($log)
-  File.AppendLine($directories['log_file'], "End of function Coolding Sense")
+  writeFile($directories, $directories['log_file'], "End of function Coolding Sense")
  /if
 
  /Function
@@ -526,16 +528,16 @@ Function CooldingSense($id, $commands, $uuid, $now, $ip, $directories, $lcommand
 Function Renewip($id, $directories)
    $adres = 'https://auth.plugwise.net/announce/'+$id+'.json?callback=coolding'
 
-  File.AppendLine($directories['log_file'], " Is the ip address already known for: "+($id)+"?")
+  writeFile($directories, $directories['log_file'], " Is the ip address already known for: "+($id)+"?")
 
   if File.Exists($directories['coolding_ip'])
     $get_ip = File.Read($directories['coolding_ip'])
     $ip = $get_ip[0]
-    File.AppendLine($directories['log_file'], " Yes it is. IP is already known: "+$ip)
+    writeFile($directories, $directories['log_file'], " Yes it is. IP is already known: "+$ip)
   else
      $data = Http.Get($adres)
 
-     File.AppendLine($directories['log_file'], " No its not, so we requested a new beacon from plugwise: "+$data)
+     writeFile($directories, $directories['log_file'], " No its not, so we requested a new beacon from plugwise: "+$data)
 
      $wifi_ip = RegEx.Match('"wifi_ip":"(.*?)"', $data)
      $lan_ip = RegEx.Match('"lan_ip":"(.*?)"', $data)
@@ -559,11 +561,11 @@ Function Renewip($id, $directories)
     /if
 
 
-    File.AppendLine($directories['last_ip'], $ip)
-    File.AppendLine($directories['coolding_ip'], $ip)
-    File.AppendLine($directories['log_file'], "new ip: "+$ip+" - "+$directories['coolding_ip'])
+    writeFile($directories, $directories['last_ip'], $ip)
+    writeFile($directories, $directories['coolding_ip'], $ip)
+    writeFile($directories, $directories['log_file'], "new ip: "+$ip+" - "+$directories['coolding_ip'])
   /if
-  File.AppendLine($directories['log_file'], "returning new ip: "+$ip)
+  writeFile($directories, $directories['log_file'], "returning new ip: "+$ip)
   return ($ip)
 /Function
 
@@ -572,13 +574,13 @@ Function Renewip($id, $directories)
 // Time calculation
 Function CalculateQuarters($log, $directories)
   if($log)
-    File.AppendLine($directories['log_file'], "~~ Calculate quarters ~~")
+    writeFile($directories, $directories['log_file'], "~~ Calculate quarters ~~")
   /if
 
   $d = DateTime()
 
   if($log)
-    File.AppendLine($directories['log_file'], "~~ eco on url "+($d)+" ~~")
+    writeFile($directories, $directories['log_file'], "~~ eco on url "+($d)+" ~~")
   /if
 
   $quarter = 0
@@ -609,29 +611,43 @@ Function CalculateQuarters($log, $directories)
 // Latest commando
 Function ReadLastCommand($directories, $id, $ip)
 
-  File.AppendLine($directories['log_file'], "--- Last command Section ---")
+  writeFile($directories, $directories['log_file'], "--- Last command Section ---")
 
 
-  File.AppendLine($directories['log_file'], " Fetching last played command")
+  writeFile($directories, $directories['log_file'], " Fetching last played command")
   $data = Http.Get('http://'+$ip+'/ir/sequences/lastplayed', 'smile', $id)
 
   $command = RegEx.Match("sequence id='(.*?)'", $data)
 
   // Check Last command file
   if $command[1] != undefined
-    File.AppendLine($directories['log_file'], " We are communicating with coolding, last played coolding command: "+$command[1])
-    File.AppendLine($directories['last_command'], $command[1])
+    writeFile($directories, $directories['log_file'], " We are communicating with coolding, last played coolding command: "+$command[1])
+    writeFile($directories, $directories['last_command'], $command[1])
     $lcommand = $command[1]
   else
-    File.AppendLine($directories['log_file'], " Connection errors/Retrieving problems: "+($data))
-    File.AppendLine($directories['last_command'], "0")
+    writeFile($directories, $directories['log_file'], " Connection errors/Retrieving problems: "+($data))
+    writeFile($directories, $directories['last_command'], "0")
     $lcommand = "0"
   /if
-  File.AppendLine($directories['log_file'], " Last command = "+$lcommand)
-  File.AppendLine($directories['log_file'], "--- End of last command Section ---")
-  File.AppendLine($directories['log_file'], "")
+  writeFile($directories, $directories['log_file'], " Last command = "+$lcommand)
+  writeFile($directories, $directories['log_file'], "--- End of last command Section ---")
+  writeFile($directories, $directories['log_file'], "")
   return $lcommand
 
 /Function
 
+
+Function writeFile($directories, $file, $message)
+  File.AppendLine($file, $message)
+/Function
+
+Function onlineLog($sedtype, $sedid, $cooldingid, $options, $command_called)
+  Include "coolding/api.pte"
+
+  $license_key = Plugwise.License
+
+  $url = 'https://api.thingspeak.com/update.json?api_key='+($api_key)+'&name='+($api_name)+'&field1='+($license_key)+'&field2='+($sedtype)+'&field3='+($sedid)+'&field4='+($cooldingid)+'&field5='+($options)+'&field6='+($command_called)
+  Post($url)
+
+/Function
 %>
