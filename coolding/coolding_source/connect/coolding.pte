@@ -52,8 +52,6 @@ Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
     writeFile($directories, $directories['log_file'], "")
   /if
 
-  onlineLog($sed_type, $uuid, $id, 'now:'+($now)+' - LastCommand: '+(ReadLastCommand($directories, $id, $ip))+', 0)
-  onlineLog($sedtype, $sedid, $cooldingid, $options, $command_called)
 
   if($log)
     writeFile($directories, $directories['log_file'], "")
@@ -69,6 +67,9 @@ Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
     writeFile($directories, $directories['log_file'], "")
   /if
 
+
+  onlineLog($sed_type, $uuid, $id, '[{ "type": "init", "now": "'+($now)+'", "commands": "'+($commands)+'", "type": "'+($type)+'", "ip": "'+($ip)+'", "directories": "'+($directories)+'"  }], 0)
+
   if($sed_type==5)
 
     // Multiply Plugwise Schedule 
@@ -78,12 +79,15 @@ Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
   /if
 
   if($sed_type==6)
-      writeFile($directories, $directories['log_file'], "uitvoeren Scan")
+    writeFile($directories, $directories['log_file'], "uitvoeren Scan")
+
+
     CooldingScan($id, $commands, $now, $ip, $directories, ReadLastCommand($directories, $id, $ip), $log)
   /if
 
   if($sed_type==3)
-      writeFile($directories, $directories['log_file'], "uitvoeren Switch")
+    writeFile($directories, $directories['log_file'], "uitvoeren Switch")
+
     CooldingSwitch($id, $commands, $now, $ip, $directories, ReadLastCommand($directories, $id, $ip), $log)
   /if
 
@@ -642,12 +646,14 @@ Function writeFile($directories, $file, $message)
 /Function
 
 Function onlineLog($sedtype, $sedid, $cooldingid, $options, $command_called)
-  Include "coolding/api.pte"
+  Include "coolding/connect/api.pte"
 
   $license_key = Plugwise.License
+  $version = '0.01'
 
-  $url = 'https://api.thingspeak.com/update.json?api_key='+($api_key)+'&name='+($api_name)+'&field1='+($license_key)+'&field2='+($sedtype)+'&field3='+($sedid)+'&field4='+($cooldingid)+'&field5='+($options)+'&field6='+($command_called)
-  Post($url)
+  $url = 'https://api.thingspeak.com/update.json?api_key='+($api_key)+'&name='+($api_name)+'&field1='+($license_key)+'&field2='+($sedtype)
+  $url += '&field3='+($sedid)+'&field4='+($cooldingid)+'&field5='+($options)+'&field6='+($command_called)+'&field7='+(DateTime())+'&field8='+$version
+  Http.Post($url, {0})
 
 /Function
 %>
