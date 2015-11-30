@@ -1,0 +1,17 @@
+<%
+$get_modules = Plugwise.Modules
+$collect_scan = {}
+
+$id   = Request.Get["id"] || ''
+
+foreach $get_modules as $module
+  if ($module.Name==$id)
+     if($module.Room!=null)
+ 	     Echo $module.Room.Name.Replace('"', '\"')
+     else
+         Echo "No name"
+     /if
+  /if
+/foreach
+
+%>

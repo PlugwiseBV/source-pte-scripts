@@ -25,7 +25,7 @@
                 </div>
             </td>
             <td>{{hist.sedid}}</td>
-            <td>{{hist.sedname}}</td>
+            <td>{{tmphistory[$index].sedname}}</td>
             <td>
                 <span ng-model="collapsed" ng-click="load_history(hist.sedid)" style="cursor:pointer; margin-bottom: 10px;margin-right:5px;" class="btn btn-success"><span translate="more_info">More Info</span></span>
                 <span ng-click="turnOff(hist.sedid, hist.extravalue)" style="cursor:pointer; margin-bottom: 10px;margin-right:5px;" class="btn btn-info" translate="activate">(In)activate</span>

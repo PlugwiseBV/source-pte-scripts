@@ -255,8 +255,7 @@
                   "command2": $scope.second_command.id,
                   "commandname2": $scope.second_command.title,
                   "seddeviceid": $scope.oursed.type,
-                  "sedid": $scope.oursed.id + "_right",
-                  "sedname": sedname
+                  "sedid": $scope.oursed.id + "_right"
                 }, {
                   "filename": filename,
                   "running": true,
@@ -266,8 +265,7 @@
                   "command2": $scope.second_command.id,
                   "commandname2": $scope.second_command.title,
                   "seddeviceid": $scope.oursed.type,
-                  "sedid": $scope.oursed.id + "_left",
-                  "sedname": sedname
+                  "sedid": $scope.oursed.id + "_left"
                 }
               ];
             } else {
@@ -281,8 +279,7 @@
                   "command2": $scope.second_command.id,
                   "commandname2": $scope.second_command.title,
                   "seddeviceid": $scope.oursed.type,
-                  "sedid": $scope.oursed.id + "_" + $scope.trigger.place,
-                  "sedname": sedname
+                  "sedid": $scope.oursed.id + "_" + $scope.trigger.place
                 }
               ];
             }
@@ -305,7 +302,6 @@
                 "seddeviceid": $scope.oursed.type,
                 "sedid": $scope.oursed.id,
                 "sed_id": $scope.oursed.deviceid,
-                "sedname": sedname,
                 "calendar_path": $scope.calendar,
                 "calendar_name": $scope.calendarname,
                 "schema_id": $scope.chosen_schedule
@@ -321,8 +317,7 @@
                 "command2": $scope.second_command.id,
                 "commandname2": $scope.second_command.title,
                 "seddeviceid": $scope.oursed.type,
-                "sedid": $scope.oursed.id,
-                "sedname": sedname
+                "sedid": $scope.oursed.id
               }
             ];
           }
@@ -331,6 +326,15 @@
           } else {
             $scope.history = data;
           }
+          $scope.tmphistory = [];
+          angular.forEach($scope.history, function(v, k) {
+            $scope.tmphistory[k] = [];
+            return JsonService.serverRequests('../connect/source_get_name.pte?id=' + v.sedid).then((function(fetch) {
+              $scope.tmphistory[k]["sedname"] = fetch.data;
+            }), function(reason) {
+              $scope.tmphistory[k]["sedname"] = '';
+            });
+          });
           return JsonService.serverRequests('../connect/save_coolding_setting.pte', 'POST', $scope.history).then((function(fetch) {
             $translate(["successfully", "command_generated"]).then(function(translations) {
               return SweetAlert.swal(translations.successfully, translations.command_generated, "success");
@@ -365,10 +369,14 @@
           return $scope.fourth_command = {};
         }
       };
-      $scope.placeSed = function(id, type, title, deviceid) {
+      $scope.placeSed = function(id, type, deviceid) {
         $scope.oursed.id = id;
         $scope.oursed.type = type;
-        $scope.oursed.title = title;
+        JsonService.serverRequests('../connect/source_get_name.pte?id=' + id).then((function(fetch) {
+          $scope.oursed.title = fetch.data;
+        }), function(reason) {
+          $scope.oursed.title = '';
+        });
         return $scope.oursed.deviceid = deviceid;
       };
       $scope.placeCooldingcom = function(id, title) {
@@ -515,7 +523,7 @@
         return angular.forEach($scope.history, function(v, k) {
           var count_schedule;
           if (v.sedid === h) {
-            $scope.placeSed(v.sedid, v.seddeviceid, v.sedname, v.sed_id);
+            $scope.placeSed(v.sedid, v.seddeviceid, v.sed_id);
             if (v.command1 != null) {
               $scope.first_command.id = v.command1;
               $scope.first_command.title = v.commandname1;
@@ -677,6 +685,15 @@
                   $scope.chosen_schedule = {};
                   $.get('../cache/coolding_setting.json', function(settings) {
                     $scope.history = angular.fromJson(settings);
+                    $scope.tmphistory = [];
+                    return angular.forEach($scope.history, function(v, k) {
+                      $scope.tmphistory[k] = [];
+                      return JsonService.serverRequests('../connect/source_get_name.pte?id=' + v.sedid).then((function(fetch) {
+                        $scope.tmphistory[k]["sedname"] = fetch.data;
+                      }), function(reason) {
+                        $scope.tmphistory[k]["sedname"] = '';
+                      });
+                    });
                   });
                   JsonService.serverRequests('../connect/schedules.pte').then((function(fetch) {
                     $scope.schedules = fetch.data;
