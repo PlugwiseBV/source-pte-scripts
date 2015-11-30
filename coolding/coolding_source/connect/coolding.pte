@@ -48,10 +48,10 @@ Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
     writeFile($directories, $directories['log_file'], " SED: "+$sed_type)
     writeFile($directories, $directories['log_file'], " Type event: "+$type)
     writeFile($directories, $directories['log_file'], " ip: "+$ip)
+    writeFile($directories, $directories['log_file'], " Size log file: "+($directories['log_file']))
     writeFile($directories, $directories['log_file'], "===========================")
     writeFile($directories, $directories['log_file'], "")
   /if
-
 
   if($log)
     writeFile($directories, $directories['log_file'], "")
@@ -661,6 +661,7 @@ Function ReadLastCommand($directories, $id, $ip)
 
 Function writeFile($directories, $file, $message)
   File.AppendLine($file, $message)
+
 /Function
 
 Function onlineLog($sedtype, $sedid, $cooldingid, $options, $command_called)
