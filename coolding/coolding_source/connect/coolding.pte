@@ -48,7 +48,7 @@ Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
     writeFile($directories, $directories['log_file'], " SED: "+$sed_type)
     writeFile($directories, $directories['log_file'], " Type event: "+$type)
     writeFile($directories, $directories['log_file'], " ip: "+$ip)
-    writeFile($directories, $directories['log_file'], " Size log file: "+($directories['log_file']))
+    writeFile($directories, $directories['log_file'], " Size log file: "+File.Size($directories['log_file']))
     writeFile($directories, $directories['log_file'], "===========================")
     writeFile($directories, $directories['log_file'], "")
   /if
