@@ -10,6 +10,7 @@ Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
     "coolding_ip"  => $s+"/coolding/cache/ip/coolding_"+$id+".txt",
     "last_ip"      => $s+"/coolding/cache/ip/coolding_lastip_"+$id+".txt",
     "log_file"     => $s+"/coolding/log.txt",
+    "tmp_file"     => $s+"/coolding/log_tmp.txt",
     "schedules"    => $s+"/sys/schedules/"
   }
 
@@ -53,8 +54,6 @@ Function Airco($id, $commands, $now, $type, $sed_type, $uuid)
     writeFile($directories, $directories['log_file'], "")
   /if
 
-  onlineLog($sed_type, $uuid, $id, 'now:'+($now)+' - LastCommand: '+(ReadLastCommand($directories, $id, $ip))+', 0)
-  onlineLog($sedtype, $sedid, $cooldingid, $options, $command_called)
 
   if($log)
     writeFile($directories, $directories['log_file'], "")
@@ -640,6 +639,13 @@ Function ReadLastCommand($directories, $id, $ip)
 
 Function writeFile($directories, $file, $message)
   File.AppendLine($file, $message)
+
+  // When it is over the 50Mb
+  if(File.Size($directories['log_file'])>50000000) {
+    File.Delete($directories['tmp_file'])
+    File.Move($directories['log_file'], $directories['tmp_file'])
+  }
+
 /Function
 
 Function onlineLog($sedtype, $sedid, $cooldingid, $options, $command_called)
