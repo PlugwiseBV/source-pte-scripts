@@ -20,6 +20,7 @@
   ; Request application privileges for Windows Vista
   RequestExecutionLevel admin
 
+
 ;--------------------------------
 ;Interface Settings
 
@@ -43,16 +44,36 @@
 
 ; The stuff to install
 Section "" ;No components page, name is not important
+  ExecWait 'taskkill /im PlugwisePC.exe'
 
   RMDir "$INSTDIR\Plugwise Coolding\"
-  RMDir "$INSTDIR\www\coolding\"
+
+  ${If} ${FileExists} "$INSTDIR\www\coolding\cache\*"
+    RMDir "$INSTDIR\www\coolding\html\"
+    RMDir "$INSTDIR\www\coolding\connect\"
+
+    ; Set output path to the installation directory.
+    SetOutPath "$INSTDIR\www\coolding\html"
+  
+    File /nonfatal /a /r "coolding_source\html\"
+
+    ; Set output path to the installation directory.
+    SetOutPath "$INSTDIR\www\coolding\connect"
+  
+    File /nonfatal /a /r "coolding_source\connect\"
+
+  ${Else}
+    RMDir "$INSTDIR\www\coolding\"
+
+    ; Set output path to the installation directory.
+    SetOutPath "$INSTDIR\www\coolding"
+  
+    File /nonfatal /a /r "coolding_source\"
+
+  ${EndIf}
 
   CreateDirectory "$INSTDIR\www\sys\switch\"
   CreateDirectory "$INSTDIR\www\sys\schedules\"
-  ; Set output path to the installation directory.
-  SetOutPath "$INSTDIR\www\coolding"
-  
-  File /nonfatal /a /r "coolding_source\"
 
   ; Set output path to the installation directory.
   SetOutPath "$INSTDIR\Plugwise Coolding\"
