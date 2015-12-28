@@ -370,6 +370,15 @@
         }
       };
       $scope.placeSed = function(id, type, deviceid) {
+        var idr;
+        idr = id.split("_");
+        if (idr[1] != null) {
+          $scope.trigger = {
+            'place': idr[1]
+          };
+        }
+        id = id.replace("_right", "");
+        id = id.replace("_left", "");
         $scope.oursed.id = id;
         $scope.oursed.type = type;
         JsonService.serverRequests('../connect/source_get_name.pte?id=' + id).then((function(fetch) {
