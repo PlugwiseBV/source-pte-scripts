@@ -11,3 +11,9 @@ First download and install Plugwise Source. Then make sure the customer (in this
 To compile this project, you will need to install 'NSIS Unicode'.
 
 After compiling, you can run install.exe.
+
+## To Compile
+
+Download Nsis 2.46.5 Unicode. See: https://code.google.com/p/unsis/downloads/list
+
+After installation run compile.nsi
