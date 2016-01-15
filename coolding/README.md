@@ -14,7 +14,7 @@ After compiling, you can run install.exe.
 
 ## To Compile
 
-Download Nsis 2.46.5 Unicode. See: https://code.google.com/p/unsis/downloads/list
+Download and install Nsis 2.46.5 Unicode. See: https://code.google.com/p/unsis/downloads/list
 
 Then download this project.
 
