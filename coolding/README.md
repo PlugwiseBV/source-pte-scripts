@@ -16,4 +16,10 @@ After compiling, you can run install.exe.
 
 Download Nsis 2.46.5 Unicode. See: https://code.google.com/p/unsis/downloads/list
 
-After installation run compile.nsi
+Then download this project.
+
+Open the program 'makensisw.exe' (for me it's located: in C:\Program Files\NSIS\makensisw.exe).
+
+Inside my project there is a file named 'compile.nsis', drag this file to the recently opened program 'makensisw'.
+
+This will compile the project and install.exe will be updated!
