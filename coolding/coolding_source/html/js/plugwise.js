@@ -329,7 +329,7 @@
           $scope.tmphistory = [];
           angular.forEach($scope.history, function(v, k) {
             $scope.tmphistory[k] = [];
-            return JsonService.serverRequests('../connect/source_get_name.pte?id=' + v.sedid).then((function(fetch) {
+            return JsonService.serverRequests('../connect/source_get_name.pte?id=' + v.sedid.replace(/_left|_right/g, '')).then((function(fetch) {
               $scope.tmphistory[k]["sedname"] = fetch.data;
             }), function(reason) {
               $scope.tmphistory[k]["sedname"] = '';
@@ -381,7 +381,7 @@
         id = id.replace("_left", "");
         $scope.oursed.id = id;
         $scope.oursed.type = type;
-        JsonService.serverRequests('../connect/source_get_name.pte?id=' + id).then((function(fetch) {
+        JsonService.serverRequests('../connect/source_get_name.pte?id=' + id.replace(/_left|_right/g, '')).then((function(fetch) {
           $scope.oursed.title = fetch.data;
         }), function(reason) {
           $scope.oursed.title = '';
@@ -697,7 +697,7 @@
                     $scope.tmphistory = [];
                     return angular.forEach($scope.history, function(v, k) {
                       $scope.tmphistory[k] = [];
-                      return JsonService.serverRequests('../connect/source_get_name.pte?id=' + v.sedid).then((function(fetch) {
+                      return JsonService.serverRequests('../connect/source_get_name.pte?id=' + v.sedid.replace(/_left|_right/g, '')).then((function(fetch) {
                         $scope.tmphistory[k]["sedname"] = fetch.data;
                       }), function(reason) {
                         $scope.tmphistory[k]["sedname"] = '';
