@@ -143,7 +143,7 @@
             }
           }
         });
-        JsonService.serverRequests('../connect/save_coolding_setting.pte', 'POST', $scope.history).then((function(fetch) {}));
+        JsonService.serverRequests('../connect/save_coolding_setting.pte', 'POST', JSON.stringify($scope.history)).then((function(fetch) {}));
         return JsonService.serverRequests('../connect/coolding_editEvent.pte?filename=' + filename + '&id=' + deviceid + '&extravalue=' + extraValue + '&remove=true&status=false').then((function(fetch) {}));
       };
       $scope.turnOff = function(id, extraValue) {
@@ -165,7 +165,7 @@
             }
           }
         });
-        JsonService.serverRequests('../connect/save_coolding_setting.pte', 'POST', $scope.history).then((function(fetch) {}));
+        JsonService.serverRequests('../connect/save_coolding_setting.pte', 'POST', JSON.stringify($scope.history)).then((function(fetch) {}));
         return JsonService.serverRequests('../connect/coolding_editEvent.pte?filename=' + filename + '&id=' + deviceid + '&extravalue=' + extraValue + '&status=' + status).then((function(fetch) {}));
       };
       $scope.reset = function() {
@@ -335,7 +335,7 @@
               $scope.tmphistory[k]["sedname"] = '';
             });
           });
-          return JsonService.serverRequests('../connect/save_coolding_setting.pte', 'POST', $scope.history).then((function(fetch) {
+          return JsonService.serverRequests('../connect/save_coolding_setting.pte', 'POST', JSON.stringify($scope.history)).then((function(fetch) {
             $translate(["successfully", "command_generated"]).then(function(translations) {
               return SweetAlert.swal(translations.successfully, translations.command_generated, "success");
             });
