@@ -3,6 +3,7 @@ $name       = Request.Get["name"] || ''
 $id       = Request.Get["id"] || ''
 $ip         = Request.Get["ip"] || ''
 $device     = Request.Get["device"] || ''
+$device_id     = Request.Get["device_id"] || ''
 $extra      = Request.Get["extra"] || ''
 $calendar      = Request.Get["calendar"] || ''
 
@@ -24,6 +25,9 @@ $eco_off    = Request.Get["eco_off"] || ''
 
 $file = System.Path+'/sys/events/'+$name+'.pte'
 
+if Plugwise.Modules[$sed_id]==Undefined
+ $sed_id = Module($device_id).id
+/if
 
 
 if File.Exists($file)

@@ -208,7 +208,7 @@
         if ($scope.oursed.type === '5') {
           extraValue = "Sense&upper_limit=" + $scope.upper_limit + "&lower_limit=" + $scope.lower_limit + "&schedule=" + $scope.chosen_schedule + "&eco_on=" + $scope.third_command.id + "&eco_off=" + $scope.fourth_command.id;
         }
-        JsonService.serverRequests('../connect/coolding_writeScript.pte?id=' + $scope.identifier + '&device=' + $scope.oursed.type + '&extra=' + extraValue + '&ip=' + $scope.ip + '&sequence_id=' + $scope.first_command.id + '&sequence_id_off=' + $scope.second_command.id + '&sed_id=' + $scope.oursed.deviceid + '&name=' + filename + '&calendar=' + $scope.calendar, 'jsonp').then((function(fetch) {}));
+        JsonService.serverRequests('../connect/coolding_writeScript.pte?id=' + $scope.identifier + '&device=' + $scope.oursed.type + '&extra=' + extraValue + '&ip=' + $scope.ip + '&sequence_id=' + $scope.first_command.id + '&sequence_id_off=' + $scope.second_command.id + '&sed_id=' + $scope.oursed.deviceid + '&device_id=' + $scope.oursed.id + '&name=' + filename + '&calendar=' + $scope.calendar, 'jsonp').then((function(fetch) {}));
         if ($scope.oursed.id != null) {
           angular.forEach($scope.history, function(v, k) {
             if (v.sedid != null) {
@@ -818,10 +818,7 @@
         stop: function(event, ui) {
           var i;
           i = 0;
-          $("#blocks li").each(function(v, k) {
-            console.log(v);
-            return console.log(k);
-          });
+          $("#blocks li").each(function(v, k) {});
         }
       });
     };
@@ -881,7 +878,6 @@
   }).filter("tohtml", function($sce) {
     return function(val) {
       if (val != null) {
-        console.log(val);
         return $sce.trustAsHtml(val);
       } else {
         return $sce.trustAsHtml('');
@@ -1125,7 +1121,6 @@
           server = PLUGWISECLOUD;
         }
         deferred = $q.defer();
-        console.log(data);
         if (method === 'jsonp') {
           return $http.jsonp(url).success(function(json) {
             deferred.resolve(json.data);
