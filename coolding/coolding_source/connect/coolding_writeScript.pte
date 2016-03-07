@@ -26,7 +26,9 @@ $eco_off    = Request.Get["eco_off"] || ''
 $file = System.Path+'/sys/events/'+$name+'.pte'
 
 if Plugwise.Modules[$sed_id]==Undefined
- $sed_id = Module($device_id).id
+ $sed_id = Module($device_id)
+else
+ $sed_id = Module($sed_id)
 /if
 
 
@@ -81,7 +83,7 @@ else
   if($not_sense==1)
     if($device==3)
       if($extra=='both')
-        $file_switch_l = System.Path+"/sys/switch/"+Plugwise.Modules[$sed_id].uuid+"_left.pte"
+        $file_switch_l = System.Path+"/sys/switch/"+$sed_id.uuid+"_left.pte"
         if File.Exists($file_switch_l)
           File.Delete($file_switch_l)
         /if
@@ -94,7 +96,7 @@ else
         File.AppendLine($file_switch_l, "%"+">") 
 
 
-        $file_switch_r = System.Path+"/sys/switch/"+Plugwise.Modules[$sed_id].uuid+"_right.pte"
+        $file_switch_r = System.Path+"/sys/switch/"+$sed_id.uuid+"_right.pte"
         if File.Exists($file_switch_r)
           File.Delete($file_switch_r)
         /if
@@ -107,7 +109,7 @@ else
         File.AppendLine($file_switch_r, "%"+">") 
 
       else
-        $file_switch = System.Path+"/sys/switch/"+Plugwise.Modules[$sed_id].uuid+"_"+$extra+".pte"
+        $file_switch = System.Path+"/sys/switch/"+$sed_id.uuid+"_"+$extra+".pte"
 
         if File.Exists($file_switch)
           File.Delete($file_switch)
@@ -197,7 +199,7 @@ else
  foreach $get_modules as $module
   // All SEDS
 
-  if ($module.Id==$sed_id)
+  if ($module.Id==$sed_id.id)
     Echo '[{ "return": "'
     Echo $name
     if($device==5)

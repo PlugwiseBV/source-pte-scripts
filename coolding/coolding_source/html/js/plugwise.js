@@ -39,19 +39,23 @@
   controller.controller('HardwareController', function() {});
 
   controller.controller('languageInit', [
-    '$translate', '$scope', function($translate, $scope) {
+    '$translate', '$scope', '$rootScope', function($translate, $scope, $rootScope) {
       $scope.init = function() {
         return $scope.languageSelect = $translate.use();
       };
       $scope.init();
+      if ($translate.use()) {
+        $rootScope.translate = $translate.use();
+      }
       return $scope.changeLanguage = function() {
         if ($translate.use() !== $scope.changedLanguageIn) {
-          return $translate.use($scope.changedLanguageIn);
+          $translate.use($scope.changedLanguageIn);
         }
+        return $rootScope.translate = $scope.changedLanguageIn;
       };
     }
   ]).controller('AddressIdentifier', [
-    '$scope', '$location', '$http', 'JsonService', '$filter', '$route', 'regexValidate', '$timeout', '$window', 'generate', 'SweetAlert', '$translate', function($scope, $location, $http, JsonService, $filter, $route, regexValidate, $timeout, $window, generate, SweetAlert, $translate) {
+    '$scope', '$location', '$http', 'JsonService', '$filter', '$route', 'regexValidate', '$timeout', '$window', 'generate', 'SweetAlert', '$translate', '$rootScope', function($scope, $location, $http, JsonService, $filter, $route, regexValidate, $timeout, $window, generate, SweetAlert, $translate, $rootScope) {
       var visible;
       $scope.valid = false;
       $scope.windowOpen = false;
@@ -104,6 +108,9 @@
         return $translate(["calendar", "save_calendar_exception", "schema", "exception_days", "close", "history", "mon", "tue", "wed", "thur", "fri", "sat", "sun", "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sept", "oct", "nov", "dec", "calendar_saved", "calendar_reset", "calendar_exception", "calendar_return", "calendar_remove", "calendar_give_name", "calendar_select_load"]).then(function(translations) {
           return translations;
         });
+      };
+      $window.getLanguageCalendar = function() {
+        return $rootScope.translate;
       };
       $scope.removeCalendar = function() {
         $scope.calendarname = '';

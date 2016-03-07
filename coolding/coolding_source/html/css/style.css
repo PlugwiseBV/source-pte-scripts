@@ -3,6 +3,9 @@ body {
     font-family: Ubuntu, sans-serif;
     background: url(../img/background.png);
 }
+.japanese_font {
+    font-family: Meiryo UI, Ubuntu, sans-serif !important;
+}
 .navbar-default {
     background-color: #fff;
 }

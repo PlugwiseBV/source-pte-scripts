@@ -346,6 +346,15 @@ $('.list').append('<div class="day-event" date-year="'+$(this).attr('date-year')
 
 $(document).ready(function() {
 	translations = window.opener.getTranslationsCalendar();
+
+	language = (window.opener.getLanguageCalendar());
+
+
+	if(language==="jp-JP") {
+		$("body").addClass("japanese_font");
+	}
+
+
 	translations.then( function(translations) {
 		$.each(translations, function(i,j) {
 			$("body").find("[data-translate='" + i + "']").html(j);
