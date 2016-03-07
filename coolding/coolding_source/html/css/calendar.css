@@ -9,7 +9,7 @@ body {
     margin: 0;
 }
 .japanese_font {
-    font-family: Meiryo UI, Ubuntu, sans-serif !important;
+    font-family: Meiryo UI !important;
 }
 a {
     text-decoration: none;
