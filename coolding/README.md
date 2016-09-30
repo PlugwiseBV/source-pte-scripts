@@ -1,6 +1,7 @@
 [![Plugwise](https://www.plugwise.com/skin/frontend/base/default/images/plugwise-logo.png)](https://www.plugwise.com)
 
 Author: E. Topuz <e.topuz@plugwise.com>
+
 (C) 2015-2016, Plugwise BV, The Netherlands
 
 ### Coolding plugin
