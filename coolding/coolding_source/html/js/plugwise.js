@@ -640,29 +640,18 @@
                 }
                 $scope.loader_device = false;
                 $scope.error_device = false;
-                JsonService.serverRequests('../connect/plugincheck.pte').then((function(plugin) {
-                  if (plugin.data === 'true') {
-                    return JsonService.serverRequests('../connect/writable.pte').then((function(writable) {
-                      if (writable.data === 'true') {
-                        $scope.devices.show = true;
-                        $scope.devices.devices = fetch.data;
-                        return callback(true);
-                      } else {
-                        $scope.loader_device = false;
-                        $scope.error_device = true;
-                        $scope.loading = false;
-                        $scope.devices.error = true;
-                        $scope.error_message = '';
-                        $scope.write_permissions = true;
-                        return callback(false);
-                      }
-                    }));
+                JsonService.serverRequests('../connect/writable.pte').then((function(writable) {
+                  if (writable.data === 'true') {
+                    $scope.devices.show = true;
+                    $scope.devices.devices = fetch.data;
+                    return callback(true);
                   } else {
                     $scope.loader_device = false;
                     $scope.error_device = true;
+                    $scope.loading = false;
                     $scope.devices.error = true;
                     $scope.error_message = '';
-                    $scope.license_missing = true;
+                    $scope.write_permissions = true;
                     return callback(false);
                   }
                 }));

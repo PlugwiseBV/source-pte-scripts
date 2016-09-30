@@ -1,5 +1,8 @@
 [![Plugwise](https://www.plugwise.com/skin/frontend/base/default/images/plugwise-logo.png)](https://www.plugwise.com)
 
+Author: E. Topuz <e.topuz@plugwise.com>
+(C) 2015-2016, Plugwise BV, The Netherlands
+
 ### Coolding plugin
 
 This Coolding plugin serves as a bridge between the Coolding and the SED's (Sleeping End Devices, such as the Switch, Scan ans Sense) using Source as main controller.
